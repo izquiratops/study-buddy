@@ -11,6 +11,6 @@ import { StorageService } from '../storage.service';
 })
 export class HomeComponent {
 
-  constructor(storageService: StorageService) {}
+  constructor(public storageService: StorageService) {}
 
 }
