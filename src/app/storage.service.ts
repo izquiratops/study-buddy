@@ -6,7 +6,7 @@ import { ObjectStoreKey, objectStoreKeys } from './database.model';
   providedIn: 'root'
 })
 export class StorageService {
-  private dbOpenRequest = indexedDB.open('flashcards', 6);
+  private dbOpenRequest = indexedDB.open('flashcards', 10);
   private dataBase!: IDBDatabase;
 
   constructor() {
@@ -24,6 +24,10 @@ export class StorageService {
     const dataBase = (ev.target as IDBOpenDBRequest).result;
 
     for (const objectStoreKey of objectStoreKeys) {
+      if (dataBase.objectStoreNames.contains(objectStoreKey)) {
+        continue;
+      }
+
       dataBase.createObjectStore(
         objectStoreKey, { keyPath: objectStoreKey, autoIncrement: true }
       );
