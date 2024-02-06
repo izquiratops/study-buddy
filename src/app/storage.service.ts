@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Card, createEmptyCard } from 'ts-fsrs';
-
-enum ObjectStoreKey {
-  Card = "cards",
-}
+import { Card } from 'ts-fsrs';
+import { ObjectStoreKey, objectStoreKeys } from './database.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +23,20 @@ export class StorageService {
   private _onDBUpgradeNeeded(ev: Event) {
     const dataBase = (ev.target as IDBOpenDBRequest).result;
 
-    for (const objectStoreKey of Object.values(ObjectStoreKey)) {
+    for (const objectStoreKey of objectStoreKeys) {
       dataBase.createObjectStore(
         objectStoreKey, { keyPath: objectStoreKey, autoIncrement: true }
       );
     }
   }
 
-  private _retrieveObjectStore(name: ObjectStoreKey): IDBObjectStore {
-    const transaction = this.dataBase.transaction(name, "readwrite")
+  private _retrieveObjectStore(name: ObjectStoreKey, mode: IDBTransactionMode = "readonly"): IDBObjectStore {
+    const transaction = this.dataBase.transaction(name, mode)
     return transaction.objectStore("cards");
   }
 
   saveCard(card: Card) {
-    const objectStore = this._retrieveObjectStore(ObjectStoreKey.Card);
+    const objectStore = this._retrieveObjectStore("cards", "readwrite");
     const request = objectStore.add(card);
     request.onsuccess = () => console.debug('Card added successfully');
     request.onerror = () => console.error("Failed to add a Card");
