@@ -1,1 +1,56 @@
-<p>editor works!</p>
+<h1>Deck Editor✨</h1>
+<div>
+    <button [routerLink]="'..'">Return</button>
+</div>
+<section>
+    <div class="new-card-container">
+        <span class="expandable-field">
+            <label for="front">Front</label>
+            <input type="text" id="front" name="front" placeholder="Dictionary" />
+        </span>
+        <span class="expandable-field">
+            <label for="front">Back</label>
+            <input type="text" id="front" name="front" placeholder="じしょ" />
+        </span>
+        <span>
+            <label for="difficulty">Difficulty</label>
+            <select name="difficulty" id="difficulty">
+                <option value="again">Again</option>
+                <option value="hard">Hard</option>
+                <option value="good">Good</option>
+                <option value="easy">Easy</option>
+            </select>
+        </span>
+    </div>
+    <div>
+        <button>Create</button>
+    </div>
+</section>
+
+<table>
+    <thead>
+        <tr>
+          <th scope="col">Front</th>
+          <th scope="col">Back</th>
+          <th scope="col">Difficulty</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Dictionary</th>
+            <th>じしょ</th>
+            <th>Again</th>
+            <th class="centered-cell">✏️</th>
+            <th class="centered-cell">❌</th>
+        </tr>
+        <tr>
+            <th scope="row">Example</th>
+            <th>例えば</th>
+            <th>Again</th>
+            <th class="centered-cell">✏️</th>
+            <th class="centered-cell">❌</th>
+        </tr>
+    </tbody>
+</table>

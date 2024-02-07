@@ -1,2 +1,26 @@
-<p>home works!</p>
+<h1>Anki🧠</h1>
+<div>
+    <button [routerLink]="'/editor'">Edit decks</button>
+    <button [routerLink]="'/about'">About</button>
+</div>
+<h4>Decks🎴</h4>
+<p>{{decks | async | json}}</p>
+<table>
+    <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Cards</th>
+        </tr>
+      </thead>
+    <tbody>
+        <tr (click)="handleDeckClick()">
+            <th scope="row">じしょ</th>
+            <th>28</th>
+        </tr>
+        <tr (click)="handleDeckClick()">
+            <th scope="row">例えば</th>
+            <th>46</th>
+        </tr>
+    </tbody>
+</table>
 <!-- <button (click)="storageService.saveCard()">Add Card</button> -->
