@@ -7,9 +7,11 @@
 
 <button type="button" (click)="handleShowNewCardDialog()">Add Card</button>
 
-<!-- TODO: Write this Form as a Reactive Form -->
-<form #newDeckForm="ngForm">
-    <button [routerLink]="'..'" (click)="handleCreateDeck()">Create Deck</button>
+<!-- Reactive form -->
+<form [formGroup]="newDeckForm">
+    <label for="name">Name</label>
+    <input type="text" id="name" formControlName="name" placeholder="JLPT N5" />
+
     <table>
         <thead>
             <tr>
@@ -18,12 +20,14 @@
                 <th scope="col"><!-- ❌ Column --></th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let flashCard of (flashCards$ | async); index as idx">
-                <th scope="row">{{flashCard.content.front}}</th>
-                <th>{{flashCard.content.back}}</th>
+        <tbody formArrayName="flashCards">
+            <tr *ngFor="let flashCard of flashCards.controls; index as idx">
+                <th scope="row">{{flashCard.value.content.front}}</th>
+                <th>{{flashCard.value.content.back}}</th>
                 <th class="centered-cell" (click)="handleDeleteCard(idx)">❌</th>
             </tr>
         </tbody>
     </table>
+
+    <button [routerLink]="'..'" [disabled]="!newDeckForm.valid" (click)="handleCreateDeck()">Create Deck</button>
 </form>

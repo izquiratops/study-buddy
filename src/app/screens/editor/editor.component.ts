@@ -1,23 +1,31 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
-import { FlashCard, FlashCardContent, FlashCards } from '@models/database.model';
 import { StorageService } from '@services/storage.service';
+import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
 import { NewCardDialogComponent } from './new-card-dialog/new-card-dialog.component';
 
 @Component({
   selector: 'app-editor',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NewCardDialogComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NewCardDialogComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css'
 })
 export class EditorComponent {
   showNewCardDialog$ = new BehaviorSubject(false);
-  flashCards$ = new BehaviorSubject<FlashCards>([]);
+  
+  newDeckForm = new FormGroup({
+    name: new FormControl<string>('', Validators.required),
+    flashCards: new FormArray<FormControl<FlashCard>>([], Validators.required)
+  });
+
+  get flashCards() {
+    return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
+  }
 
   constructor(public storageService: StorageService) {
   }
@@ -27,27 +35,21 @@ export class EditorComponent {
   };
 
   handleDeleteCard(index: number) {
-    const currentFlashCards = this.flashCards$.getValue();
-    const newFlashCards = currentFlashCards.filter((_, position) => position !== index);
-
-    this.flashCards$.next(newFlashCards);
+    this.flashCards.removeAt(index);
   };
 
   handleCreateDeck() {
-    this.storageService.setDeck({
-      name: 'lore ipsum',
-      flashCards: this.flashCards$.getValue()
-    });
+    // Forcing the value to be a Deck because I don't know how types works on reactive forms
+    this.storageService.setDeck(this.newDeckForm.value as Deck);
   };
 
   onSubmitNewCard(content: FlashCardContent) {
-    const currentFlashCards = this.flashCards$.getValue();
-    const newFlashCard: FlashCard = {
+    const newFlashCard = new FormControl<FlashCard>({
       card: createEmptyCard(),
-      content,
-    };
+      content
+    }, { nonNullable: true });
 
-    this.flashCards$.next([...currentFlashCards, newFlashCard]);
+    this.flashCards.push(newFlashCard);
     this.showNewCardDialog$.next(false);
   };
 }

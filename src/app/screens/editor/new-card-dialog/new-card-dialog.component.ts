@@ -18,6 +18,7 @@ export class NewCardDialogComponent {
   newCardModel: FlashCardContent = { front: '', back: '' };
 
   handleSubmit() {
+    // Returns a copy of the form becuase the original data is wiped after the submit
     this.submitNewCard.emit({...this.newCardModel});
   }
 
