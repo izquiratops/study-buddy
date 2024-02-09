@@ -5,8 +5,9 @@ export type ObjectStoreKey = typeof objectStoreKeys[number];
 
 export type Decks = Array<Deck>;
 export type Deck = {
+    idbKey: number,
     name: string,
-    flashCards: FlashCards
+    flashCards: FlashCards,
 }
 
 export type FlashCards = Array<FlashCard>;

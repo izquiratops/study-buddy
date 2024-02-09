@@ -24,7 +24,7 @@ export class HomeComponent {
       filter(isReady => isReady), // Filter only when isReady is true
       tap(() => { // Update the subject with the obtained decks from IDB
         console.debug('Loading decks from local database');
-        this.storageService.getDecksAsync().then(decks => {
+        this.storageService.getDecks().then(decks => {
           this.decks$.next(decks)
         });
       }),
@@ -32,8 +32,12 @@ export class HomeComponent {
     .subscribe();
   }
 
-  handleDeleteDeck(index: number) {
-    // TODO: handle delete
+  async handleDeleteDeck(index: number) {
+    // Remove from idb
+    await this.storageService.deleteDeck(index);
+    // Remove from current state. decks$ is not linked to indexedDB updates.
+    const decks = this.decks$.getValue();
+    const newDecksState = decks.filter(curr => curr.idbKey !== index);
+    this.decks$.next(newDecksState);
   }
-
 }

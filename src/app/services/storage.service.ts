@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Card } from 'ts-fsrs';
 import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
 
 @Injectable({
@@ -8,7 +7,7 @@ import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.m
 })
 export class StorageService {
   isReady = new BehaviorSubject(false);
-  private dbOpenRequest = indexedDB.open('flashcards', 12);
+  private dbOpenRequest = indexedDB.open('flashcards', 14);
   private dataBase!: IDBDatabase;
 
   constructor() {
@@ -34,7 +33,7 @@ export class StorageService {
       }
 
       dataBase.createObjectStore(
-        objectStoreKey, { keyPath: objectStoreKey, autoIncrement: true }
+        objectStoreKey, { keyPath: "idbKey", autoIncrement: true }
       );
     }
   }
@@ -44,23 +43,41 @@ export class StorageService {
     return transaction.objectStore(name);
   }
 
-  setCard(card: Card) {
-    const objectStore = this._retrieveObjectStore("cards", "readwrite");
-    const request = objectStore.add(card);
-    request.onsuccess = () => console.debug('Card added successfully');
-    request.onerror = (ev: Event) => console.error("Failed to add a Card", ev);
-  }
-
-  setDeck(deck: Deck) {
-    const objectStore = this._retrieveObjectStore("decks", "readwrite");
-    const request = objectStore.add(deck);
-    request.onsuccess = () => console.debug('Deck added successfully');
-    request.onerror = (ev: Event) => console.error("Failed to add a Deck", ev);
-  }
-
-  async getDecksAsync(): Promise<Decks> {
+  async setDeck(deck: Deck): Promise<void> {
     return new Promise((resolve, reject) => {
-      const objectStore = this._retrieveObjectStore("decks");
+      const objectStore = this._retrieveObjectStore("decks", "readwrite");
+      const request = objectStore.add(deck);
+
+      request.onsuccess = () => {
+        console.debug('Deck added successfully');
+        resolve();
+      }
+      request.onerror = (ev: Event) => {
+        console.error("Failed to add a Deck", ev);
+        reject();
+      }
+    });
+  }
+
+  async deleteDeck(index: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const objectStore = this._retrieveObjectStore("decks", "readwrite");
+      const request = objectStore.delete(index);
+
+      request.onsuccess = () => {
+        console.debug('Deck deleted successfully');
+        resolve();
+      }
+      request.onerror = (ev: Event) => {
+        console.error("Failed to delete a Deck", ev);
+        reject();
+      }
+    })
+  }
+
+  async getDecks(): Promise<Decks> {
+    return new Promise((resolve, reject) => {
+      const objectStore = this._retrieveObjectStore("decks", "readonly");
       const request = objectStore.getAll();
 
       request.onsuccess = (ev: Event) => {

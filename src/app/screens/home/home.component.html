@@ -15,10 +15,10 @@
     </thead>
     <tbody *ngIf="decks$ | async as decks">
         <ng-container *ngIf="decks.length > 0; else emptyListBlock">
-            <tr *ngFor="let deck of decks; index as idx">
+            <tr *ngFor="let deck of decks">
                 <th scope="row">{{deck.name}}</th>
                 <th>{{deck.flashCards.length}}</th>
-                <th class="centered-cell" (click)="handleDeleteDeck(idx)">❌</th>
+                <th class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</th>
             </tr>
         </ng-container>
     </tbody>
