@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, filter, take, tap } from 'rxjs';
-import { StorageService } from '../storage.service';
-import { Decks } from '../database.model';
+import { StorageService } from '../../services/storage.service';
+import { Decks } from '../../models/database.model';
 
 @Component({
   selector: 'app-home',

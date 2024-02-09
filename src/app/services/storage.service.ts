@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Card } from 'ts-fsrs';
-import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from './database.model';
+import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '../models/database.model';
 
 @Injectable({
   providedIn: 'root'
