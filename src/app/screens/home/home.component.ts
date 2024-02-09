@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, filter, take, tap } from 'rxjs';
-import { StorageService } from '../../services/storage.service';
-import { Decks } from '../../models/database.model';
+import { StorageService } from '@services/storage.service';
+import { Decks } from '@models/database.model';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +23,7 @@ export class HomeComponent {
     this.storageService.isReady.pipe(
       filter(isReady => isReady), // Filter only when isReady is true
       tap(() => { // Update the subject with the obtained decks from IDB
+        console.debug('Loading decks from local database');
         this.storageService.getDecks().then(decks => {
           this.decks.next(decks)
         });

@@ -25,6 +25,8 @@
     ],
     "paths": {
       "@models/*": ["app/models/*"],
+      "@screens/*": ["app/screens/*"],
+      "@services/*": ["app/services/*"],
     }
   },
   "angularCompilerOptions": {

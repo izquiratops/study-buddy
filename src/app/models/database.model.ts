@@ -12,8 +12,8 @@ export type Deck = {
 export type FlashCards = Array<FlashCard>;
 export type FlashCard = {
     card: Card,
-    log: ReviewLog,
     content: FlashCardContent,
+    log?: ReviewLog, // Logs are empty on fresh new cards
 }
 
 export type FlashCardContent = {

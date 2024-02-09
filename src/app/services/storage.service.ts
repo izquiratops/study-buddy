@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Card } from 'ts-fsrs';
-import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '../models/database.model';
+import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class StorageService {
     this.dataBase = (ev.target as IDBOpenDBRequest).result;
     this.dataBase.onerror = console.error;
 
-    // Letting know to listeners that Database is ready
+    // Letting know to listeners that indexedDB is ready
     this.isReady.next(true);
   }
 
