@@ -14,7 +14,7 @@ import { Decks } from '@models/database.model';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  decks = new BehaviorSubject<Decks>([]);
+  decks$ = new BehaviorSubject<Decks>([]);
 
   constructor(public storageService: StorageService) {
   }
@@ -24,15 +24,16 @@ export class HomeComponent {
       filter(isReady => isReady), // Filter only when isReady is true
       tap(() => { // Update the subject with the obtained decks from IDB
         console.debug('Loading decks from local database');
-        this.storageService.getDecks().then(decks => {
-          this.decks.next(decks)
+        this.storageService.getDecksAsync().then(decks => {
+          this.decks$.next(decks)
         });
       }),
       take(1)) // Stop listening after the first tap
     .subscribe();
   }
 
-  handleDeckClick() {
+  handleDeleteDeck(index: number) {
+    // TODO: handle delete
   }
 
 }

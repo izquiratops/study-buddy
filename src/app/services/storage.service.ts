@@ -58,7 +58,7 @@ export class StorageService {
     request.onerror = (ev: Event) => console.error("Failed to add a Deck", ev);
   }
 
-  async getDecks(): Promise<Decks> {
+  async getDecksAsync(): Promise<Decks> {
     return new Promise((resolve, reject) => {
       const objectStore = this._retrieveObjectStore("decks");
       const request = objectStore.getAll();

@@ -12,7 +12,7 @@ import { FlashCardContent } from '@models/database.model';
   styleUrl: './new-card-dialog.component.css'
 })
 export class NewCardDialogComponent {
-  @Input('showDialog') showDialog$!: BehaviorSubject<boolean>;
+  @Input('isOpen') isOpen$!: BehaviorSubject<boolean>;
   @Output() submitNewCard = new EventEmitter<FlashCardContent>();
 
   newCardModel: FlashCardContent = { front: '', back: '' };
@@ -20,9 +20,10 @@ export class NewCardDialogComponent {
   handleSubmit() {
     // Returns a copy of the form becuase the original data is wiped after the submit
     this.submitNewCard.emit({...this.newCardModel});
+    this.isOpen$.next(false);
   }
 
   handleDismiss() {
-    this.showDialog$.next(false);
+    this.isOpen$.next(false);
   }
 }

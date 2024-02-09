@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
 import { NewCardDialogComponent } from './new-card-dialog/new-card-dialog.component';
+
+type NewCardForm = {
+  name: FormControl<string>,
+  flashCards: FormArray<FormControl<FlashCard>>
+}
 
 @Component({
   selector: 'app-editor',
@@ -16,26 +21,23 @@ import { NewCardDialogComponent } from './new-card-dialog/new-card-dialog.compon
   styleUrl: './editor.component.css'
 })
 export class EditorComponent {
-  showNewCardDialog$ = new BehaviorSubject(false);
-  
-  newDeckForm = new FormGroup({
-    name: new FormControl<string>('', Validators.required),
-    flashCards: new FormArray<FormControl<FlashCard>>([], Validators.required)
+  private _fb = new FormBuilder();
+  newDeckForm = this._fb.group<NewCardForm>({
+    name: this._fb.nonNullable.control('', Validators.required),
+    flashCards: this._fb.nonNullable.array<FlashCard>([], Validators.required)
   });
 
-  get flashCards() {
+  newCardDialogOpen$ = new BehaviorSubject(false);
+
+  get flashCardsFormField() {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
   }
 
   constructor(public storageService: StorageService) {
   }
 
-  handleShowNewCardDialog() {
-    this.showNewCardDialog$.next(true);
-  };
-
   handleDeleteCard(index: number) {
-    this.flashCards.removeAt(index);
+    this.flashCardsFormField.removeAt(index);
   };
 
   handleCreateDeck() {
@@ -43,13 +45,16 @@ export class EditorComponent {
     this.storageService.setDeck(this.newDeckForm.value as Deck);
   };
 
+  handleOpenNewCardDialog() {
+    this.newCardDialogOpen$.next(true);
+  };
+
   onSubmitNewCard(content: FlashCardContent) {
-    const newFlashCard = new FormControl<FlashCard>({
+    const newFlashCard = this._fb.nonNullable.control<FlashCard>({
       card: createEmptyCard(),
       content
-    }, { nonNullable: true });
+    });
 
-    this.flashCards.push(newFlashCard);
-    this.showNewCardDialog$.next(false);
+    this.flashCardsFormField.push(newFlashCard);
   };
 }

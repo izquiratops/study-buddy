@@ -8,21 +8,24 @@
 <table>
     <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Cards</th>
+            <th scope="col">Name</th>
+            <th scope="col">Cards</th>
+            <th scope="col"><!-- ❌ Column --></th>
         </tr>
-      </thead>
-    <tbody>
-        <tr>
-            <th scope="row" colspan="2">Empty list</th>
-        </tr>
-        <!-- <tr (click)="handleDeckClick()">
-            <th scope="row">じしょ</th>
-            <th>28</th>
-        </tr>
-        <tr (click)="handleDeckClick()">
-            <th scope="row">例えば</th>
-            <th>46</th>
-        </tr> -->
+    </thead>
+    <tbody *ngIf="decks$ | async as decks">
+        <ng-container *ngIf="decks.length > 0; else emptyListBlock">
+            <tr *ngFor="let deck of decks; index as idx">
+                <th scope="row">{{deck.name}}</th>
+                <th>{{deck.flashCards.length}}</th>
+                <th class="centered-cell" (click)="handleDeleteDeck(idx)">❌</th>
+            </tr>
+        </ng-container>
     </tbody>
 </table>
+
+<ng-template #emptyListBlock>
+    <tr>
+        <th scope="row" colspan="2">Empty list</th>
+    </tr>
+</ng-template>

@@ -3,9 +3,9 @@
     <button [routerLink]="'..'">Return</button>
 </div>
 
-<app-new-card-dialog [showDialog]="showNewCardDialog$" (submitNewCard)="onSubmitNewCard($event)"></app-new-card-dialog>
+<app-new-card-dialog [isOpen]="newCardDialogOpen$" (submitNewCard)="onSubmitNewCard($event)"></app-new-card-dialog>
 
-<button type="button" (click)="handleShowNewCardDialog()">Add Card</button>
+<button type="button" (click)="handleOpenNewCardDialog()">Add Card</button>
 
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody formArrayName="flashCards">
-            <tr *ngFor="let flashCard of flashCards.controls; index as idx">
+            <tr *ngFor="let flashCard of flashCardsFormField.controls; index as idx">
                 <th scope="row">{{flashCard.value.content.front}}</th>
                 <th>{{flashCard.value.content.back}}</th>
                 <th class="centered-cell" (click)="handleDeleteCard(idx)">❌</th>
