@@ -1,17 +1,17 @@
-<dialog [open]="isOpen$ | async">
+<dialog [open]="isOpen | async">
     <!-- Template driven form -->
-    <form #newCardForm="ngForm">
+    <form #flashCardForm="ngForm">
         <!-- Inputs for every property on 'content' -->
         <div class="new-card-container">
             <span class="expandable-field">
                 <label for="front">Front</label>
-                <input type="text" [(ngModel)]="newCardModel.front" required id="front" name="front"
+                <input type="text" [(ngModel)]="flashCardModel.front" required id="front" name="front"
                     placeholder="Dictionary" #front="ngModel" />
                 <div [hidden]="front.valid || front.pristine">Field not valid</div>
             </span>
             <span class="expandable-field">
                 <label for="front">Back</label>
-                <input type="text" [(ngModel)]="newCardModel.back" required id="back" name="back" placeholder="じしょ"
+                <input type="text" [(ngModel)]="flashCardModel.back" required id="back" name="back" placeholder="じしょ"
                     #back="ngModel" />
                 <div [hidden]="back.valid || back.pristine">Field not valid</div>
             </span>
@@ -19,7 +19,7 @@
 
         <!-- Form actions -->
         <div>
-            <button type="submit" [disabled]="!newCardForm.form.valid" (click)="handleSubmit(); newCardForm.reset();">
+            <button type="button" [disabled]="!flashCardForm.form.valid" (click)="handleSubmit()">
                 Submit
             </button>
             <button type="button" (click)="handleDismiss()">

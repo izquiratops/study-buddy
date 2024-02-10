@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
-import { NewCardDialogComponent } from './components/new-card-dialog/new-card-dialog.component';
+import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 
 type NewCardForm = {
   name: FormControl<string>,
@@ -16,7 +15,7 @@ type NewCardForm = {
 @Component({
   selector: 'app-editor',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NewCardDialogComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, CardEditDialogComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css'
 })
@@ -27,13 +26,20 @@ export class EditorComponent {
     flashCards: this._fb.nonNullable.array<FlashCard>([], Validators.required)
   });
 
-  newCardDialogOpen$ = new BehaviorSubject(false);
+  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
 
   get flashCardsFormField() {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
   }
 
   constructor(public storageService: StorageService) {
+  }
+
+  handleEditCard(index: number) {
+    const flashCard = this.flashCardsFormField.at(index).value;
+    this.cardEditDialog.deckPositionForm = index;
+    this.cardEditDialog.flashCardModel = { ...flashCard.content };
+    this.cardEditDialog.open();
   }
 
   handleDeleteCard(index: number) {
@@ -43,18 +49,34 @@ export class EditorComponent {
   handleCreateDeck() {
     // Forcing the value to be a Deck because I don't know how types works on reactive forms
     this.storageService.setDeck(this.newDeckForm.value as Deck);
+    // TODO: write navigation here
   };
 
-  handleOpenNewCardDialog() {
-    this.newCardDialogOpen$.next(true);
+  handleCreateNewCard() {
+    this.cardEditDialog.deckPositionForm = -1;
+    this.cardEditDialog.flashCardModel = { front: '', back: '' };
+    this.cardEditDialog.open();
   };
 
   onSubmitNewCard(content: FlashCardContent) {
-    const newFlashCard = this._fb.nonNullable.control<FlashCard>({
-      card: createEmptyCard(),
-      content
-    });
+    const index = this.cardEditDialog.deckPositionForm;
 
-    this.flashCardsFormField.push(newFlashCard);
+    if (index >= 0) {
+      // Edits an already existent card
+      const flashCardController = this.flashCardsFormField.at(index);
+      const currentFlashCard = flashCardController.value;
+      const newFlashCard = { ...currentFlashCard, content };
+
+      flashCardController.patchValue(newFlashCard);
+    } else {
+      // Creates a new card. The methods 'createEmptyCard' generates all
+      // the FSRS initial values.
+      const newFlashCard = this._fb.nonNullable.control<FlashCard>({
+        card: createEmptyCard(),
+        content
+      });
+  
+      this.flashCardsFormField.push(newFlashCard);
+    }
   };
 }
