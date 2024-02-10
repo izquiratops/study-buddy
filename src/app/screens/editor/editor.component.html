@@ -1,11 +1,11 @@
 <h1>Deck Editor✨</h1>
 <div>
     <button [routerLink]="'..'">Return</button>
+    <button type="button" (click)="handleCreateNewCard()">Add Card</button>
 </div>
 
 <app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
 
-<button type="button" (click)="handleCreateNewCard()">Add Card</button>
 
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
@@ -13,6 +13,7 @@
     <input type="text" id="name" formControlName="name" placeholder="JLPT N5" />
     <div [hidden]="nameFormField.valid || nameFormField.pristine">Field not valid</div>
 
+    <label for="flashCards">Cards</label>
     <table>
         <thead>
             <tr>
@@ -32,5 +33,7 @@
         </tbody>
     </table>
 
-    <button [routerLink]="'..'" [disabled]="!newDeckForm.valid" (click)="handleCreateDeck()">Create Deck</button>
+    <button [routerLink]="'..'" [disabled]="!newDeckForm.valid" (click)="handleCreateDeck()">
+        Create Deck
+    </button>
 </form>

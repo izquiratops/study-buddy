@@ -1,33 +1,35 @@
 <h1>Anki🧠</h1>
 <div>
-    <button [routerLink]="'/editor'">Create decks</button>
+    <button [routerLink]="'/editor'">Create new deck</button>
     <button [routerLink]="'/about'">About</button>
 </div>
 
 <h4>Decks</h4>
-<table>
+<ng-container *ngIf="decks$ | async as decks">
+<table *ngIf="decks.length > 0; else emptyListBlock">
     <thead>
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Deck cards</th>
             <th scope="col">Cards to review</th>
+            <th scope="col"><!-- ✏️ Column --></th>
             <th scope="col"><!-- ❌ Column --></th>
         </tr>
     </thead>
     <tbody *ngIf="decks$ | async as decks">
-        <ng-container *ngIf="decks.length > 0; else emptyListBlock">
-            <tr *ngFor="let deck of decks">
-                <th scope="row">{{deck.name}}</th>
-                <th>{{deck.flashCards.length}}</th>
-                <th>{{deck.flashCards | getCardsToReviewCount}}</th>
-                <th class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</th>
-            </tr>
-        </ng-container>
+        <tr *ngFor="let deck of decks">
+            <th scope="row">{{deck.name}}</th>
+            <th>{{deck.flashCards.length}}</th>
+            <th>{{deck.flashCards | getCardsToReviewCount}}</th>
+            <th class="centered-cell">✏️</th>
+            <th class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</th>
+        </tr>
     </tbody>
 </table>
+</ng-container>
 
 <ng-template #emptyListBlock>
-    <tr>
-        <th scope="row" colspan="2">Empty list</th>
-    </tr>
+    <p>Looks like there are no decks here at the moment.
+        <a [routerLink]="'/editor'">Click here to create one.</a>
+    </p>
 </ng-template>
