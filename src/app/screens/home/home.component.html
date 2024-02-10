@@ -6,26 +6,27 @@
 
 <h4>Decks</h4>
 <ng-container *ngIf="decks$ | async as decks">
-<table *ngIf="decks.length > 0; else emptyListBlock">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Deck cards</th>
-            <th scope="col">Cards to review</th>
-            <th scope="col"><!-- ✏️ Column --></th>
-            <th scope="col"><!-- ❌ Column --></th>
-        </tr>
-    </thead>
-    <tbody *ngIf="decks$ | async as decks">
-        <tr *ngFor="let deck of decks">
-            <th scope="row">{{deck.name}}</th>
-            <th>{{deck.flashCards.length}}</th>
-            <th>{{deck.flashCards | getCardsToReviewCount}}</th>
-            <th class="centered-cell">✏️</th>
-            <th class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</th>
-        </tr>
-    </tbody>
-</table>
+    <table *ngIf="decks.length > 0; else emptyListBlock">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Deck cards</th>
+                <th scope="col">Cards to review</th>
+                <th scope="col"><!-- ✏️ Column --></th>
+                <th scope="col"><!-- ❌ Column --></th>
+            </tr>
+        </thead>
+        <!-- TODO: Add ngFor trackBy method -->
+        <tbody *ngIf="decks$ | async as decks">
+            <tr *ngFor="let deck of decks; index as idx">
+                <th scope="row" tabindex="idx">{{deck.name}}</th>
+                <td>{{deck.flashCards.length}}</td>
+                <td>{{deck.flashCards | getCardsToReviewCount}}</td>
+                <td class="centered-cell" [routerLink]="'/editor'">✏️</td>
+                <td class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</td>
+            </tr>
+        </tbody>
+    </table>
 </ng-container>
 
 <ng-template #emptyListBlock>

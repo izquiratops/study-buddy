@@ -26,9 +26,9 @@
         <tbody formArrayName="flashCards">
             <tr *ngFor="let flashCard of flashCardsFormField.controls; index as idx">
                 <th scope="row">{{flashCard.value.content.front}}</th>
-                <th>{{flashCard.value.content.back}}</th>
-                <th class="centered-cell" (click)="handleEditCard(idx)">✏️</th>
-                <th class="centered-cell" (click)="handleDeleteCard(idx)">❌</th>
+                <td>{{flashCard.value.content.back}}</td>
+                <td class="centered-cell" (click)="handleEditCard(idx)">✏️</td>
+                <td class="centered-cell" (click)="handleDeleteCard(idx)">❌</td>
             </tr>
         </tbody>
     </table>
