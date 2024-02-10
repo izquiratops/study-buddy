@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { BehaviorSubject, filter, take, tap } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { Decks } from '@models/database.model';
+import { GetCardsToReviewCountPipe } from './get-cards-to-review-count.pipe';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, GetCardsToReviewCountPipe],
   providers: [StorageService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

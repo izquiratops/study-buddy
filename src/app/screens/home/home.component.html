@@ -9,7 +9,8 @@
     <thead>
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Cards</th>
+            <th scope="col">Deck cards</th>
+            <th scope="col">Cards to review</th>
             <th scope="col"><!-- ❌ Column --></th>
         </tr>
     </thead>
@@ -18,6 +19,7 @@
             <tr *ngFor="let deck of decks">
                 <th scope="row">{{deck.name}}</th>
                 <th>{{deck.flashCards.length}}</th>
+                <th>{{deck.flashCards | getCardsToReviewCount}}</th>
                 <th class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</th>
             </tr>
         </ng-container>
