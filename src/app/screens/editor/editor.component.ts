@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
-import { NewCardDialogComponent } from './new-card-dialog/new-card-dialog.component';
+import { NewCardDialogComponent } from './components/new-card-dialog/new-card-dialog.component';
 
 type NewCardForm = {
   name: FormControl<string>,
