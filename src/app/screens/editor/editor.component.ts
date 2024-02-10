@@ -28,6 +28,10 @@ export class EditorComponent {
 
   @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
 
+  get nameFormField() {
+    return this.newDeckForm.get('name') as FormControl<string>;
+  }
+
   get flashCardsFormField() {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
   }
