@@ -21,7 +21,7 @@ export class CardEditDialogComponent {
   // This index keeps the position from the arrayForm on the deck. 
   // If the card is new is setted to -1.
   deckPositionForm: number = -1;
-  flashCardModel: FlashCardContent = { front: '', back: '' };
+  flashCardModel: FlashCardContent = new FlashCardContent();
 
   get isOpen() {
     return this._isOpen$.asObservable();

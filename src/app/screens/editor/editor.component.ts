@@ -36,7 +36,7 @@ export class EditorComponent {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
   }
 
-  constructor(public storageService: StorageService) {
+  constructor(private storageService: StorageService) {
   }
 
   handleEditCard(index: number) {
@@ -58,7 +58,7 @@ export class EditorComponent {
 
   handleCreateNewCard() {
     this.cardEditDialog.deckPositionForm = -1;
-    this.cardEditDialog.flashCardModel = { front: '', back: '' };
+    this.cardEditDialog.flashCardModel = new FlashCardContent();
     this.cardEditDialog.open();
   };
 

@@ -1,4 +1,4 @@
-<h1>Anki🧠</h1>
+<h1>フラッシュカード🃏</h1>
 <div>
     <button [routerLink]="'/editor'">Create new deck</button>
     <button [routerLink]="'/about'">About</button>
@@ -21,7 +21,7 @@
             <tr *ngFor="let deck of decks; index as idx">
                 <th scope="row" tabindex="idx">{{deck.name}}</th>
                 <td>{{deck.flashCards.length}}</td>
-                <td>{{deck.flashCards | getCardsToReviewCount}}</td>
+                <td>{{deck.toBeReviewedCount}}</td>
                 <td class="centered-cell" [routerLink]="'/editor'">✏️</td>
                 <td class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</td>
             </tr>
