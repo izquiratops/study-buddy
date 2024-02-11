@@ -6,6 +6,7 @@ export class HomeService {
 
   constructor() { }
 
+  // TODO: Rename along ProcessedDeck
   getDeckMetadata(deck: Deck): ProcessedDeck {
     return {
       ...deck,

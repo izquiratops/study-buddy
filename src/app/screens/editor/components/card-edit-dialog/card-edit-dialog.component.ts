@@ -7,14 +7,12 @@ import { FlashCardContent } from '@models/database.model';
 // Rename component to 'flash card edit dialog'
 @Component({
   selector: 'app-card-edit-dialog',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './card-edit-dialog.component.html',
   styleUrl: './card-edit-dialog.component.css'
 })
 export class CardEditDialogComponent {
   @Output() submit = new EventEmitter<FlashCardContent>();
-  @ViewChild('flashCardForm') flashCardForm!: NgForm;
+  @ViewChild('flashCardForm') flashCardForm: NgForm;
 
   private _isOpen$ = new BehaviorSubject<boolean>(false);
 
@@ -22,6 +20,8 @@ export class CardEditDialogComponent {
   // If the card is new is setted to -1.
   deckPositionForm: number = -1;
   flashCardModel: FlashCardContent = new FlashCardContent();
+
+  constructor() {}
 
   get isOpen() {
     return this._isOpen$.asObservable();

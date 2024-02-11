@@ -22,7 +22,7 @@
                 <th scope="row" tabindex="idx">{{deck.name}}</th>
                 <td>{{deck.flashCards.length}}</td>
                 <td>{{deck.toBeReviewedCount}}</td>
-                <td class="centered-cell" [routerLink]="'/editor'">✏️</td>
+                <td class="centered-cell" [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">✏️</td>
                 <td class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</td>
             </tr>
         </tbody>

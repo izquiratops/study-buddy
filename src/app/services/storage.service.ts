@@ -8,9 +8,10 @@ import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.m
 export class StorageService {
   isReady = new BehaviorSubject(false);
   private dbOpenRequest = indexedDB.open('flashcards', 14);
-  private dataBase!: IDBDatabase;
+  private dataBase: IDBDatabase;
 
   constructor() {
+    console.debug('Initializing Storage Service...');
     this.dbOpenRequest.onerror = console.error;
     this.dbOpenRequest.onsuccess = this._onDBRequestSuccess.bind(this);
     this.dbOpenRequest.onupgradeneeded = this._onDBUpgradeNeeded.bind(this);
@@ -51,11 +52,29 @@ export class StorageService {
       request.onsuccess = () => {
         console.debug('Deck added successfully');
         resolve();
-      }
+      };
+
       request.onerror = (ev: Event) => {
         console.error("Failed to add a Deck", ev);
         reject();
-      }
+      };
+    });
+  }
+
+  async getDeck(index: number): Promise<Deck> {
+    return new Promise((resolve, reject) => {
+      const objectStore = this._retrieveObjectStore("decks", "readonly");
+      const request = objectStore.openCursor(index);
+
+      request.onsuccess = (ev: Event) => {
+        const cursor: IDBCursorWithValue = ((ev.target) as IDBRequest).result;
+        resolve(cursor.value);
+      };
+
+      request.onerror = (ev: Event) => {
+        console.error("Failed to find a Deck", ev);
+        reject();
+      };
     });
   }
 
@@ -67,11 +86,12 @@ export class StorageService {
       request.onsuccess = () => {
         console.debug('Deck deleted successfully');
         resolve();
-      }
+      };
+
       request.onerror = (ev: Event) => {
         console.error("Failed to delete a Deck", ev);
         reject();
-      }
+      };
     })
   }
 
@@ -88,7 +108,7 @@ export class StorageService {
       request.onerror = (ev: Event) => {
         console.error("Failed to add a Deck", ev);
         reject();
-      }
+      };
     })
   }
 }

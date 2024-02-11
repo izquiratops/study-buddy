@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { filter, map } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
+import { EditorService } from './editor.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 
@@ -14,19 +15,36 @@ type NewCardForm = {
 
 @Component({
   selector: 'app-editor',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, CardEditDialogComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css'
 })
 export class EditorComponent {
+  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
+
   private _fb = new FormBuilder();
+
   newDeckForm = this._fb.group<NewCardForm>({
     name: this._fb.nonNullable.control('', Validators.required),
     flashCards: this._fb.nonNullable.array<FlashCard>([], Validators.required)
   });
 
-  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
+  constructor(
+    private route: ActivatedRoute,
+    private editorService: EditorService,
+    private storageService: StorageService,
+    ) {}
+
+  ngOnInit() {
+    this.route.queryParams.pipe(
+      map(p => p['id']),
+      filter(id => id)
+    ).subscribe((id) => this._loadDeck(id));
+  }
+
+  private async _loadDeck(index: number) {
+    const deck = await this.storageService.getDeck(index);
+    console.debug('hurray!');
+  }
 
   get nameFormField() {
     return this.newDeckForm.get('name') as FormControl<string>;
@@ -34,9 +52,6 @@ export class EditorComponent {
 
   get flashCardsFormField() {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
-  }
-
-  constructor(private storageService: StorageService) {
   }
 
   handleEditCard(index: number) {
@@ -52,8 +67,8 @@ export class EditorComponent {
 
   handleCreateDeck() {
     // Forcing the value to be a Deck because I don't know how types works on reactive forms
-    this.storageService.setDeck(this.newDeckForm.value as Deck);
-    // TODO: write navigation here
+    const deck = new Deck(this.newDeckForm.value);
+    this.storageService.setDeck(deck);
   };
 
   handleCreateNewCard() {

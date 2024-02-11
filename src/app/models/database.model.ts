@@ -9,11 +9,15 @@ export interface ProcessedDeck extends Deck {
     toBeReviewedCount: number,
 };
 export type Decks = Array<Deck>;
-export type Deck = {
-    idbKey: number,
-    name: string,
-    flashCards: FlashCards,
-};
+export class Deck {
+    idbKey: number;
+    name: string;
+    flashCards: FlashCards;
+
+    public constructor(init?: Partial<Deck>) {
+        Object.assign(this, init);
+    }
+}
 
 export type FlashCards = Array<FlashCard>;
 export type FlashCard = {
