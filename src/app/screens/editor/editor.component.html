@@ -1,11 +1,12 @@
-<h1>Deck Editor✨</h1>
+<app-navigator-bar title="Deck Editor">
+    <li><a [routerLink]="'..'">Go Home</a></li>
+</app-navigator-bar>
+
 <div>
-    <button [routerLink]="'..'">Return</button>
     <button type="button" (click)="handleCreateNewCard()">Add Card</button>
 </div>
 
 <app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
-
 
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">

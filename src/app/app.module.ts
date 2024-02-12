@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from '@screens/home/home.component';
 import { EditorComponent } from '@screens/editor/editor.component';
 import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
+import { NavigatorBarComponent } from './components/navigator-bar/navigator-bar.component';
 
 import { HomeService } from '@screens/home/home.service';
 import { EditorService } from '@screens/editor/editor.service';
@@ -20,6 +21,7 @@ import { EditorService } from '@screens/editor/editor.service';
     HomeComponent,
     EditorComponent,
     CardEditDialogComponent,
+    NavigatorBarComponent,
   ],
   imports: [
     CommonModule,

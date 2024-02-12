@@ -1,10 +1,7 @@
-<h1>フラッシュカード🃏</h1>
-<div>
-    <button [routerLink]="'/editor'">Create new deck</button>
-    <button [routerLink]="'/about'">About</button>
-</div>
+<app-navigator-bar title="フラッシュカード"></app-navigator-bar>
 
 <h4>Decks</h4>
+<button [routerLink]="'/editor'">Create new deck</button>
 <ng-container *ngIf="decks$ | async as decks">
     <table *ngIf="decks.length > 0; else emptyListBlock">
         <thead>

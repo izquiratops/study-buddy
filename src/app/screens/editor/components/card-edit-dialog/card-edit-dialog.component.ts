@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { FlashCardContent } from '@models/database.model';
 
@@ -11,10 +10,10 @@ import { FlashCardContent } from '@models/database.model';
   styleUrl: './card-edit-dialog.component.css'
 })
 export class CardEditDialogComponent {
+  private _isOpen$ = new BehaviorSubject<boolean>(false);
+
   @Output() submit = new EventEmitter<FlashCardContent>();
   @ViewChild('flashCardForm') flashCardForm: NgForm;
-
-  private _isOpen$ = new BehaviorSubject<boolean>(false);
 
   // This index keeps the position from the arrayForm on the deck. 
   // If the card is new is setted to -1.
@@ -23,7 +22,7 @@ export class CardEditDialogComponent {
 
   constructor() {}
 
-  get isOpen() {
+  get isOpen$() {
     return this._isOpen$.asObservable();
   }
 
