@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, filter, take } from 'rxjs';
 import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  isReady = new BehaviorSubject(false);
+  private _onIdbReady$ = new BehaviorSubject(false);
   private dbOpenRequest = indexedDB.open('flashcards', 14);
   private dataBase: IDBDatabase;
 
@@ -22,7 +22,7 @@ export class StorageService {
     this.dataBase.onerror = console.error;
 
     // Letting know to listeners that indexedDB is ready
-    this.isReady.next(true);
+    this._onIdbReady$.next(true);
   }
 
   private _onDBUpgradeNeeded(ev: Event) {
@@ -42,6 +42,10 @@ export class StorageService {
   private _retrieveObjectStore(name: ObjectStoreKey, mode: IDBTransactionMode = "readonly"): IDBObjectStore {
     const transaction = this.dataBase.transaction(name, mode)
     return transaction.objectStore(name);
+  }
+
+  get onIdbReady(): Observable<boolean> {
+    return this._onIdbReady$.pipe(filter(value => value), take(1));
   }
 
   async setDeck(deck: Deck): Promise<void> {
@@ -67,8 +71,10 @@ export class StorageService {
       const request = objectStore.openCursor(index);
 
       request.onsuccess = (ev: Event) => {
-        const cursor: IDBCursorWithValue = ((ev.target) as IDBRequest).result;
-        resolve(cursor.value);
+        const cursor: IDBCursorWithValue = ((ev.target) as IDBRequest)?.result;
+        const deck = cursor?.value;
+        console.debug("Deck fetched from IDB object store", deck);
+        resolve(deck);
       };
 
       request.onerror = (ev: Event) => {
@@ -101,8 +107,9 @@ export class StorageService {
       const request = objectStore.getAll();
 
       request.onsuccess = (ev: Event) => {
-        console.debug("Decks fetched from IDB object store", ev);
-        resolve((ev.target as IDBRequest).result as Decks);
+        const decks = (ev.target as IDBRequest)?.result as Decks;
+        console.debug("Decks fetched from IDB object store", decks);
+        resolve(decks);
       };
 
       request.onerror = (ev: Event) => {

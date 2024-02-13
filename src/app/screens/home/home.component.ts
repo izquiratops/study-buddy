@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, filter, switchMap, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { ProcessedDecks } from '@models/database.model';
 import { HomeService } from './home.service';
@@ -18,14 +18,12 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.storageService.isReady.pipe(
-      filter(isReady => isReady), // Filter only when isReady is true
-      take(1), // Stop listening after the first tap
-      switchMap(async () => { // Update the subject with the obtained decks from IDB
-        const decks = await this.storageService.getDecks();
-        return decks.map(this.homeService.getDeckMetadata);
-      })) 
-    .subscribe(decks => this.decks$.next(decks));
+    this.storageService.onIdbReady.subscribe(async () => {
+      const decks = await this.storageService.getDecks();
+      const processedDecks = decks.map(this.homeService.getDeckMetadata);
+
+      this.decks$.next(processedDecks);
+    });
   }
 
   async handleDeleteDeck(index: number) {

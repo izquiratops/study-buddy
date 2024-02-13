@@ -3,7 +3,7 @@
 <h4>Decks</h4>
 <button [routerLink]="'/editor'">Create new deck</button>
 <ng-container *ngIf="decks$ | async as decks">
-    <table *ngIf="decks.length > 0; else emptyListBlock">
+    <table *ngIf="decks.length > 0; else emptyListBlock" class="striped">
         <thead>
             <tr>
                 <th scope="col">Name</th>

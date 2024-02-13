@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { filter, map } from 'rxjs';
+import { map } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
@@ -21,6 +21,7 @@ type NewCardForm = {
 export class EditorComponent {
   @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
 
+  private _id: number;
   private _fb = new FormBuilder();
 
   newDeckForm = this._fb.group<NewCardForm>({
@@ -36,14 +37,12 @@ export class EditorComponent {
 
   ngOnInit() {
     this.route.queryParams.pipe(
-      map(p => p['id']),
-      filter(id => id)
-    ).subscribe((id) => this._loadDeck(id));
-  }
+      map(params => params['id'] as number),
+    ).subscribe(id => this._id = id);
 
-  private async _loadDeck(index: number) {
-    const deck = await this.storageService.getDeck(index);
-    console.debug('hurray!');
+    this.storageService.onIdbReady.subscribe(async () => {
+      await this.storageService.getDeck(this._id);
+    });
   }
 
   get nameFormField() {
