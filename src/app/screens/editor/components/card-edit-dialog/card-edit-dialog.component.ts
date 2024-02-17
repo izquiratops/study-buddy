@@ -7,7 +7,6 @@ import { FlashCardContent } from '@models/database.model';
 @Component({
   selector: 'app-card-edit-dialog',
   templateUrl: './card-edit-dialog.component.html',
-  styleUrl: './card-edit-dialog.component.css'
 })
 export class CardEditDialogComponent {
   private _isOpen$ = new BehaviorSubject<boolean>(false);

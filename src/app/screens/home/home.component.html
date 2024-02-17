@@ -1,4 +1,4 @@
-<app-navigator-bar title="フラッシュカード"></app-navigator-bar>
+<app-navigator-bar title="フラッシュカード 🐁"></app-navigator-bar>
 
 <h4>Decks</h4>
 <button [routerLink]="'/editor'">Create new deck</button>
@@ -13,7 +13,6 @@
                 <th scope="col"><!-- ❌ Column --></th>
             </tr>
         </thead>
-        <!-- TODO: Add ngFor trackBy method -->
         <tbody *ngIf="decks$ | async as decks">
             <tr *ngFor="let deck of decks; index as idx">
                 <th scope="row" tabindex="idx">{{deck.name}}</th>

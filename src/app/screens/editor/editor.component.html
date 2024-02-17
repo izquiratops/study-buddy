@@ -1,18 +1,26 @@
 <app-navigator-bar title="Deck Editor">
-    <li><a [routerLink]="'..'">Go Home</a></li>
+    <li><a [routerLink]="'..'">
+        Go Home
+    </a></li>
 </app-navigator-bar>
 
 <div>
-    <button type="button" (click)="handleCreateNewCard()">Add Card</button>
+    <button type="button" class="secondary" (click)="handleCreateNewCard()">
+        Add Card 
+    </button>
 </div>
 
 <app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
 
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
-    <label for="name">Name</label>
-    <input type="text" id="name" formControlName="name" placeholder="JLPT N5" />
-    <div [hidden]="nameFormField.valid || nameFormField.pristine">Field not valid</div>
+    <label for="name">
+        Name
+        <input type="text" id="name" formControlName="name" placeholder="JLPT N5" />
+        <small class="pico-color-red-500" [hidden]="nameFormField.valid || nameFormField.pristine">
+            Field not valid
+        </small>
+    </label>
 
     <label for="flashCards">Cards</label>
     <table class="striped">
@@ -26,8 +34,8 @@
         </thead>
         <tbody formArrayName="flashCards">
             <tr *ngFor="let flashCard of flashCardsFormField.controls; index as idx">
-                <th scope="row">{{flashCard.value.content.front}}</th>
-                <td>{{flashCard.value.content.back}}</td>
+                <th scope="row">{{ flashCard.value.content.front }}</th>
+                <td>{{ flashCard.value.content.back }}</td>
                 <td class="centered-cell" (click)="handleEditCard(idx)">✏️</td>
                 <td class="centered-cell" (click)="handleDeleteCard(idx)">❌</td>
             </tr>

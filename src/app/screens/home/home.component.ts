@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { StorageService } from '@services/storage.service';
-import { ProcessedDecks } from '@models/database.model';
+import { Deck, ProcessedDecks } from '@models/database.model';
 import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
 })
 export class HomeComponent {
   decks$ = new BehaviorSubject<ProcessedDecks>([]);
@@ -27,11 +26,11 @@ export class HomeComponent {
   }
 
   async handleDeleteDeck(index: number) {
-  // Remove from idb
-  await this.storageService.deleteDeck(index);
-  // Remove from current state. decks$ is not linked to indexedDB updates.
-  const currDecksState = this.decks$.getValue();
-  const newDecksState = currDecksState.filter(curr => curr.idbKey !== index);
-  this.decks$.next(newDecksState);
-}
+    // Remove from idb
+    await this.storageService.deleteDeck(index);
+    // Remove from current state. decks$ is not linked to indexedDB updates.
+    const currDecksState = this.decks$.getValue();
+    const newDecksState = currDecksState.filter(curr => curr.idbKey !== index);
+    this.decks$.next(newDecksState);
+  }
 }

@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
@@ -16,24 +16,29 @@ type NewCardForm = {
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
-  styleUrl: './editor.component.css'
 })
 export class EditorComponent {
   @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
 
   idbKey: number;
-  private _fb = new FormBuilder().nonNullable;
+  private _fb = new FormBuilder();
 
-  newDeckForm = this._fb.group<NewCardForm>({
-    name: this._fb.control('', Validators.required),
-    flashCards: this._fb.array<FlashCard>([], Validators.required)
-  });
+  newDeckForm: FormGroup<NewCardForm>;
 
   constructor(
     private route: ActivatedRoute,
     private editorService: EditorService,
     private storageService: StorageService,
-    ) {}
+  ) {
+    this.newDeckForm = this._fb.group<NewCardForm>({
+      name: this._fb.nonNullable.control('', Validators.required),
+      flashCards: this._fb.nonNullable.array<FlashCard>([], [control => this._requiredListValidator(control)])
+    });
+  }
+
+  private _requiredListValidator(control: AbstractControl): any {
+    return control.value.length > 0 ? null : { emptyList: true };
+  }
 
   ngOnInit() {
     this.route.queryParams.pipe(
@@ -42,17 +47,19 @@ export class EditorComponent {
 
     this.storageService.onIdbReady.subscribe(async () => {
       const deck = await this.storageService.getDeck(this.idbKey);
-      
+
       if (deck) {
         this.nameFormField.patchValue(deck.name);
 
-        // Append a new FormControl for each FlashCard
-        deck.flashCards.map(flashCard => {
-          const control = this._fb.control(flashCard);
-          const flashCardControllers = this.flashCardsFormField.controls;
+        for (const flashCard of deck.flashCards) {
+          // Append a new FormControl for each FlashCard
+          const control = this._fb.nonNullable.control(flashCard, Validators.required);
+          this.flashCardsFormField.controls.push(control);
+        }
 
-          flashCardControllers.push(control);
-        });
+        // ? Mark as touch to trigger validation
+        // this.flashCardsFormField.markAsTouched();
+        this.flashCardsFormField.markAsDirty();
       } else {
         // TODO: Use a dialog for this. Add a navigation back to Home
         alert('It seems like I can\'t find the deck.')
@@ -80,7 +87,7 @@ export class EditorComponent {
   };
 
   handleCreateDeck() {
-    const deck = new Deck({ 
+    const deck = new Deck({
       idbKey: this.idbKey,
       ...this.newDeckForm.value
     });
@@ -107,11 +114,11 @@ export class EditorComponent {
     } else {
       // Creates a new card. The methods 'createEmptyCard' generates all
       // the FSRS initial values.
-      const newFlashCard = this._fb.control<FlashCard>({
+      const newFlashCard = this._fb.nonNullable.control<FlashCard>({
         card: createEmptyCard(),
         content
       });
-  
+
       this.flashCardsFormField.push(newFlashCard);
     }
   };
