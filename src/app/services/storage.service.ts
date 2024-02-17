@@ -51,7 +51,7 @@ export class StorageService {
   async setDeck(deck: Deck): Promise<void> {
     return new Promise((resolve, reject) => {
       const objectStore = this._retrieveObjectStore("decks", "readwrite");
-      const request = objectStore.add(deck);
+      const request = objectStore.put(deck);
 
       request.onsuccess = () => {
         console.debug('Deck added successfully');

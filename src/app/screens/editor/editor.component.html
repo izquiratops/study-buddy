@@ -35,6 +35,6 @@
     </table>
 
     <button [routerLink]="'..'" [disabled]="!newDeckForm.valid" (click)="handleCreateDeck()">
-        Create Deck
+        {{ idbKey ? 'Apply Changes' : 'Create Deck' }}
     </button>
 </form>

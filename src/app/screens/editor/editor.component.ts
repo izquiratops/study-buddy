@@ -21,12 +21,12 @@ type NewCardForm = {
 export class EditorComponent {
   @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
 
-  private _id: number;
-  private _fb = new FormBuilder();
+  idbKey: number;
+  private _fb = new FormBuilder().nonNullable;
 
   newDeckForm = this._fb.group<NewCardForm>({
-    name: this._fb.nonNullable.control('', Validators.required),
-    flashCards: this._fb.nonNullable.array<FlashCard>([], Validators.required)
+    name: this._fb.control('', Validators.required),
+    flashCards: this._fb.array<FlashCard>([], Validators.required)
   });
 
   constructor(
@@ -37,11 +37,26 @@ export class EditorComponent {
 
   ngOnInit() {
     this.route.queryParams.pipe(
-      map(params => params['id'] as number),
-    ).subscribe(id => this._id = id);
+      map(params => Number.parseInt(params['id'])),
+    ).subscribe(id => this.idbKey = id);
 
     this.storageService.onIdbReady.subscribe(async () => {
-      await this.storageService.getDeck(this._id);
+      const deck = await this.storageService.getDeck(this.idbKey);
+      
+      if (deck) {
+        this.nameFormField.patchValue(deck.name);
+
+        // Append a new FormControl for each FlashCard
+        deck.flashCards.map(flashCard => {
+          const control = this._fb.control(flashCard);
+          const flashCardControllers = this.flashCardsFormField.controls;
+
+          flashCardControllers.push(control);
+        });
+      } else {
+        // TODO: Use a dialog for this. Add a navigation back to Home
+        alert('It seems like I can\'t find the deck.')
+      }
     });
   }
 
@@ -65,8 +80,11 @@ export class EditorComponent {
   };
 
   handleCreateDeck() {
-    // Forcing the value to be a Deck because I don't know how types works on reactive forms
-    const deck = new Deck(this.newDeckForm.value);
+    const deck = new Deck({ 
+      idbKey: this.idbKey,
+      ...this.newDeckForm.value
+    });
+
     this.storageService.setDeck(deck);
   };
 
@@ -89,7 +107,7 @@ export class EditorComponent {
     } else {
       // Creates a new card. The methods 'createEmptyCard' generates all
       // the FSRS initial values.
-      const newFlashCard = this._fb.nonNullable.control<FlashCard>({
+      const newFlashCard = this._fb.control<FlashCard>({
         card: createEmptyCard(),
         content
       });
