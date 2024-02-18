@@ -2,6 +2,7 @@ import { NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { routes } from './app.routes';
@@ -10,13 +11,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from '@screens/home/home.component';
 import { EditorComponent } from '@screens/editor/editor.component';
 import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
-import { NavigatorBarComponent } from './components/navigator-bar/navigator-bar.component';
-import { FilterCardsByTextPipe } from './pipe/filterCardsByText.pipe';
-import { FilterDecksByTextPipe } from './pipe/filterDecksByText.pipe';
 
-import { HomeService } from '@screens/home/home.service';
-import { EditorService } from '@screens/editor/editor.service';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { NavigatorBarComponent } from '@components/navigator-bar/navigator-bar.component';
+import { FilterCardsByTextPipe } from '@pipes/filterCardsByText.pipe';
+import { FilterDecksByTextPipe } from '@pipes/filterDecksByText.pipe';
 
 @NgModule({
   declarations: [
@@ -41,10 +39,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
-  providers: [
-    HomeService,
-    EditorService
-  ],
+  providers: [],
   bootstrap: [
     AppComponent
   ]

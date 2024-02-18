@@ -1,7 +1,12 @@
-<app-navigator-bar title="フラッシュカード 🐁"></app-navigator-bar>
+<app-navigator-bar title="フラッシュカード"></app-navigator-bar>
+
+<hgroup>
+    <h2>こんにちは👏</h2>
+    <p>This part of the site will have a greetings section with a cute message to ask for support 💖</p>
+</hgroup>
 
 <ng-container *ngIf="decks$ | async as decks">
-    <ng-container *ngIf="decks.length > 0; else emptyListBlock">
+    <article *ngIf="decks.length > 0; else emptyListBlock">
         <input type="search" placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
 
         <div class="overflow-auto">
@@ -21,14 +26,12 @@
                         <td>{{deck.flashCards.length}}</td>
                         <td>{{deck.toBeReviewedCount}}</td>
                         <td class="shrink-cell">
-                            <button class="contrast outline" data-tooltip="Edit" [routerLink]="'/editor'"
-                                [queryParams]="{id: deck.idbKey}">
+                            <button data-tooltip="Edit" [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
                                 ✏️
                             </button>
                         </td>
                         <td class="shrink-cell">
-                            <button class="contrast outline" data-tooltip="Remove"
-                                (click)="handleDeleteDeck(deck.idbKey)">
+                            <button data-tooltip="Remove" (click)="handleDeleteDeck(deck.idbKey)">
                                 ❌
                             </button>
                         </td>
@@ -41,11 +44,11 @@
                 </tbody>
             </table>
         </div>
-    </ng-container>
+    </article>
 </ng-container>
 
 <ng-template #emptyListBlock>
-    <p>Looks like there are no decks here at the moment,
+    <article>Looks like there are no decks here at the moment,
         <a [routerLink]="'/editor'">click here to create one.</a>
-    </p>
+    </article>
 </ng-template>

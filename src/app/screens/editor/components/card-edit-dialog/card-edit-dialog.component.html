@@ -1,5 +1,12 @@
 <dialog [open]="isOpen$ | async">
     <article>
+        <header>
+            <hgroup>
+                <h2>Create new card</h2>
+                <p>Choose the template and fill the form</p>
+            </hgroup>
+        </header>
+
         <!-- Template driven form -->
         <form #flashCardForm="ngForm">
             <label for="front">

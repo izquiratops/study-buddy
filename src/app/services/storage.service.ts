@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, filter, take } from 'rxjs';
+import { BehaviorSubject, filter, take } from 'rxjs';
 import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
 
 @Injectable({
@@ -9,6 +9,8 @@ export class StorageService {
   private _onIdbReady$ = new BehaviorSubject(false);
   private dbOpenRequest = indexedDB.open('flashcards', 14);
   private dataBase: IDBDatabase;
+
+  onIdbReady$ = this._onIdbReady$.pipe(filter(value => value), take(1));
 
   constructor() {
     console.debug('Initializing Storage Service...');
@@ -42,10 +44,6 @@ export class StorageService {
   private _retrieveObjectStore(name: ObjectStoreKey, mode: IDBTransactionMode = "readonly"): IDBObjectStore {
     const transaction = this.dataBase.transaction(name, mode)
     return transaction.objectStore(name);
-  }
-
-  get onIdbReady(): Observable<boolean> {
-    return this._onIdbReady$.pipe(filter(value => value), take(1));
   }
 
   async setDeck(deck: Deck): Promise<void> {

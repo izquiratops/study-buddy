@@ -11,4 +11,8 @@ app-root > *:not(router-outlet) {
 
 .shrink-cell {
     width: 1px;
+    button {
+        --pico-background-color: 'transparent';
+        --pico-border-color: 'transparent';
+    }
 }

@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { map } from 'rxjs';
+import { concatMap, filter, map } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
 import { StorageService } from '@services/storage.service';
-import { EditorService } from './editor.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 
@@ -21,13 +20,12 @@ export class EditorComponent {
   private _fb = new FormBuilder();
 
   @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
-  idbKey?: number;
+  idbKey = -1; // Id -1 means new Deck
   searchText: string;
-  newDeckForm: FormGroup<NewCardForm>;
+  newDeckForm: FormGroup<NewCardForm>; 
 
   constructor(
     private route: ActivatedRoute,
-    private editorService: EditorService,
     private storageService: StorageService,
   ) {
     this.newDeckForm = this._fb.group<NewCardForm>({
@@ -40,39 +38,33 @@ export class EditorComponent {
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
+  private _patchValueForm(deck: Deck) {
+    this.nameFormField.patchValue(deck.name);
+
+    // Append a new FormControl for each FlashCard
+    for (const flashCard of deck.flashCards) {
+      const control = this._fb.nonNullable.control(flashCard, Validators.required);
+      this.flashCardsFormField.controls.push(control);
+    }
+
+    // Force validation, without this line the form initializes as invalid
+    this.flashCardsFormField.updateValueAndValidity();
+  }
+
   ngOnInit() {
     this.route.queryParams.pipe(
-      map(params => {
-        const id = params['id'];
-
-        if (id) {
-          return Number.parseInt(id);
-        } else {
-          return undefined;
-        }
-      }),
+      filter(params => Object.hasOwn(params, 'id')),
+      map(params => parseInt(params['id'])),
     ).subscribe(id => this.idbKey = id);
-
-    this.storageService.onIdbReady.subscribe(async () => {
-      if (!this.idbKey) {
-        return;
-      }
-
-      const deck = await this.storageService.getDeck(this.idbKey);
-
+  
+    this.storageService.onIdbReady$.pipe(
+      filter(() => this.idbKey !== -1),
+      concatMap(async () => await this.storageService.getDeck(this.idbKey))
+    ).subscribe((deck) => {
       if (deck) {
-        this.nameFormField.patchValue(deck.name);
-
-        for (const flashCard of deck.flashCards) {
-          // Append a new FormControl for each FlashCard
-          const control = this._fb.nonNullable.control(flashCard, Validators.required);
-          this.flashCardsFormField.controls.push(control);
-        }
-
-        this.flashCardsFormField.updateValueAndValidity();
+        this._patchValueForm(deck);
       } else {
-        // TODO: Use a dialog for this. Add a navigation back to Home
-        alert('It seems like I can\'t find the deck.')
+        throw new Error('Deck not found');
       }
     });
   }
@@ -97,11 +89,9 @@ export class EditorComponent {
   };
 
   handleCreateDeck() {
-    const deck = new Deck({
-      ...this.newDeckForm.value
-    });
+    const deck = new Deck({ ...this.newDeckForm.value });
 
-    if (this.idbKey) {
+    if (this.idbKey !== -1) {
       deck.idbKey = this.idbKey;
     }
 

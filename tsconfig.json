@@ -28,6 +28,8 @@
       "@models/*": ["app/models/*"],
       "@screens/*": ["app/screens/*"],
       "@services/*": ["app/services/*"],
+      "@pipes/*": ["app/pipes/*"],
+      "@components/*": ["app/components/*"],
     }
   },
   "angularCompilerOptions": {
