@@ -98,8 +98,12 @@ export class EditorComponent {
 
   handleCreateDeck() {
     const deck = new Deck({
-      idbKey: this.idbKey, ...this.newDeckForm.value
+      ...this.newDeckForm.value
     });
+
+    if (this.idbKey) {
+      deck.idbKey = this.idbKey;
+    }
 
     this.storageService.setDeck(deck);
   };

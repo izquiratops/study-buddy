@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { StorageService } from '@services/storage.service';
-import { Deck, ProcessedDecks } from '@models/database.model';
+import { ProcessedDecks } from '@models/database.model';
 import { HomeService } from './home.service';
 
 @Component({

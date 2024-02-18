@@ -2,43 +2,45 @@
 
 <ng-container *ngIf="decks$ | async as decks">
     <ng-container *ngIf="decks.length > 0; else emptyListBlock">
-        <input type="text" placeholder="Search... 🔎" (keyup)="handleSearchTextChange($event)" />
+        <input type="search" placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
 
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Deck cards</th>
-                    <th scope="col">Cards to review</th>
-                    <th scope="col"><!-- ✏️ Column --></th>
-                    <th scope="col"><!-- ❌ Column --></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let deck of (decks | filterDecksByText: searchText); index as idx">
-                    <th scope="row" tabindex="idx">{{deck.name}}</th>
-                    <td>{{deck.flashCards.length}}</td>
-                    <td>{{deck.toBeReviewedCount}}</td>
-                    <td class="shrink-cell">
-                        <button class="contrast outline" data-tooltip="Edit" 
-                            [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
-                            ✏️
-                        </button>
-                    </td>
-                    <td class="shrink-cell">
-                        <button class="contrast outline" data-tooltip="Remove" 
-                            (click)="handleDeleteDeck(deck.idbKey)">
-                            ❌
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" colspan="5">
-                        <a [routerLink]="'/editor'">Create new deck</a>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
+        <div class="overflow-auto">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Deck cards</th>
+                        <th scope="col">Cards to review</th>
+                        <th scope="col"><!-- ✏️ Column --></th>
+                        <th scope="col"><!-- ❌ Column --></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let deck of (decks | filterDecksByText: searchText); index as idx">
+                        <th scope="row" tabindex="idx">{{deck.name}}</th>
+                        <td>{{deck.flashCards.length}}</td>
+                        <td>{{deck.toBeReviewedCount}}</td>
+                        <td class="shrink-cell">
+                            <button class="contrast outline" data-tooltip="Edit" [routerLink]="'/editor'"
+                                [queryParams]="{id: deck.idbKey}">
+                                ✏️
+                            </button>
+                        </td>
+                        <td class="shrink-cell">
+                            <button class="contrast outline" data-tooltip="Remove"
+                                (click)="handleDeleteDeck(deck.idbKey)">
+                                ❌
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" colspan="5">
+                            <a [routerLink]="'/editor'">Create new deck</a>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </ng-container>
 </ng-container>
 

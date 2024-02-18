@@ -16,46 +16,44 @@
         </small>
     </fieldset>
 
-    <label for="name">
-        Cards
-    </label>
-    <input type="text" placeholder="Search... 🔎" (keyup)="onSearchTextChange($event)" />
-    <table class="striped">
-        <thead>
-            <tr>
-                <th scope="col">Front</th>
-                <th scope="col">Back</th>
-                <th scope="col"><!-- ✏️ Column --></th>
-                <th scope="col"><!-- ❌ Column --></th>
-            </tr>
-        </thead>
-        <tbody formArrayName="flashCards">
-            <tr *ngFor="let flashCard of (flashCardsFormField.controls | filterCardsByText: searchText); index as idx">
-                <th scope="row">{{ flashCard.value.content.front }}</th>
-                <td>{{ flashCard.value.content.back }}</td>
-                <td class="shrink-cell">
-                    <button class="secondary outline" data-tooltip="Edit"
-                        (click)="handleEditCard(idx)">
-                        ✏️
-                    </button>
-                </td>
-                <td class="shrink-cell">
-                    <button class="secondary outline" data-tooltip="Remove"
-                        (click)="handleDeleteCard(idx)">
-                        ❌
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row" colspan="4">
-                    <a (click)="handleCreateNewCard()">Add Card</a>
-                </th>
-            </tr>
-        </tbody>
-    </table>
+    <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" />
 
-    <button type="button" [disabled]="!newDeckForm.valid"
-        [routerLink]="'..'" (click)="handleCreateDeck()">
+    <div class="overflow-auto">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th scope="col">Front</th>
+                    <th scope="col">Back</th>
+                    <th scope="col"><!-- ✏️ Column --></th>
+                    <th scope="col"><!-- ❌ Column --></th>
+                </tr>
+            </thead>
+            <tbody formArrayName="flashCards">
+                <tr
+                    *ngFor="let flashCard of (flashCardsFormField.controls | filterCardsByText: searchText); index as idx">
+                    <th scope="row">{{ flashCard.value.content.front }}</th>
+                    <td>{{ flashCard.value.content.back }}</td>
+                    <td class="shrink-cell">
+                        <button class="secondary outline" data-tooltip="Edit" (click)="handleEditCard(idx)">
+                            ✏️
+                        </button>
+                    </td>
+                    <td class="shrink-cell">
+                        <button class="secondary outline" data-tooltip="Remove" (click)="handleDeleteCard(idx)">
+                            ❌
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" colspan="4">
+                        <a (click)="handleCreateNewCard()">Add Card</a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="button" [disabled]="!newDeckForm.valid" [routerLink]="'..'" (click)="handleCreateDeck()">
         {{ idbKey ? 'Apply Changes' : 'Create Deck' }}
     </button>
 </form>
