@@ -1,28 +1,22 @@
 <app-navigator-bar title="Deck Editor">
-    <li><a [routerLink]="'..'">
-        Go Home
-    </a></li>
+    <li>
+        <a [routerLink]="'..'">Go Home 🏡</a>
+    </li>
 </app-navigator-bar>
-
-<div>
-    <button type="button" class="secondary" (click)="handleCreateNewCard()">
-        Add Card 
-    </button>
-</div>
 
 <app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
 
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
-    <label for="name">
-        Name
-        <input type="text" id="name" formControlName="name" placeholder="JLPT N5" />
+    <fieldset>
+        <input type="text" id="name" formControlName="name" placeholder="Deck name" />
         <small class="pico-color-red-500" [hidden]="nameFormField.valid || nameFormField.pristine">
             Field not valid
         </small>
-    </label>
+    </fieldset>
 
-    <label for="flashCards">Cards</label>
+    <input type="text" placeholder="Search... 🔎" (keyup)="handleSearchTextChange($event)" />
+
     <table class="striped">
         <thead>
             <tr>
@@ -33,16 +27,32 @@
             </tr>
         </thead>
         <tbody formArrayName="flashCards">
-            <tr *ngFor="let flashCard of flashCardsFormField.controls; index as idx">
+            <tr *ngFor="let flashCard of (flashCardsFormField.controls | filterByText: searchText); index as idx">
                 <th scope="row">{{ flashCard.value.content.front }}</th>
                 <td>{{ flashCard.value.content.back }}</td>
-                <td class="centered-cell" (click)="handleEditCard(idx)">✏️</td>
-                <td class="centered-cell" (click)="handleDeleteCard(idx)">❌</td>
+                <td class="shrink-cell">
+                    <button class="secondary outline" data-tooltip="Edit"
+                        (click)="handleEditCard(idx)">
+                        ✏️
+                    </button>
+                </td>
+                <td class="shrink-cell">
+                    <button class="secondary outline" data-tooltip="Remove"
+                        (click)="handleDeleteCard(idx)">
+                        ❌
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="4">
+                    <a (click)="handleCreateNewCard()">Add Card</a>
+                </th>
             </tr>
         </tbody>
     </table>
 
-    <button [routerLink]="'..'" [disabled]="!newDeckForm.valid" (click)="handleCreateDeck()">
+    <button type="button" [disabled]="!newDeckForm.valid"
+        [routerLink]="'..'" (click)="handleCreateDeck()">
         {{ idbKey ? 'Apply Changes' : 'Create Deck' }}
     </button>
 </form>

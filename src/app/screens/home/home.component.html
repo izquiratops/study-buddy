@@ -1,32 +1,49 @@
 <app-navigator-bar title="フラッシュカード 🐁"></app-navigator-bar>
 
-<h4>Decks</h4>
-<button [routerLink]="'/editor'">Create new deck</button>
 <ng-container *ngIf="decks$ | async as decks">
-    <table *ngIf="decks.length > 0; else emptyListBlock" class="striped">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Deck cards</th>
-                <th scope="col">Cards to review</th>
-                <th scope="col"><!-- ✏️ Column --></th>
-                <th scope="col"><!-- ❌ Column --></th>
-            </tr>
-        </thead>
-        <tbody *ngIf="decks$ | async as decks">
-            <tr *ngFor="let deck of decks; index as idx">
-                <th scope="row" tabindex="idx">{{deck.name}}</th>
-                <td>{{deck.flashCards.length}}</td>
-                <td>{{deck.toBeReviewedCount}}</td>
-                <td class="centered-cell" [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">✏️</td>
-                <td class="centered-cell" (click)="handleDeleteDeck(deck.idbKey)">❌</td>
-            </tr>
-        </tbody>
-    </table>
+    <ng-container *ngIf="decks.length > 0; else emptyListBlock">
+        <input type="text" placeholder="Search... 🔎" (change)="handleSearchTextChange($event)" />
+
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Deck cards</th>
+                    <th scope="col">Cards to review</th>
+                    <th scope="col"><!-- ✏️ Column --></th>
+                    <th scope="col"><!-- ❌ Column --></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let deck of decks; index as idx">
+                    <th scope="row" tabindex="idx">{{deck.name}}</th>
+                    <td>{{deck.flashCards.length}}</td>
+                    <td>{{deck.toBeReviewedCount}}</td>
+                    <td class="shrink-cell">
+                        <button class="contrast outline" data-tooltip="Edit" 
+                            [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
+                            ✏️
+                        </button>
+                    </td>
+                    <td class="shrink-cell">
+                        <button class="contrast outline" data-tooltip="Remove" 
+                            (click)="handleDeleteDeck(deck.idbKey)">
+                            ❌
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" colspan="5">
+                        <a [routerLink]="'/editor'">Create new deck</a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
 </ng-container>
 
 <ng-template #emptyListBlock>
-    <p>Looks like there are no decks here at the moment.
-        <a [routerLink]="'/editor'">Click here to create one.</a>
+    <p>Looks like there are no decks here at the moment,
+        <a [routerLink]="'/editor'">click here to create one.</a>
     </p>
 </ng-template>

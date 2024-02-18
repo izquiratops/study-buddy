@@ -11,6 +11,7 @@ import { HomeComponent } from '@screens/home/home.component';
 import { EditorComponent } from '@screens/editor/editor.component';
 import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
 import { NavigatorBarComponent } from './components/navigator-bar/navigator-bar.component';
+import { FilterByTextPipe } from './pipe/filterByText.pipe';
 
 import { HomeService } from '@screens/home/home.service';
 import { EditorService } from '@screens/editor/editor.service';
@@ -23,6 +24,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     EditorComponent,
     CardEditDialogComponent,
     NavigatorBarComponent,
+    FilterByTextPipe
   ],
   imports: [
     CommonModule,

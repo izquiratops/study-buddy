@@ -18,11 +18,11 @@ type NewCardForm = {
   templateUrl: './editor.component.html',
 })
 export class EditorComponent {
-  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
-
-  idbKey: number;
   private _fb = new FormBuilder();
 
+  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
+  idbKey?: number;
+  searchText: string;
   newDeckForm: FormGroup<NewCardForm>;
 
   constructor(
@@ -37,15 +37,28 @@ export class EditorComponent {
   }
 
   private _requiredListValidator(control: AbstractControl): any {
+    console.debug('running validator', control.value.length);
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
   ngOnInit() {
     this.route.queryParams.pipe(
-      map(params => Number.parseInt(params['id'])),
+      map(params => {
+        const id = params['id'];
+
+        if (id) {
+          return Number.parseInt(id);
+        } else {
+          return undefined;
+        }
+      }),
     ).subscribe(id => this.idbKey = id);
 
     this.storageService.onIdbReady.subscribe(async () => {
+      if (!this.idbKey) {
+        return;
+      }
+
       const deck = await this.storageService.getDeck(this.idbKey);
 
       if (deck) {
@@ -57,9 +70,7 @@ export class EditorComponent {
           this.flashCardsFormField.controls.push(control);
         }
 
-        // ? Mark as touch to trigger validation
-        // this.flashCardsFormField.markAsTouched();
-        this.flashCardsFormField.markAsDirty();
+        this.flashCardsFormField.updateValueAndValidity();
       } else {
         // TODO: Use a dialog for this. Add a navigation back to Home
         alert('It seems like I can\'t find the deck.')
@@ -88,8 +99,7 @@ export class EditorComponent {
 
   handleCreateDeck() {
     const deck = new Deck({
-      idbKey: this.idbKey,
-      ...this.newDeckForm.value
+      idbKey: this.idbKey, ...this.newDeckForm.value
     });
 
     this.storageService.setDeck(deck);
@@ -100,6 +110,10 @@ export class EditorComponent {
     this.cardEditDialog.flashCardModel = new FlashCardContent();
     this.cardEditDialog.open();
   };
+
+  handleSearchTextChange(event: Event) {
+    this.searchText = (event.target as HTMLInputElement).value;
+  }
 
   onSubmitNewCard(content: FlashCardContent) {
     const index = this.cardEditDialog.deckPositionForm;

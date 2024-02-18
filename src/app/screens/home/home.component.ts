@@ -9,6 +9,7 @@ import { HomeService } from './home.service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  searchText: string;
   decks$ = new BehaviorSubject<ProcessedDecks>([]);
 
   constructor(
@@ -23,6 +24,10 @@ export class HomeComponent {
 
       this.decks$.next(processedDecks);
     });
+  }
+
+  handleSearchTextChange(event: Event) {
+    this.searchText = (event.target as HTMLInputElement).value;
   }
 
   async handleDeleteDeck(index: number) {
