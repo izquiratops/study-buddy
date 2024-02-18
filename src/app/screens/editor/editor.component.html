@@ -1,7 +1,5 @@
-<app-navigator-bar title="Deck Editor">
-    <li>
-        <a [routerLink]="'..'">Go Home 🏡</a>
-    </li>
+<app-navigator-bar title="Editor">
+    <li><a [routerLink]="'..'">Go Home 🏡</a></li>
 </app-navigator-bar>
 
 <app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
@@ -9,14 +7,19 @@
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
     <fieldset>
+        <label for="name">
+            Name
+        </label>
         <input type="text" id="name" formControlName="name" placeholder="Deck name" />
         <small class="pico-color-red-500" [hidden]="nameFormField.valid || nameFormField.pristine">
             Field not valid
         </small>
     </fieldset>
 
-    <input type="text" placeholder="Search... 🔎" (keyup)="handleSearchTextChange($event)" />
-
+    <label for="name">
+        Cards
+    </label>
+    <input type="text" placeholder="Search... 🔎" (keyup)="onSearchTextChange($event)" />
     <table class="striped">
         <thead>
             <tr>
@@ -27,7 +30,7 @@
             </tr>
         </thead>
         <tbody formArrayName="flashCards">
-            <tr *ngFor="let flashCard of (flashCardsFormField.controls | filterByText: searchText); index as idx">
+            <tr *ngFor="let flashCard of (flashCardsFormField.controls | filterCardsByText: searchText); index as idx">
                 <th scope="row">{{ flashCard.value.content.front }}</th>
                 <td>{{ flashCard.value.content.back }}</td>
                 <td class="shrink-cell">

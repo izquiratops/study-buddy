@@ -37,7 +37,6 @@ export class EditorComponent {
   }
 
   private _requiredListValidator(control: AbstractControl): any {
-    console.debug('running validator', control.value.length);
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
@@ -111,7 +110,7 @@ export class EditorComponent {
     this.cardEditDialog.open();
   };
 
-  handleSearchTextChange(event: Event) {
+  onSearchTextChange(event: Event) {
     this.searchText = (event.target as HTMLInputElement).value;
   }
 

@@ -2,7 +2,7 @@
 
 <ng-container *ngIf="decks$ | async as decks">
     <ng-container *ngIf="decks.length > 0; else emptyListBlock">
-        <input type="text" placeholder="Search... 🔎" (change)="handleSearchTextChange($event)" />
+        <input type="text" placeholder="Search... 🔎" (keyup)="handleSearchTextChange($event)" />
 
         <table class="striped">
             <thead>
@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let deck of decks; index as idx">
+                <tr *ngFor="let deck of (decks | filterDecksByText: searchText); index as idx">
                     <th scope="row" tabindex="idx">{{deck.name}}</th>
                     <td>{{deck.flashCards.length}}</td>
                     <td>{{deck.toBeReviewedCount}}</td>

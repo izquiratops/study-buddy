@@ -3,11 +3,11 @@ import { FormControl } from '@angular/forms';
 import { FlashCard } from '@models/database.model';
 
 @Pipe({
-  name: 'filterByText'
+  name: 'filterCardsByText'
 })
-export class FilterByTextPipe implements PipeTransform {
-  transform(items: Array<FormControl<FlashCard>>, filterValue: string): any[] {
-    console.debug("running pipe", filterValue);
+export class FilterCardsByTextPipe implements PipeTransform {
+  transform(items: Array<FormControl<FlashCard>>, filterValue: string): Array<FormControl<FlashCard>> {
+    console.debug("Running pipe cards", filterValue);
 
     if (items.length === 0 || !filterValue) {
       return items;
