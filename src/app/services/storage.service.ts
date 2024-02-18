@@ -50,8 +50,9 @@ export class StorageService {
 
   async setDeck(deck: Deck): Promise<void> {
     return new Promise((resolve, reject) => {
+      // Having already an idbKey will override the deck data, otherwise adds a fresh new card
       const objectStore = this._retrieveObjectStore("decks", "readwrite");
-      const request = objectStore.put(deck);
+      const request = deck.idbKey ? objectStore.put(deck) : objectStore.add(deck);
 
       request.onsuccess = () => {
         console.debug('Deck added successfully');
