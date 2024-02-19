@@ -2,8 +2,6 @@
     <li><a [routerLink]="'..'">Go Home 🏡</a></li>
 </app-navigator-bar>
 
-<app-card-edit-dialog (submit)="onSubmitNewCard($event)"></app-card-edit-dialog>
-
 <!-- Reactive form -->
 <form [formGroup]="newDeckForm">
     <fieldset>
@@ -35,7 +33,7 @@
                         <th scope="row">{{ flashCard.value.content.front }}</th>
                         <td>{{ flashCard.value.content.back }}</td>
                         <td class="shrink-cell">
-                            <button data-tooltip="Edit" (click)="handleEditCard(idx)">
+                            <button data-tooltip="Edit" (click)="handleOpenCardDialog(idx)">
                                 ✏️
                             </button>
                         </td>
@@ -47,7 +45,7 @@
                     </tr>
                     <tr>
                         <th scope="row" colspan="4">
-                            <a (click)="handleCreateNewCard()">Add Card</a>
+                            <a (click)="handleOpenCardDialog(-1)">Add Card</a>
                         </th>
                     </tr>
                 </tbody>
@@ -62,6 +60,6 @@
 
 <ng-template #emptyListBlock>
     <article>Looks like there are no cards,
-        <a (click)="handleCreateNewCard()">click here to create one.</a>
+        <a (click)="handleOpenCardDialog(-1)">click here to create one.</a>
     </article>
 </ng-template>

@@ -1,11 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ComponentRef, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { concatMap, filter, map } from 'rxjs';
+import { concatMap, filter, finalize, map, take } from 'rxjs';
 import { createEmptyCard } from 'ts-fsrs';
-import { StorageService } from '@services/storage.service';
 import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
-import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
+import { StorageService } from '@services/storage.service';
+import { CardEditDialogComponent } from '@components/card-edit-dialog/card-edit-dialog.component';
 
 type NewCardForm = {
   name: FormControl<string>,
@@ -19,13 +19,14 @@ type NewCardForm = {
 export class EditorComponent {
   private _fb = new FormBuilder();
 
-  @ViewChild(CardEditDialogComponent) cardEditDialog!: CardEditDialogComponent;
+  editDialogRef?: ComponentRef<CardEditDialogComponent>;
   idbKey = -1; // Id -1 means new Deck
   searchText: string;
   newDeckForm: FormGroup<NewCardForm>; 
 
   constructor(
     private route: ActivatedRoute,
+    private viewContainerRef: ViewContainerRef,
     private storageService: StorageService,
   ) {
     this.newDeckForm = this._fb.group<NewCardForm>({
@@ -50,6 +51,26 @@ export class EditorComponent {
     // Force validation, without this line the form initializes as invalid
     this.flashCardsFormField.updateValueAndValidity();
   }
+
+  private _upsertFlashCard(content: FlashCardContent, index: number) {
+    if (index === -1) {
+      // Creates a new card. The methods 'createEmptyCard' generates all
+      // the FSRS initial values.
+      const newFlashCard = this._fb.nonNullable.control<FlashCard>({
+        card: createEmptyCard(),
+        content
+      });
+
+      this.flashCardsFormField.push(newFlashCard);
+    } else {
+      // Edits an already existent card
+      const flashCardController = this.flashCardsFormField.at(index);
+      const currentFlashCard = flashCardController.value;
+      const newFlashCard = { ...currentFlashCard, content };
+
+      flashCardController.patchValue(newFlashCard);
+    }
+  };
 
   ngOnInit() {
     this.route.queryParams.pipe(
@@ -77,11 +98,19 @@ export class EditorComponent {
     return this.newDeckForm.get('flashCards') as FormArray<FormControl<FlashCard>>;
   }
 
-  handleEditCard(index: number) {
-    const flashCard = this.flashCardsFormField.at(index).value;
-    this.cardEditDialog.deckPositionForm = index;
-    this.cardEditDialog.flashCardModel = { ...flashCard.content };
-    this.cardEditDialog.open();
+  handleOpenCardDialog(index: number) {
+    let flashCard = index !== -1 ? this.flashCardsFormField.at(index) : undefined;
+
+    this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
+    this.editDialogRef.instance.flashCardModel = new FlashCardContent(flashCard?.value.content);
+
+    this.editDialogRef.instance.submit
+      .pipe(
+        take(1),
+        filter(card => !!card),
+        finalize(() => this.editDialogRef?.destroy()),
+      )
+      .subscribe((card) => this._upsertFlashCard(card, index));
   }
 
   handleDeleteCard(index: number) {
@@ -91,6 +120,7 @@ export class EditorComponent {
   handleCreateDeck() {
     const deck = new Deck({ ...this.newDeckForm.value });
 
+    // idbKey must be undefined on new cards
     if (this.idbKey !== -1) {
       deck.idbKey = this.idbKey;
     }
@@ -98,35 +128,7 @@ export class EditorComponent {
     this.storageService.setDeck(deck);
   };
 
-  handleCreateNewCard() {
-    this.cardEditDialog.deckPositionForm = -1;
-    this.cardEditDialog.flashCardModel = new FlashCardContent();
-    this.cardEditDialog.open();
-  };
-
   onSearchTextChange(event: Event) {
     this.searchText = (event.target as HTMLInputElement).value;
   }
-
-  onSubmitNewCard(content: FlashCardContent) {
-    const index = this.cardEditDialog.deckPositionForm;
-
-    if (index >= 0) {
-      // Edits an already existent card
-      const flashCardController = this.flashCardsFormField.at(index);
-      const currentFlashCard = flashCardController.value;
-      const newFlashCard = { ...currentFlashCard, content };
-
-      flashCardController.patchValue(newFlashCard);
-    } else {
-      // Creates a new card. The methods 'createEmptyCard' generates all
-      // the FSRS initial values.
-      const newFlashCard = this._fb.nonNullable.control<FlashCard>({
-        card: createEmptyCard(),
-        content
-      });
-
-      this.flashCardsFormField.push(newFlashCard);
-    }
-  };
 }

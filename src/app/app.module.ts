@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 import { AppComponent } from './app.component';
 import { HomeComponent } from '@screens/home/home.component';
 import { EditorComponent } from '@screens/editor/editor.component';
-import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
+import { CardEditDialogComponent } from '@components/card-edit-dialog/card-edit-dialog.component';
 
 import { NavigatorBarComponent } from '@components/navigator-bar/navigator-bar.component';
 import { FilterCardsByTextPipe } from '@pipes/filterCardsByText.pipe';

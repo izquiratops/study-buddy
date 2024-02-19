@@ -28,4 +28,8 @@ export type FlashCard = {
 export class FlashCardContent {
     front = '';
     back = '';
+
+    public constructor(init?: FlashCardContent) {
+        Object.assign(this, init);
+    }
 }
