@@ -1,5 +1,5 @@
 {
-  "name": "flashcard-friend",
+  "name": "flashcards-web-app",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
