@@ -14,7 +14,7 @@
         </small>
     </fieldset>
 
-    <article *ngIf="hasCards; else emptyListBlock">
+    <article formControlName="cards" *ngIf="hasCards; else emptyListBlock">
         <app-cards-table></app-cards-table>
     </article>
 

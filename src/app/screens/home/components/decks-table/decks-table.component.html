@@ -15,7 +15,7 @@
         <tbody>
             <tr *ngFor="let deck of decks$ | async; index as idx">
                 <th scope="row" tabindex="idx">{{deck.name}}</th>
-                <td>{{deck.flashCards.length}}</td>
+                <td>{{deck.cards.length}}</td>
                 <td>{{deck.toBeReviewedCount}}</td>
                 <td class="shrink-cell">
                     <button data-tooltip="Edit" [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">

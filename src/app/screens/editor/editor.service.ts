@@ -1,10 +1,8 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
 import { AbstractControl, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
-import { Deck, FlashCard, FlashCardContent } from '@models/database.model';
+import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
-
-import { createEmptyCard } from 'ts-fsrs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,16 +17,9 @@ export class EditorService {
     private nnfb: NonNullableFormBuilder,
   ) {
     this.deckForm = this.nnfb.group({
-      idbKey: this.nnfb.control<number>(
-        -1
-      ),
-      name: this.nnfb.control<string>(
-        '', Validators.required
-      ),
-      flashCards: this.nnfb.array<FlashCard>(
-        [],
-        [ctr => this._requiredListValidator(ctr)]
-      )
+      idbKey: this.nnfb.control(-1),
+      name: this.nnfb.control('', Validators.required),
+      cards: this.nnfb.array<Card>([], this._requiredListValidator)
     });
   }
 
@@ -36,21 +27,19 @@ export class EditorService {
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
-  upsertCard(content: FlashCardContent, index?: number) {
+  upsertCard(content: CardContent, index?: number) {
     if (index) {
       // Edits an already existent card
-      const cardFormControl = this.deckForm.controls.flashCards.at(index);
+      const cardFormControl = this.deckForm.controls.cards.at(index);
       const currentState = cardFormControl.value;
       const newState = { ...currentState, content };
 
       cardFormControl.patchValue(newState);
     } else {
-      // TODO: Card constructor with createEmptyCard on it?
-      const newCard = this.nnfb.control<FlashCard>({
-        card: createEmptyCard(), content
-      });
+      const newCard = new Card({ content });
+      const newCardControl = this.nnfb.control(newCard);
 
-      this.deckForm.controls.flashCards.push(newCard);
+      this.deckForm.controls.cards.push(newCardControl);
     }
   };
 
@@ -58,24 +47,24 @@ export class EditorService {
     this.deckForm.get('name')?.patchValue(deck.name);
     this.deckForm.get('idbKey')?.patchValue(deck.idbKey);
 
-    // Append a new FormControl for each FlashCard
-    for (const flashCard of deck.flashCards) {
-      const control = this.nnfb.control(flashCard, Validators.required);
-      this.deckForm.controls.flashCards.push(control);
+    // Append a new FormControl for each card
+    for (const card of deck.cards) {
+      const control = this.nnfb.control(card, Validators.required);
+      this.deckForm.controls.cards.push(control);
     }
 
     // Force validation, without this line the form initializes as invalid
-    this.deckForm.updateValueAndValidity();
+    this.deckForm.controls.cards.updateValueAndValidity();
   }
 
   openCardDialog(index?: number) {
-    const cards = this.deckForm.get('flashCards');
+    const cards = this.deckForm.get('cards');
 
     // TODO: Set id on Cards, I'm currently using list position
     const card = index ? cards?.value.at(index) : undefined;
 
     this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
-    this.editDialogRef.instance.flashCardModel = new FlashCardContent(card?.content);
+    this.editDialogRef.instance.cardModel = new CardContent(card?.content);
     this.editDialogRef.instance.index = index;
   }
 
@@ -84,6 +73,6 @@ export class EditorService {
   }
 
   deleteCard(index: number) {
-    this.deckForm.controls.flashCards.removeAt(index);
+    this.deckForm.controls.cards.removeAt(index);
   };
 }

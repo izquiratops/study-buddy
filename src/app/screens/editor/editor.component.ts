@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
-import { Deck } from '@models/database.model';
+import { NewDeck } from '@models/database.model';
 
 @Component({
   selector: 'app-editor',
@@ -24,7 +24,7 @@ export class EditorComponent {
   }
 
   get hasCards() {
-    return this.deckForm.get('flashCards')!.value.length > 0;
+    return this.deckForm.get('cards')!.value.length > 0;
   }
 
   get isNewCard() {
@@ -52,7 +52,7 @@ export class EditorComponent {
 
   ngOnDestroy() {
     this.deckForm.reset();
-    this.deckForm.controls.flashCards.clear();
+    this.deckForm.controls.cards.clear();
   }
 
   handleCreateDeck() {
@@ -62,8 +62,7 @@ export class EditorComponent {
       delete formValue.idbKey;
     }
 
-    // TODO: solve this ugly type
-    this.storageService.setDeck(formValue as Omit<Deck, 'idbKey'> & { idbKey?: number });
+    this.storageService.setDeck(formValue as NewDeck);
   };
 
   handleOpenDialog() {

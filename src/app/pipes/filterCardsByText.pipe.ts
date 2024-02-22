@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FlashCards } from '@models/database.model';
+import { Cards } from '@models/database.model';
 
 @Pipe({
   name: 'filterCardsByText'
 })
 export class FilterCardsByTextPipe implements PipeTransform {
-  transform(items: FlashCards | undefined, filterValue: string): FlashCards {
+  transform(items: Cards | undefined, filterValue: string): Cards {
     console.debug("Running pipe cards", filterValue);
 
     if (!items) {

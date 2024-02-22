@@ -10,8 +10,8 @@ export class MapDeckDataPipe implements PipeTransform {
   private _mapDecks(deck: Deck): ProcessedDeck {
     return {
       ...deck,
-      toBeReviewedCount: deck.flashCards.reduce((acc, curr) => {
-        if (curr.card.due < new Date()) {
+      toBeReviewedCount: deck.cards.reduce((acc, curr) => {
+        if (curr.fsrsCard.due < new Date()) {
           return acc + 1;
         } else {
           return acc;

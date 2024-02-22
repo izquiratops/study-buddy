@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { FlashCardContent } from '@models/database.model';
+import { CardContent } from '@models/database.model';
 import { EditorService } from '@screens/editor/editor.service';
 
 @Component({
@@ -8,14 +8,14 @@ import { EditorService } from '@screens/editor/editor.service';
   templateUrl: './card-edit-dialog.component.html',
 })
 export class CardEditDialogComponent {
-  @Input() flashCardModel: FlashCardContent;
+  @Input() cardModel: CardContent;
   @Input() index?: number;
-  @ViewChild('flashCardForm') flashCardForm: NgForm;
+  @ViewChild('cardForm') cardForm: NgForm;
 
   constructor(private editorService: EditorService) {}
 
   handleSubmit() {
-    this.editorService.upsertCard(this.flashCardModel, this.index);
+    this.editorService.upsertCard(this.cardModel, this.index);
     this.editorService.dismissCardDialog();
   }
 

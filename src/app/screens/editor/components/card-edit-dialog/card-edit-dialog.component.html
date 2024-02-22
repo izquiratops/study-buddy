@@ -8,10 +8,10 @@
         </header>
 
         <!-- Template driven form -->
-        <form #flashCardForm="ngForm">
+        <form #cardForm="ngForm">
             <label for="front">
                 Front
-                <input type="text" [(ngModel)]="flashCardModel.front" required id="front" name="front"
+                <input type="text" [(ngModel)]="cardModel.front" required id="front" name="front"
                     placeholder="Dictionary" #front="ngModel" />
                 <small class="pico-color-red-500" [hidden]="front.valid || front.pristine">
                     Field not valid
@@ -20,7 +20,7 @@
 
             <label for="front">
                 Back
-                <input type="text" [(ngModel)]="flashCardModel.back" required id="back" name="back" placeholder="じしょ"
+                <input type="text" [(ngModel)]="cardModel.back" required id="back" name="back" placeholder="じしょ"
                     #back="ngModel" />
                 <small class="pico-color-red-500" [hidden]="back.valid || back.pristine">
                     Field not valid
@@ -32,7 +32,7 @@
             <button type="button" class="secondary" (click)="handleDismiss()">
                 Dismiss
             </button>
-            <button type="button" [disabled]="!flashCardForm.form.valid" (click)="handleSubmit()">
+            <button type="button" [disabled]="!cardForm.form.valid" (click)="handleSubmit()">
                 Submit
             </button>
         </footer>

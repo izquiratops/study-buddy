@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Deck, Decks, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
+import { Deck, Decks, NewDeck, ObjectStoreKey, objectStoreKeys } from '@models/database.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  private dbOpenRequest = indexedDB.open('flashcards', 14);
+  private dbOpenRequest = indexedDB.open('cards', 14);
   private dataBase: IDBDatabase;
   
   onIdbReady$ = new BehaviorSubject(false);
@@ -45,7 +45,7 @@ export class StorageService {
     return transaction.objectStore(name);
   }
 
-  async setDeck(deck: Omit<Deck, 'idbKey'> & { idbKey?: number }): Promise<void> {
+  async setDeck(deck: NewDeck): Promise<void> {
     return new Promise((resolve, reject) => {
       // Having already an idbKey will override the deck data, otherwise adds a fresh new card
       const objectStore = this._retrieveObjectStore("decks", "readwrite");

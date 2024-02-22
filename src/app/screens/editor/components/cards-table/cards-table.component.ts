@@ -11,7 +11,7 @@ export class CardsTableComponent {
   constructor(private editorService: EditorService) {}
 
   get cards() {
-    return this.editorService.deckForm.get('flashCards')!.value;
+    return this.editorService.deckForm.get('cards')!.value;
   }
 
   onSearchTextChange(event: Event) {
