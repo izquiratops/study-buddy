@@ -1,0 +1,30 @@
+<app-navigator-bar title="エディタ">
+    <li><a [routerLink]="'..'">Go Home 🏡</a></li>
+</app-navigator-bar>
+
+<!-- Reactive form -->
+<form [formGroup]="deckForm">
+    <fieldset>
+        <label for="name">
+            Name
+        </label>
+        <input type="text" id="name" formControlName="name" placeholder="JLPT N5 🍉" />
+        <small class="pico-color-red-500" [hidden]="nameControl.valid || nameControl.pristine">
+            Field not valid
+        </small>
+    </fieldset>
+
+    <article *ngIf="hasCards; else emptyListBlock">
+        <app-cards-table></app-cards-table>
+    </article>
+
+    <button type="button" [disabled]="!deckForm.valid" [routerLink]="'..'" (click)="handleCreateDeck()">
+        {{ isNewCard ? 'Create Deck' : 'Apply Changes' }}
+    </button>
+</form>
+
+<ng-template #emptyListBlock>
+    <article>Looks like there are no cards,
+        <a (click)="handleOpenDialog()">click here to create one.</a>
+    </article>
+</ng-template>

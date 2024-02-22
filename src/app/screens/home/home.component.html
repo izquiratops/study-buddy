@@ -1,0 +1,16 @@
+<app-navigator-bar title="フラッシュカード"></app-navigator-bar>
+
+<hgroup>
+    <p>This part of the site will have a greetings section with a cute message to ask for support 💖</p>
+</hgroup>
+
+<!-- For some reason decks$ could be nullish but I have no idea why -->
+<article *ngIf="(decks$ | async)!.length > 0; else emptyListBlock">
+    <app-decks-table [items]="decks$ | mapDeckData"></app-decks-table>
+</article>
+
+<ng-template #emptyListBlock>
+    <article>Looks like there are no decks here at the moment,
+        <a [routerLink]="'/editor'">click here to create one.</a>
+    </article>
+</ng-template>
