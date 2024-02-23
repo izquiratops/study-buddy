@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let deck of (decks$ | async | filterDecksByText: searchText); index as idx">
+            <tr *ngFor="let deck of (processedDecks$ | async | filterDecksByText: searchText); index as idx">
                 <th scope="row" tabindex="idx" [routerLink]="'/feed'" [queryParams]="{id: deck.idbKey}">
                     <a data-tooltip="Review">
                         {{deck.name}}

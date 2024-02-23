@@ -1,42 +1,36 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, filter, switchMap, take } from 'rxjs';
+import { Observable, filter, map, switchMap, take } from 'rxjs';
 import { StorageService } from '@services/storage.service';
-import { Decks } from '@models/database.model';
-import { DataThemeValue } from '@models/editor.model';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  readonly decks$ = new BehaviorSubject<Decks>([]);
-  readonly hasItems$ = new BehaviorSubject(false);
-  isDark = document.documentElement.getAttribute('data-theme') as DataThemeValue;
+  hasItems$: Observable<boolean>;
 
-  constructor(private storageService: StorageService) { }
+  constructor(
+    private storageService: StorageService,
+    private homeService: HomeService,
+    ) { }
 
   ngOnInit() {
     this.storageService.onIdbReady$.pipe(
       filter(value => value),
-      switchMap(() => this.storageService.getDecks()),
       take(1),
+      switchMap(() => this.storageService.getDecks()),
     ).subscribe({
-      next: decks => this.decks$.next(decks),
+      next: decks => this.homeService.decks$.next(decks),
       error: err => console.error(err)
     });
 
-    this.decks$.subscribe((decks) => {
-      this.hasItems$.next(decks.length > 0);
-    })
+    this.hasItems$ = this.homeService.decks$.pipe(
+      map(decks => decks.length > 0)
+    );
   }
 
-  switchTheme() {
-    if (this.isDark === 'light') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      this.isDark = 'dark';
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      this.isDark = 'light';
-    }
+  handleThemeClick() {
+    this.homeService.switchTheme()
   }
 }

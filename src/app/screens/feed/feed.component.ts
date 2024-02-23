@@ -1,24 +1,34 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Card, Deck } from '@models/database.model';
 import { StorageService } from '@services/storage.service';
-import { BehaviorSubject, Subject, combineLatest, filter, map, switchMap, take } from 'rxjs';
-import { FSRS, Rating } from 'ts-fsrs';
+import { combineLatest, filter, map, switchMap, take } from 'rxjs';
+import { FSRS } from 'ts-fsrs';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
 })
 export class FeedComponent {
-  private readonly fsrs: FSRS = new FSRS({});
+  private readonly fsrs = new FSRS({});
 
-  currentCard$ = new BehaviorSubject<Card | undefined>(undefined);
-  list: Array<Card & { toBeReviewed: boolean }>;
+  index: number = 0;
+  list: Array<Card> = [];
 
   constructor(
     private route: ActivatedRoute,
     private storageService: StorageService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) { }
+
+  private _initializeCardList(deck: Deck) {
+    this.list = deck.cards.sort((a, b) => {
+      const dateA = a.fsrsCard.due.getUTCSeconds();
+      const dateB = b.fsrsCard.due.getUTCSeconds();
+
+      return dateB - dateA;
+    });
+  }
 
   ngOnInit() {
     combineLatest([
@@ -31,32 +41,26 @@ export class FeedComponent {
       take(1),
     ).subscribe({
       next: deck => this._initializeCardList(deck),
-      error: err => console.error(err)
+      error: err => console.error(err),
+      complete: () => this.changeDetectionRef.markForCheck(),
     });
   }
 
-  private _initializeCardList(deck: Deck) {
-    this.list = deck.cards
-      .sort((a, b) => b.fsrsCard.due.getUTCSeconds() - a.fsrsCard.due.getUTCSeconds())
-      .map(curr => ({ ...curr, toBeReviewed: curr.fsrsCard.due < new Date() }));
-
-    this.currentCard$.next(this.list.pop());
+  get currentCard() {
+    return this.list.at(this.index);
   }
 
-  handleFeedback(rating: Rating) {
-    const currentCard = this.currentCard$.getValue();
-
-    if (currentCard) {
-      const currentCardReviewed = this.fsrs.repeat(currentCard.fsrsCard, new Date());
-      // TODO: Save card
+  handleFeedback(rating: 1 | 2 | 3 | 4) {
+    if (this.currentCard) {
+      const scheduler = this.fsrs.repeat(this.currentCard.fsrsCard, new Date());
+      this.currentCard.fsrsCard = scheduler[rating].card;
+      this.currentCard.log = scheduler[rating].log;
     }
 
-    const nextCard = this.list.pop();
-
-    if (nextCard) {
-      this.currentCard$.next(nextCard);
+    if (this.index === this.list.length - 1) {
+      this.index = 0;
     } else {
-      console.log('End of review');
+      this.index++;
     }
   }
 }

@@ -21,8 +21,6 @@ export class EditorService {
       name: this.nnfb.control('', Validators.required),
       cards: this.nnfb.array<Card>([], this._requiredListValidator)
     });
-
-    this.deckForm.get('cards')?.valueChanges.subscribe(console.debug);
   }
 
   private _requiredListValidator(control: AbstractControl): any {

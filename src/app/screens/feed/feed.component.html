@@ -2,12 +2,14 @@
     <li><a [routerLink]="'..'">Go Home 🏡</a></li>
 </app-navigator-bar>
 
-<progress value="57" max="100"></progress>
+<progress [value]="index" [max]="list?.length"></progress>
 
-<article *ngIf="currentCard$ | async as card">
-    <p>{{ card.content.front }}</p>
+<article *ngIf="currentCard">
+    <p>{{ currentCard.content.front }}</p>
     <hr>
-    <p>{{ card.content.back }}</p>
+    <p>{{ currentCard.content.back }}</p>
+    <hr>
+    <pre>{{ currentCard.fsrsCard | json }}</pre>
     <div class="grid">
         <button (click)="handleFeedback(4)">Easy</button>
         <button (click)="handleFeedback(3)">Good</button>

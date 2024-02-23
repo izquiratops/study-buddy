@@ -19,7 +19,6 @@ import { NavigatorBarComponent } from '@components/navigator-bar/navigator-bar.c
 
 import { FilterCardsByTextPipe } from '@pipes/filterCardsByText.pipe';
 import { FilterDecksByTextPipe } from '@pipes/filterDecksByText.pipe';
-import { MapDeckDataPipe } from '@screens/home/map-deck-data.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { MapDeckDataPipe } from '@screens/home/map-deck-data.pipe';
     CardsTableComponent,
     FilterCardsByTextPipe,
     FilterDecksByTextPipe,
-    MapDeckDataPipe,
   ],
   imports: [
     CommonModule,
