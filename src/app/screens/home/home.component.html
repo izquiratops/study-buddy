@@ -4,8 +4,7 @@
     <p>This part of the site will have a greetings section with a cute message to ask for support 💖</p>
 </hgroup>
 
-<!-- For some reason decks$ could be nullish but I have no idea why -->
-<article *ngIf="(decks$ | async)!.length > 0; else emptyListBlock">
+<article *ngIf="hasItems$ | async; else emptyListBlock">
     <app-decks-table [items]="decks$ | mapDeckData"></app-decks-table>
 </article>
 

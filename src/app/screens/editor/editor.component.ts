@@ -51,8 +51,7 @@ export class EditorComponent {
   }
 
   ngOnDestroy() {
-    this.deckForm.reset();
-    this.deckForm.controls.cards.clear();
+    this.editorService.clearForm();
   }
 
   handleCreateDeck() {

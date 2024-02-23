@@ -8,12 +8,12 @@ import { Decks } from '@models/database.model';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  decks$ = new BehaviorSubject<Decks>([]);
+  readonly decks$ = new BehaviorSubject<Decks>([]);
+  readonly hasItems$ = new BehaviorSubject(false);
 
   constructor(private storageService: StorageService) {}
 
   ngOnInit() {
-    // Fetch decks when idb is ready
     this.storageService.onIdbReady$.pipe(
       filter(value => value),
       switchMap(() => this.storageService.getDecks()),
@@ -22,5 +22,9 @@ export class HomeComponent {
       next: decks => this.decks$.next(decks),
       error: err => console.error(err)
     });
+
+    this.decks$.subscribe((decks) => {
+      this.hasItems$.next(decks.length > 0);
+    })
   }
 }

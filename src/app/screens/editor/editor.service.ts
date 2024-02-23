@@ -43,18 +43,27 @@ export class EditorService {
     }
   };
 
+  deleteCard(index: number) {
+    this.deckForm.controls.cards.removeAt(index);
+  };
+
   populateForm(deck: Deck) {
     this.deckForm.get('name')?.patchValue(deck.name);
     this.deckForm.get('idbKey')?.patchValue(deck.idbKey);
 
     // Append a new FormControl for each card
     for (const card of deck.cards) {
-      const control = this.nnfb.control(card, Validators.required);
+      const control = this.nnfb.control(card);
       this.deckForm.controls.cards.push(control);
     }
 
     // Force validation, without this line the form initializes as invalid
     this.deckForm.controls.cards.updateValueAndValidity();
+  }
+
+  clearForm() {
+    this.deckForm.reset();
+    this.deckForm.controls.cards.clear();
   }
 
   openCardDialog(index?: number) {
@@ -71,8 +80,4 @@ export class EditorService {
   dismissCardDialog() {
     this.editDialogRef?.destroy();
   }
-
-  deleteCard(index: number) {
-    this.deckForm.controls.cards.removeAt(index);
-  };
 }

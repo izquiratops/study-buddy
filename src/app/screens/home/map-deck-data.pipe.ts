@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Deck, Decks, ProcessedDeck, ProcessedDecks } from '@models/database.model';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 
 @Pipe({
   name: 'mapDeckData',
