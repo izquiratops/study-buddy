@@ -21,6 +21,10 @@ export interface ProcessedDeck extends Deck {
 export type Decks = Array<Deck>;
 export type ProcessedDecks = Array<ProcessedDeck>;
 
+export enum Rating {
+    
+}
+
 // Cards
 export type Cards = Array<Card>;
 export class Card {

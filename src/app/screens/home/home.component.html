@@ -1,12 +1,14 @@
-<app-navigator-bar title="フラッシュカード"></app-navigator-bar>
+<app-navigator-bar title="フラッシュカード">
+    <li><a [routerLink]="'/about'">About 🙇🏼‍♂️</a></li>
+    <li><a [routerLink]="'.'" (click)="switchTheme()">Theme ✨</a></li>
+</app-navigator-bar>
 
-<hgroup>
-    <p>This part of the site will have a greetings section with a cute message to ask for support 💖</p>
-</hgroup>
-
-<article *ngIf="hasItems$ | async; else emptyListBlock">
+<ng-container *ngIf="hasItems$ | async; else emptyListBlock">
     <app-decks-table [items]="decks$ | mapDeckData"></app-decks-table>
-</article>
+    <button class="fab" data-tooltip="Add Deck" [routerLink]="'/editor'">
+        Add Deck
+    </button>
+</ng-container>
 
 <ng-template #emptyListBlock>
     <article>Looks like there are no decks here at the moment,

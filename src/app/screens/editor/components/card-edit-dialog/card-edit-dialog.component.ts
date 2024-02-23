@@ -9,7 +9,7 @@ import { EditorService } from '@screens/editor/editor.service';
 })
 export class CardEditDialogComponent {
   @Input() cardModel: CardContent;
-  @Input() index?: number;
+  @Input() index: number;
   @ViewChild('cardForm') cardForm: NgForm;
 
   constructor(private editorService: EditorService) {}

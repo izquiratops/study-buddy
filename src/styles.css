@@ -6,6 +6,7 @@ main {
 app-root > *:not(router-outlet) {
     height: 100%;
     display: flex;
+    position: relative;
     flex-direction: column;
 }
 
@@ -15,4 +16,12 @@ app-root > *:not(router-outlet) {
         --pico-background-color: 'transparent';
         --pico-border-color: 'transparent';
     }
+}
+
+.fab {
+    position: absolute;
+    padding: var(--pico-spacing);
+    border-radius: 9rem;
+    bottom: 0;
+    right: 0;
 }

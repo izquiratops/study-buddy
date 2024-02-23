@@ -1,9 +1,10 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
 import { NewDeck } from '@models/database.model';
+import { FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -13,6 +14,7 @@ export class EditorComponent {
   constructor(
     private route: ActivatedRoute,
     private viewContainerRef: ViewContainerRef,
+    private changeDetectionRef: ChangeDetectorRef,
     private storageService: StorageService,
     private editorService: EditorService,
   ) {
@@ -23,16 +25,16 @@ export class EditorComponent {
     return this.editorService.deckForm;
   }
 
-  get hasCards() {
-    return this.deckForm.get('cards')!.value.length > 0;
-  }
-
   get isNewCard() {
     return this.deckForm.get('idbKey')!.value === -1;
   }
 
   get nameControl() {
     return this.deckForm.get('name')!;
+  }
+
+  get hasCards() {
+    return this.deckForm.get('cards')!.value.length > 0;
   }
 
   ngOnInit() {
@@ -45,7 +47,10 @@ export class EditorComponent {
       switchMap((id) => this.storageService.getDeck(id)),
       take(1),
     ).subscribe({
-      next: deck => this.editorService.populateForm(deck),
+      next: deck => {
+        this.editorService.populateForm(deck);
+        this.changeDetectionRef.markForCheck();
+      },
       error: err => console.error(err)
     });
   }
@@ -64,7 +69,7 @@ export class EditorComponent {
     this.storageService.setDeck(formValue as NewDeck);
   };
 
-  handleOpenDialog() {
-    this.editorService.openCardDialog();
+  handleOpenDialog(index: number) {
+    this.editorService.openCardDialog(index);
   }
 }

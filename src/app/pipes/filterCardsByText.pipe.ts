@@ -5,8 +5,8 @@ import { Cards } from '@models/database.model';
   name: 'filterCardsByText'
 })
 export class FilterCardsByTextPipe implements PipeTransform {
-  transform(items: Cards | undefined, filterValue: string): Cards {
-    console.debug("Running pipe cards", filterValue);
+  transform(items: Cards | null, filterValue: string): Cards {
+    console.debug("Running filter pipe cards", filterValue);
 
     if (!items) {
       return [];

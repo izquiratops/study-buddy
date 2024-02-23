@@ -13,8 +13,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let deck of decks$ | async; index as idx">
-                <th scope="row" tabindex="idx">{{deck.name}}</th>
+            <tr *ngFor="let deck of (decks$ | async | filterDecksByText: searchText); index as idx">
+                <th scope="row" tabindex="idx" [routerLink]="'/feed'" [queryParams]="{id: deck.idbKey}">
+                    <a data-tooltip="Review">
+                        {{deck.name}}
+                    </a>
+                </th>
                 <td>{{deck.cards.length}}</td>
                 <td>{{deck.toBeReviewedCount}}</td>
                 <td class="shrink-cell">
@@ -27,11 +31,6 @@
                         ❌
                     </button>
                 </td>
-            </tr>
-            <tr>
-                <th scope="row" colspan="5">
-                    <a [routerLink]="'/editor'">Create new deck</a>
-                </th>
             </tr>
         </tbody>
     </table>

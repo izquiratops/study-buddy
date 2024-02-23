@@ -1,0 +1,17 @@
+<app-navigator-bar title="Feed">
+    <li><a [routerLink]="'..'">Go Home 🏡</a></li>
+</app-navigator-bar>
+
+<progress value="57" max="100"></progress>
+
+<article *ngIf="currentCard$ | async as card">
+    <p>{{ card.content.front }}</p>
+    <hr>
+    <p>{{ card.content.back }}</p>
+    <div class="grid">
+        <button (click)="handleFeedback(4)">Easy</button>
+        <button (click)="handleFeedback(3)">Good</button>
+        <button (click)="handleFeedback(2)">Hard</button>
+        <button (click)="handleFeedback(1)">Again</button>
+    </div>
+</article>

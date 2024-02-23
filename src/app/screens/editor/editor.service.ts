@@ -1,5 +1,5 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { AbstractControl, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
@@ -21,14 +21,16 @@ export class EditorService {
       name: this.nnfb.control('', Validators.required),
       cards: this.nnfb.array<Card>([], this._requiredListValidator)
     });
+
+    this.deckForm.get('cards')?.valueChanges.subscribe(console.debug);
   }
 
   private _requiredListValidator(control: AbstractControl): any {
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
-  upsertCard(content: CardContent, index?: number) {
-    if (index) {
+  upsertCard(content: CardContent, index: number) {
+    if (index !== -1) {
       // Edits an already existent card
       const cardFormControl = this.deckForm.controls.cards.at(index);
       const currentState = cardFormControl.value;
@@ -48,17 +50,13 @@ export class EditorService {
   };
 
   populateForm(deck: Deck) {
-    this.deckForm.get('name')?.patchValue(deck.name);
-    this.deckForm.get('idbKey')?.patchValue(deck.idbKey);
+    this.deckForm.get('name')?.setValue(deck.name);
+    this.deckForm.get('idbKey')?.setValue(deck.idbKey);
 
-    // Append a new FormControl for each card
+    const control = this.deckForm.get('cards') as FormArray;
     for (const card of deck.cards) {
-      const control = this.nnfb.control(card);
-      this.deckForm.controls.cards.push(control);
+      control.push(this.nnfb.control(card));
     }
-
-    // Force validation, without this line the form initializes as invalid
-    this.deckForm.controls.cards.updateValueAndValidity();
   }
 
   clearForm() {
@@ -66,11 +64,11 @@ export class EditorService {
     this.deckForm.controls.cards.clear();
   }
 
-  openCardDialog(index?: number) {
+  openCardDialog(index: number) {
     const cards = this.deckForm.get('cards');
 
     // TODO: Set id on Cards, I'm currently using list position
-    const card = index ? cards?.value.at(index) : undefined;
+    const card = index !== -1 ? cards?.value.at(index) : undefined;
 
     this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
     this.editDialogRef.instance.cardModel = new CardContent(card?.content);

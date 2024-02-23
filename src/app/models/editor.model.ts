@@ -7,3 +7,5 @@ export type CardForm = {
   name: FormControl<string>,
   cards: FormArray<FormControl<Card>>
 }
+
+export type DataThemeValue = 'light' | 'dark';

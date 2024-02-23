@@ -18,7 +18,7 @@ export class CardsTableComponent {
     this.searchText = (event.target as HTMLInputElement).value;
   }
 
-  handleOpenCardDialog(index?: number) {
+  handleOpenCardDialog(index: number) {
     this.editorService.openCardDialog(index);
   }
 
