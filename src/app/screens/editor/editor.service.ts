@@ -1,5 +1,5 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { AbstractControl, FormArray, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
@@ -27,29 +27,49 @@ export class EditorService {
     return control.value.length > 0 ? null : { emptyList: true };
   }
 
+  /**
+   * Can be called as:
+   * - this.getCardControl<FormControl<Card>> to get their FormControl
+   * - this.getCardControl<Card> to get just their value
+   * @param index Card position in the ArrayForm
+   * @returns 
+   */
+  private getCardControl<T>(index: number): T | undefined {
+    if (index === -1) {
+      return;
+    }
+
+    const cards = this.deckForm.get('cards')! as FormArray;
+    return cards.at(index) as T;
+  }
+
   upsertCard(content: CardContent, index: number) {
     if (index !== -1) {
       // Edits an already existent card
-      const cardFormControl = this.deckForm.controls.cards.at(index);
-      const currentState = cardFormControl.value;
-      const newState = { ...currentState, content };
+      const cardControl = this.getCardControl<FormControl<Card>>(index)!;
+      const newCardValue = new Card({ ...cardControl.value, content });
 
-      cardFormControl.patchValue(newState);
+      cardControl.patchValue(newCardValue);
     } else {
       const newCard = new Card({ content });
       const newCardControl = this.nnfb.control(newCard);
-
       this.deckForm.controls.cards.push(newCardControl);
     }
   };
 
+  clearCardState(index: number) {
+    const card = this.getCardControl<Card>(index);
+    card?.clearStats();
+  };
+
   deleteCard(index: number) {
-    this.deckForm.controls.cards.removeAt(index);
+    const control = this.deckForm.get('cards') as FormArray;
+    control.removeAt(index);
   };
 
   populateForm(deck: Deck) {
-    this.deckForm.get('name')?.setValue(deck.name);
-    this.deckForm.get('idbKey')?.setValue(deck.idbKey);
+    this.deckForm.get('name')!.setValue(deck.name);
+    this.deckForm.get('idbKey')!.setValue(deck.idbKey);
 
     const control = this.deckForm.get('cards') as FormArray;
     for (const card of deck.cards) {
@@ -63,11 +83,7 @@ export class EditorService {
   }
 
   openCardDialog(index: number) {
-    const cards = this.deckForm.get('cards');
-
-    // TODO: Set id on Cards, I'm currently using list position
-    const card = index !== -1 ? cards?.value.at(index) : undefined;
-
+    const card = this.getCardControl<Card>(index);
     this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
     this.editDialogRef.instance.cardModel = new CardContent(card?.content);
     this.editDialogRef.instance.index = index;

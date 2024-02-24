@@ -9,7 +9,7 @@ export class StorageService {
   private dbOpenRequest = indexedDB.open('cards', 14);
   private dataBase: IDBDatabase;
   
-  onIdbReady$ = new BehaviorSubject(false);
+  readonly onIdbReady$ = new BehaviorSubject(false);
 
   constructor() {
     console.debug('Initializing Storage Service...');
@@ -70,7 +70,7 @@ export class StorageService {
 
       request.onsuccess = (ev: Event) => {
         const cursor: IDBCursorWithValue = ((ev.target) as IDBRequest)?.result;
-        const deck = cursor?.value;
+        const deck: Deck = cursor?.value;
         console.debug("Deck fetched from IDB object store", deck);
         resolve(deck);
       };

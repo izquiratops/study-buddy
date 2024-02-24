@@ -1,8 +1,8 @@
-<app-navigator-bar title="Feed">
+<app-navigator-bar [title]="deckTitle">
     <li><a [routerLink]="'..'">Go Home 🏡</a></li>
 </app-navigator-bar>
 
-<progress [value]="index" [max]="list?.length"></progress>
+<progress [value]="index" [max]="list.length"></progress>
 
 <article *ngIf="currentCard">
     <p>{{ currentCard.content.front }}</p>

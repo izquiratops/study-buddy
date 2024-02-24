@@ -22,6 +22,10 @@ export class CardsTableComponent {
     this.editorService.openCardDialog(index);
   }
 
+  handleClearCardStats(index: number) {
+    this.editorService.clearCardState(index);
+  }
+
   handleDeleteCard(index: number) {
     this.editorService.deleteCard(index);
   };

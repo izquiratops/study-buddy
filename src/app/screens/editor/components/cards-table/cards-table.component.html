@@ -7,6 +7,7 @@
                 <th scope="col">Front</th>
                 <th scope="col">Back</th>
                 <th scope="col"><!-- ✏️ Column --></th>
+                <th scope="col"><!-- 🧼 Column --></th>
                 <th scope="col"><!-- ❌ Column --></th>
             </tr>
         </thead>
@@ -17,6 +18,11 @@
                 <td class="shrink-cell">
                     <button data-tooltip="Edit" (click)="handleOpenCardDialog(idx)">
                         ✏️
+                    </button>
+                </td>
+                <td class="shrink-cell">
+                    <button data-tooltip="Clear Stats" (click)="handleClearCardStats(idx)">
+                        🧼
                     </button>
                 </td>
                 <td class="shrink-cell">

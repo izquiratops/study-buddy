@@ -10,38 +10,46 @@ export class Deck {
     name: string;
     cards: Cards;
 
-    public constructor(init?: Partial<Deck>) {
-        Object.assign(this, init);
+    constructor(init: Deck) {
+        this.idbKey = init.idbKey;
+        this.name = init.name;
+        this.cards = init.cards.map(curr => new Card(curr));
     }
 }
 export type NewDeck = Omit<Deck, 'idbKey'> & { idbKey?: number };
-export interface ProcessedDeck extends Deck {
+export interface ProcessedDeck extends Deck { // TODO: Merge this as a single Deck class
     toBeReviewedCount: number,
 };
 export type Decks = Array<Deck>;
 export type ProcessedDecks = Array<ProcessedDeck>;
-
-export enum Rating {
-    
-}
 
 // Cards
 export type Cards = Array<Card>;
 export class Card {
     fsrsCard: FsrsCard;
     content: CardContent;
-    log?: ReviewLog; // Logs are empty on fresh new cards
+    log?: ReviewLog; // Logs are empty on new cards
 
-    public constructor(init?: Partial<Card>) {
+    constructor(init?: Partial<Card>) {
         Object.assign(this, init);
+
+        // Initializes a new card with new FSRS values
+        if (this.fsrsCard === undefined) {
+            this.clearStats();
+        }
+    }
+
+    clearStats () {
         this.fsrsCard = createEmptyCard();
+        this.log = undefined;
     }
 };
+
 export class CardContent {
     front = '';
     back = '';
 
-    public constructor(init?: CardContent) {
+    constructor(init?: CardContent) {
         Object.assign(this, init);
     }
 }

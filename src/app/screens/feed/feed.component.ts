@@ -14,6 +14,7 @@ export class FeedComponent {
 
   index: number = 0;
   list: Array<Card> = [];
+  deckTitle: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +23,7 @@ export class FeedComponent {
   ) { }
 
   private _initializeCardList(deck: Deck) {
+    this.deckTitle = deck.name;
     this.list = deck.cards.sort((a, b) => {
       const dateA = a.fsrsCard.due.getUTCSeconds();
       const dateB = b.fsrsCard.due.getUTCSeconds();
@@ -61,6 +63,7 @@ export class FeedComponent {
       this.index = 0;
     } else {
       this.index++;
+      
     }
   }
 }
