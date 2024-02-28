@@ -1,5 +1,5 @@
 <app-navigator-bar title="エディタ">
-    <li><a [routerLink]="'..'">Go Home 🏡</a></li>
+    <li><a (click)="handleOpenDialog(-1)">Add Card ✍🏼</a></li>
 </app-navigator-bar>
 
 <!-- Reactive form -->
@@ -13,13 +13,10 @@
             Field not valid
         </small>
     </fieldset>
-
     <hr>
-
     <ng-container *ngIf="hasCards; else emptyListBlock">
         <app-cards-table></app-cards-table>
     </ng-container>
-
     <button type="button" [disabled]="!deckForm.valid" [routerLink]="'..'" (click)="handleCreateDeck()">
         {{ isNewCard ? 'Create Deck' : 'Apply Changes' }}
     </button>

@@ -1,37 +1,24 @@
-<input type="search" placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
+<input placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
 
-<div class="overflow-auto">
-    <table class="striped">
-        <thead>
-            <tr>
-                <ng-container></ng-container>
-                <th scope="col">Name</th>
-                <th scope="col">Deck cards</th>
-                <th scope="col">Cards to review</th>
-                <th scope="col"><!-- ✏️ Column --></th>
-                <th scope="col"><!-- ❌ Column --></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let deck of (processedDecks$ | async | filterDecksByText: searchText); index as idx">
-                <th scope="row" tabindex="idx" [routerLink]="'/feed'" [queryParams]="{id: deck.idbKey}">
-                    <a data-tooltip="Review">
-                        {{deck.name}}
-                    </a>
-                </th>
-                <td>{{deck.cards.length}}</td>
-                <td>{{deck.toBeReviewedCount}}</td>
-                <td class="shrink-cell">
-                    <button data-tooltip="Edit" [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
-                        ✏️
-                    </button>
-                </td>
-                <td class="shrink-cell">
-                    <button data-tooltip="Remove" (click)="handleDeleteDeck(deck.idbKey!)">
-                        ❌
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<table class="striped">
+    <thead>
+        <tr>
+            <th scope="col">Decks</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let deck of (processedDecks$ | async | filterDecksByText: searchText); index as idx">
+            <td scope="row">
+                <a tabindex="0" [routerLink]="'/feed'" [queryParams]="{id: deck.idbKey}">
+                    {{deck.name}}
+                </a>
+            </td>
+            <td [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
+                <div data-tooltip="Edit">
+                    ✏️
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

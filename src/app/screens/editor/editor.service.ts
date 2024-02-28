@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormControl, NonNullableFormBuilder, Valida
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
+import { parse } from 'csv-parse';
 
 @Injectable({
   providedIn: 'root'
@@ -58,8 +59,8 @@ export class EditorService {
   };
 
   clearCardState(index: number) {
-    const card = this.getCardControl<Card>(index);
-    card?.clearStats();
+    const cardControl = this.getCardControl<FormControl<Card>>(index);
+    cardControl?.value.clearStats();
   };
 
   deleteCard(index: number) {
@@ -83,9 +84,9 @@ export class EditorService {
   }
 
   openCardDialog(index: number) {
-    const card = this.getCardControl<Card>(index);
+    const cardControl = this.getCardControl<FormControl<Card>>(index);
     this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
-    this.editDialogRef.instance.cardModel = new CardContent(card?.content);
+    this.editDialogRef.instance.cardModel = new CardContent(cardControl?.value.content);
     this.editDialogRef.instance.index = index;
   }
 

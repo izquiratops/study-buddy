@@ -1,13 +1,12 @@
 <app-navigator-bar title="フラッシュカード">
-    <li><a [routerLink]="'/about'">About 🙇🏼‍♂️</a></li>
-    <li><a [routerLink]="'.'" (click)="handleThemeClick()">Theme ✨</a></li>
+    <li><a [routerLink]="'.'" (click)="handleThemeClick()">
+        {{ currentDataTheme === 'light' ? 'Darken 🌑' : 'Enlighten ☀️' }}
+    </a></li>
+    <li><a [routerLink]="'/editor'">Add Deck ✒️</a></li>
 </app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">
     <app-decks-table></app-decks-table>
-    <button class="fab" data-tooltip="Add Deck" [routerLink]="'/editor'">
-        Add Deck
-    </button>
 </ng-container>
 
 <ng-template #emptyListBlock>

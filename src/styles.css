@@ -1,27 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 main {
     height: 100dvh;
+    overflow: hidden;
 }
 
 app-root > *:not(router-outlet) {
     height: 100%;
     display: flex;
-    position: relative;
     flex-direction: column;
 }
 
-.shrink-cell {
-    width: 1px;
-    button {
-        --pico-background-color: 'transparent';
-        --pico-border-color: 'transparent';
-    }
+thead,
+tbody,
+tr {
+  display: contents;
 }
 
-.fab {
-    position: absolute;
-    padding: var(--pico-spacing);
-    border-radius: 9rem;
-    bottom: 0;
-    right: 0;
+th,
+td {
+  white-space: wrap;
+}
+
+th {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+
+/* app-decks-table */
+app-decks-table, app-cards-table {
+  overflow-y: auto;
 }

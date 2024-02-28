@@ -14,6 +14,15 @@ export class CardEditDialogComponent {
 
   constructor(private editorService: EditorService) {}
 
+  handleClearCardStats() {
+    this.editorService.clearCardState(this.index);
+  }
+
+  handleDeleteCard() {
+    this.editorService.deleteCard(this.index);
+    this.editorService.dismissCardDialog();
+  }
+
   handleSubmit() {
     this.editorService.upsertCard(this.cardModel, this.index);
     this.editorService.dismissCardDialog();

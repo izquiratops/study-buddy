@@ -4,6 +4,7 @@ import { EditorService } from '@screens/editor/editor.service';
 @Component({
   selector: 'app-cards-table',
   templateUrl: './cards-table.component.html',
+  styleUrl: './cards-table.component.css'
 })
 export class CardsTableComponent {
   searchText: string;
@@ -21,12 +22,4 @@ export class CardsTableComponent {
   handleOpenCardDialog(index: number) {
     this.editorService.openCardDialog(index);
   }
-
-  handleClearCardStats(index: number) {
-    this.editorService.clearCardState(index);
-  }
-
-  handleDeleteCard(index: number) {
-    this.editorService.deleteCard(index);
-  };
 }

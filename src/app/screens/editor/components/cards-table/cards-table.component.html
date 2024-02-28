@@ -1,41 +1,22 @@
 <!-- <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" /> -->
 
-<div class="overflow-auto">
-    <table class="striped">
-        <thead>
-            <tr>
-                <th scope="col">Front</th>
-                <th scope="col">Back</th>
-                <th scope="col"><!-- ✏️ Column --></th>
-                <th scope="col"><!-- 🧼 Column --></th>
-                <th scope="col"><!-- ❌ Column --></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let card of (cards | filterCardsByText: searchText); index as idx">
-                <th scope="row">{{ card.content.front }}</th>
-                <td>{{ card.content.back }}</td>
-                <td class="shrink-cell">
-                    <button data-tooltip="Edit" (click)="handleOpenCardDialog(idx)">
-                        ✏️
-                    </button>
-                </td>
-                <td class="shrink-cell">
-                    <button data-tooltip="Clear Stats" (click)="handleClearCardStats(idx)">
-                        🧼
-                    </button>
-                </td>
-                <td class="shrink-cell">
-                    <button data-tooltip="Remove" (click)="handleDeleteCard(idx)">
-                        ❌
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row" colspan="4">
-                    <a (click)="handleOpenCardDialog(-1)">Add Card</a>
-                </th>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<table class="striped">
+    <thead>
+        <tr>
+            <th scope="col">Front</th>
+            <th scope="col">Back</th>
+            <th scope="col"><!-- ✏️ Column --></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let card of (cards | filterCardsByText: searchText); index as idx">
+            <th scope="row">{{ card.content.front }}</th>
+            <td>{{ card.content.back }}</td>
+            <td class="shrink-cell">
+                <div data-tooltip="Edit" (click)="handleOpenCardDialog(idx)">
+                    ✏️
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

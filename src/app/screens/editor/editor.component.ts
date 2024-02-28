@@ -4,7 +4,6 @@ import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
 import { NewDeck } from '@models/database.model';
-import { FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',

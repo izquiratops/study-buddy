@@ -30,6 +30,10 @@ export class HomeComponent {
     );
   }
 
+  get currentDataTheme() {
+    return this.homeService.dataThemeValue;
+  }
+
   handleThemeClick() {
     this.homeService.switchTheme()
   }

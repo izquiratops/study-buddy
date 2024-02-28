@@ -4,6 +4,7 @@ import { HomeService } from '@screens/home/home.service';
 @Component({
   selector: 'app-decks-table',
   templateUrl: './decks-table.component.html',
+  styleUrl: './decks-table.component.css'
 })
 export class DecksTableComponent {
   searchText: string;

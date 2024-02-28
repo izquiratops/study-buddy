@@ -3,7 +3,7 @@
         <header>
             <hgroup>
                 <h2>Create new card</h2>
-                <p>Choose the template and fill the form</p>
+                <!-- <p>🐉</p> -->
             </hgroup>
         </header>
 
@@ -17,7 +17,6 @@
                     Field not valid
                 </small>
             </label>
-
             <label for="front">
                 Back
                 <input type="text" [(ngModel)]="cardModel.back" required id="back" name="back" placeholder="じしょ"
@@ -26,6 +25,15 @@
                     Field not valid
                 </small>
             </label>
+            <hr>
+            <div class="grid">
+                <button tabindex="-1" class="secondary" (click)="handleClearCardStats()">
+                    Clear stats 🧼
+                </button>
+                <button tabindex="-1" class="secondary" (click)="handleDeleteCard()">
+                    Delete 🗑️
+                </button>
+            </div>
         </form>
 
         <footer>

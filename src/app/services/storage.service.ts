@@ -72,7 +72,7 @@ export class StorageService {
         const cursor: IDBCursorWithValue = ((ev.target) as IDBRequest)?.result;
         const deck: Deck = cursor?.value;
         console.debug("Deck fetched from IDB object store", deck);
-        resolve(deck);
+        resolve(new Deck(deck));
       };
 
       request.onerror = (ev: Event) => {
@@ -107,7 +107,7 @@ export class StorageService {
       request.onsuccess = (ev: Event) => {
         const decks = (ev.target as IDBRequest)?.result as Decks;
         console.debug("Decks fetched from IDB object store", decks);
-        resolve(decks);
+        resolve(decks.map(curr => new Deck(curr)));
       };
 
       request.onerror = (ev: Event) => {

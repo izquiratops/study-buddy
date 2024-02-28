@@ -8,7 +8,7 @@ import { DataThemeValue } from '@models/editor.model';
   providedIn: 'root'
 })
 export class HomeService {
-  private isDark = document.documentElement.getAttribute('data-theme') as DataThemeValue;
+  dataThemeValue = document.documentElement.getAttribute('data-theme') as DataThemeValue;
 
   readonly decks$ = new BehaviorSubject<Decks>([]);
   readonly processedDecks$ = from(this.decks$).pipe(
@@ -41,12 +41,12 @@ export class HomeService {
   }
 
   switchTheme() {
-    if (this.isDark === 'light') {
+    if (this.dataThemeValue === 'light') {
       document.documentElement.setAttribute('data-theme', 'dark');
-      this.isDark = 'dark';
+      this.dataThemeValue = 'dark';
     } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      this.isDark = 'light';
+      this.dataThemeValue = 'light';
     }
   }
 
