@@ -1,16 +1,20 @@
 <app-navigator-bar title="フラッシュカード">
-    <li><a [routerLink]="'.'" (click)="handleThemeClick()">
-        {{ currentDataTheme === 'light' ? 'Darken 🌑' : 'Enlighten ☀️' }}
-    </a></li>
-    <li><a [routerLink]="'/editor'">Add Deck ✒️</a></li>
+  <li>
+    <a [routerLink]="'.'" (click)="handleThemeClick()">
+      {{ currentDataTheme === "light" ? "Darken 🌑" : "Enlighten ☀️" }}
+    </a>
+  </li>
+  <li><a [routerLink]="'/editor'">Add Deck ✒️</a></li>
 </app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">
-    <app-decks-table></app-decks-table>
+  <input placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
+  <app-decks-table></app-decks-table>
 </ng-container>
 
 <ng-template #emptyListBlock>
-    <article>Looks like there are no decks here at the moment,
-        <a [routerLink]="'/editor'">click here to create one.</a>
-    </article>
+  <article>
+    Looks like there are no decks here at the moment,
+    <a [routerLink]="'/editor'">click here to create one.</a>
+  </article>
 </ng-template>

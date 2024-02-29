@@ -1,4 +1,19 @@
-table {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+:host {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+ol {
+    padding-inline: 1rem;
+}
+
+article {
+    display: flex;
+
+    border: var(--pico-border-width) solid var(--pico-form-element-border-color);
+    box-shadow: none;
+
+    .deck-list-name {
+       flex-grow: 1;
+    }
 }

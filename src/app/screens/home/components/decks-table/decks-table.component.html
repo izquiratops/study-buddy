@@ -1,24 +1,20 @@
-<input placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
-
-<table class="striped">
-    <thead>
-        <tr>
-            <th scope="col">Decks</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let deck of (processedDecks$ | async | filterDecksByText: searchText); index as idx">
-            <td scope="row">
-                <a tabindex="0" [routerLink]="'/feed'" [queryParams]="{id: deck.idbKey}">
-                    {{deck.name}}
-                </a>
-            </td>
-            <td [routerLink]="'/editor'" [queryParams]="{id: deck.idbKey}">
-                <div data-tooltip="Edit">
-                    ✏️
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<ol>
+  <li
+    *ngFor="
+      let deck of processedDecks$ | async | filterDecksByText : searchText;
+      index as idx
+    "
+  >
+    <article class="deck-list-item">
+      <a
+        class="deck-list-name"
+        tabindex="0"
+        [routerLink]="'/feed'"
+        [queryParams]="{ id: deck.idbKey }"
+      >
+        {{ deck.name }}
+      </a>
+      <div [routerLink]="'/editor'" [queryParams]="{ id: deck.idbKey }">✏️</div>
+    </article>
+  </li>
+</ol>

@@ -34,6 +34,10 @@ export class HomeComponent {
     return this.homeService.dataThemeValue;
   }
 
+  handleSearchTextChange(event: Event) {
+    this.homeService.searchText = (event.target as HTMLInputElement).value;
+  }
+
   handleThemeClick() {
     this.homeService.switchTheme()
   }

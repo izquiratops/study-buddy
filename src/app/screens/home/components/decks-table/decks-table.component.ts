@@ -7,8 +7,6 @@ import { HomeService } from '@screens/home/home.service';
   styleUrl: './decks-table.component.css'
 })
 export class DecksTableComponent {
-  searchText: string;
-
   constructor(
     private homeService: HomeService,
   ) { }
@@ -17,8 +15,8 @@ export class DecksTableComponent {
     return this.homeService.processedDecks$;
   }
 
-  handleSearchTextChange(event: Event) {
-    this.searchText = (event.target as HTMLInputElement).value;
+  get searchText() {
+    return this.homeService.searchText;
   }
 
   async handleDeleteDeck(index: number) {

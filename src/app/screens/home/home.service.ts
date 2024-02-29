@@ -8,6 +8,7 @@ import { DataThemeValue } from '@models/editor.model';
   providedIn: 'root'
 })
 export class HomeService {
+  searchText: string = '';
   dataThemeValue = document.documentElement.getAttribute('data-theme') as DataThemeValue;
 
   readonly decks$ = new BehaviorSubject<Decks>([]);

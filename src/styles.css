@@ -4,6 +4,11 @@ main {
     overflow: hidden;
 }
 
+ol {
+  list-style: none;
+  padding: 0;
+}
+
 app-root > *:not(router-outlet) {
     height: 100%;
     display: flex;
@@ -25,9 +30,4 @@ th {
   position: sticky;
   z-index: 1;
   top: 0;
-}
-
-/* app-decks-table */
-app-decks-table, app-cards-table {
-  overflow-y: auto;
 }
