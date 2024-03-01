@@ -1,5 +1,12 @@
 <app-navigator-bar title="エディタ">
-  <li><a (click)="handleOpenDialog(-1)">Add Card ✍🏼</a></li>
+  <li>
+    <button class="outline" (click)="handleExportCsv()">
+      Export to CSV 💾
+    </button>
+  </li>
+  <li>
+    <button class="primary" (click)="handleOpenDialog(-1)">Add Card ✍🏼</button>
+  </li>
 </app-navigator-bar>
 
 <!-- Reactive form -->

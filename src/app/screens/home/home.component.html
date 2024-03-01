@@ -1,10 +1,10 @@
 <app-navigator-bar title="フラッシュカード">
   <li>
-    <a [routerLink]="'.'" (click)="handleThemeClick()">
+    <button class="outline" [routerLink]="'.'" (click)="handleThemeClick()">
       {{ dataThemeLabel }}
-    </a>
+    </button>
   </li>
-  <li><a [routerLink]="'/editor'">Add Deck ✒️</a></li>
+  <li><button class="primary" [routerLink]="'/editor'">Add Deck ✒️</button></li>
 </app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">

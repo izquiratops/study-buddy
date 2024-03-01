@@ -73,6 +73,10 @@ export class EditorComponent {
     this.editorService.openCardDialog(index);
   }
 
+  handleExportCsv() {
+    this.editorService.exportCsvFile();
+  }
+
   onSearchTextChange(event: Event) {
     this.editorService.searchText = (event.target as HTMLInputElement).value;
   }

@@ -1,19 +1,19 @@
 <app-navigator-bar [title]="deckTitle">
-    <li><a [routerLink]="'..'">Go Home 🏡</a></li>
+  <li><button class="primary" [routerLink]="'..'">Go Home 🏡</button></li>
 </app-navigator-bar>
 
 <progress [value]="index" [max]="list.length"></progress>
 
 <article *ngIf="currentCard">
-    <p>{{ currentCard.content.front }}</p>
-    <hr>
-    <p>{{ currentCard.content.back }}</p>
-    <hr>
-    <pre>{{ currentCard.fsrsCard | json }}</pre>
-    <div class="grid">
-        <button (click)="handleFeedback(4)">Easy</button>
-        <button (click)="handleFeedback(3)">Good</button>
-        <button (click)="handleFeedback(2)">Hard</button>
-        <button (click)="handleFeedback(1)">Again</button>
-    </div>
+  <p>{{ currentCard.content.front }}</p>
+  <hr />
+  <p>{{ currentCard.content.back }}</p>
+  <hr />
+  <pre>{{ currentCard.fsrsCard | json }}</pre>
+  <div class="grid">
+    <button (click)="handleFeedback(4)">Easy</button>
+    <button (click)="handleFeedback(3)">Good</button>
+    <button (click)="handleFeedback(2)">Hard</button>
+    <button (click)="handleFeedback(1)">Again</button>
+  </div>
 </article>

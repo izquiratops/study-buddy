@@ -112,6 +112,12 @@ export class EditorService {
     }
   }
 
+  exportCsvFile() {
+    const control = this.deckForm.get('cards') as FormArray<FormControl<Card>>;
+    const deck = control.value.map((card) => card.content);
+    this.fileService.unparseCsv(deck);
+  }
+
   clearForm() {
     this.deckForm.reset();
     this.deckForm.controls.cards.clear();
