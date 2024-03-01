@@ -15,6 +15,7 @@ import { FeedComponent } from '@screens/feed/feed.component';
 import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
 import { CardsTableComponent } from '@screens/editor/components/cards-table/cards-table.component';
 import { NavigatorBarComponent } from '@components/navigator-bar/navigator-bar.component';
+import { ConfirmDialogComponent } from '@components/confirm-dialog/confirm-dialog.component';
 
 import { FilterCardsByTextPipe } from '@pipes/filterCardsByText.pipe';
 import { FilterDecksByTextPipe } from '@pipes/filterDecksByText.pipe';
@@ -27,6 +28,7 @@ import { FilterDecksByTextPipe } from '@pipes/filterDecksByText.pipe';
     FeedComponent,
     CardEditDialogComponent,
     NavigatorBarComponent,
+    ConfirmDialogComponent,
     DecksTableComponent,
     CardsTableComponent,
     FilterCardsByTextPipe,

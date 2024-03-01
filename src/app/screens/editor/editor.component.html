@@ -40,6 +40,8 @@
 <ng-template #emptyListBlock>
   <article>
     Looks like there are no cards,
-    <a (click)="handleOpenDialog(-1)">click here to create one.</a>
+    <a (click)="handleOpenDialog(-1)">click here to create one</a>
+    or import an already existing CSV project.
+    <input type="file" accept=".csv" (change)="onCsvFileSelected($event)" />
   </article>
 </ng-template>

@@ -1,0 +1,18 @@
+<dialog open="true">
+  <article>
+    <header>
+      <hgroup>
+        <h2>{{ title }}</h2>
+        <p [hidden]="!description">{{ description }}</p>
+      </hgroup>
+    </header>
+    <div>
+      <button class="primary" (click)="handleOption(true)">
+        {{ confirmLabel }}
+      </button>
+      <button class="secondary" (click)="handleOption(false)">
+        {{ dismissLabel }}
+      </button>
+    </div>
+  </article>
+</dialog>

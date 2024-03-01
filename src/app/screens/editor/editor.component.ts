@@ -15,7 +15,7 @@ export class EditorComponent {
     private viewContainerRef: ViewContainerRef,
     private changeDetectionRef: ChangeDetectorRef,
     private storageService: StorageService,
-    private editorService: EditorService,
+    private editorService: EditorService
   ) {
     this.editorService.viewContainerRef = viewContainerRef;
   }
@@ -25,7 +25,9 @@ export class EditorComponent {
   }
 
   get submitButtonLabel() {
-    return this.deckForm.get('idbKey')!.value === -1 ? "Create Deck" : "Apply Changes";
+    return this.deckForm.get('idbKey')!.value === -1
+      ? 'Create Deck'
+      : 'Apply Changes';
   }
 
   get nameControl() {
@@ -37,21 +39,20 @@ export class EditorComponent {
   }
 
   ngOnInit() {
-    combineLatest([
-      this.route.queryParams,
-      this.storageService.onIdbReady$
-    ]).pipe(
-      filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
-      map((([params, _]) => Number.parseInt(params['id']))),
-      switchMap((id) => this.storageService.getDeck(id)),
-      take(1),
-    ).subscribe({
-      next: deck => {
-        this.editorService.populateForm(deck);
-        this.changeDetectionRef.markForCheck();
-      },
-      error: err => console.error(err)
-    });
+    combineLatest([this.route.queryParams, this.storageService.onIdbReady$])
+      .pipe(
+        filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
+        map(([params, _]) => Number.parseInt(params['id'])),
+        switchMap((id) => this.storageService.getDeck(id)),
+        take(1)
+      )
+      .subscribe({
+        next: (deck) => {
+          this.editorService.importDeck(deck);
+          this.changeDetectionRef.markForCheck();
+        },
+        error: (err) => console.error(err),
+      });
   }
 
   ngOnDestroy() {
@@ -66,7 +67,7 @@ export class EditorComponent {
     }
 
     this.storageService.setDeck(formValue as NewDeck);
-  };
+  }
 
   handleOpenDialog(index: number) {
     this.editorService.openCardDialog(index);
@@ -74,5 +75,15 @@ export class EditorComponent {
 
   onSearchTextChange(event: Event) {
     this.editorService.searchText = (event.target as HTMLInputElement).value;
+  }
+
+  async onCsvFileSelected(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (!files) {
+      throw Error('File not found');
+    }
+
+    await this.editorService.importCsvFile(files[0]);
+    this.changeDetectionRef.markForCheck();
   }
 }

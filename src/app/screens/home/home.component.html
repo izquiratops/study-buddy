@@ -1,7 +1,7 @@
 <app-navigator-bar title="フラッシュカード">
   <li>
     <a [routerLink]="'.'" (click)="handleThemeClick()">
-      {{ currentDataTheme === "light" ? "Darken 🌑" : "Enlighten ☀️" }}
+      {{ dataThemeLabel }}
     </a>
   </li>
   <li><a [routerLink]="'/editor'">Add Deck ✒️</a></li>

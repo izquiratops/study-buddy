@@ -30,8 +30,8 @@ export class HomeComponent {
     );
   }
 
-  get currentDataTheme() {
-    return this.homeService.dataThemeValue;
+  get dataThemeLabel() {
+    return this.homeService.dataThemeValue === "light" ? "Darken 🌑" : "Enlighten ☀️"
   }
 
   onSearchTextChange(event: Event) {

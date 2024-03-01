@@ -1,15 +1,26 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  NonNullableFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
+import { FileService } from '@services/file.service';
+import { ConfirmDialogComponent } from '@components/confirm-dialog/confirm-dialog.component';
+import { filter } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditorService {
+  // 📒 Reference to the Card dialog component
   private editDialogRef?: ComponentRef<CardEditDialogComponent>;
-
+  // ❓ Reference to the Confirm dialog component
+  private confirmDialogRef?: ComponentRef<ConfirmDialogComponent>;
   // 🔎 Current search input value
   searchText: string;
   // 📍 Component View reference
@@ -19,11 +30,12 @@ export class EditorService {
 
   constructor(
     private nnfb: NonNullableFormBuilder,
+    private fileService: FileService
   ) {
     this.deckForm = this.nnfb.group({
       idbKey: this.nnfb.control(-1),
       name: this.nnfb.control('', Validators.required),
-      cards: this.nnfb.array<Card>([], this._requiredListValidator)
+      cards: this.nnfb.array<Card>([], this._requiredListValidator),
     });
   }
 
@@ -36,7 +48,7 @@ export class EditorService {
    * - this.getCardControl<FormControl<Card>> to get their FormControl
    * - this.getCardControl<Card> to get just their value
    * @param index Card position in the ArrayForm
-   * @returns 
+   * @returns
    */
   private getCardControl<T>(index: number): T | undefined {
     if (index === -1) {
@@ -59,24 +71,43 @@ export class EditorService {
       const newCardControl = this.nnfb.control(newCard);
       this.deckForm.controls.cards.push(newCardControl);
     }
-  };
+  }
 
   clearCardState(index: number) {
     const cardControl = this.getCardControl<FormControl<Card>>(index);
     cardControl?.value.clearStats();
-  };
+  }
 
   deleteCard(index: number) {
     const control = this.deckForm.get('cards') as FormArray;
     control.removeAt(index);
-  };
+  }
 
-  populateForm(deck: Deck) {
+  importDeck(deck: Deck) {
+    const control = this.deckForm.get('cards') as FormArray;
+
     this.deckForm.get('name')!.setValue(deck.name);
     this.deckForm.get('idbKey')!.setValue(deck.idbKey);
 
-    const control = this.deckForm.get('cards') as FormArray;
     for (const card of deck.cards) {
+      control.push(this.nnfb.control(card));
+    }
+  }
+
+  async importCsvFile(inputTarget: File) {
+    const control = this.deckForm.get('cards') as FormArray;
+    const parsedFile: any = await this.fileService.parseCsv(inputTarget);
+
+    const name = inputTarget.name.endsWith('.csv')
+      ? inputTarget.name.slice(0, -4)
+      : inputTarget.name;
+    this.deckForm.get('name')!.setValue(name);
+
+    for (const entry of parsedFile.data) {
+      const card = new Card({
+        content: { front: entry.at(0), back: entry.at(1) },
+      });
+
       control.push(this.nnfb.control(card));
     }
   }
@@ -88,8 +119,12 @@ export class EditorService {
 
   openCardDialog(index: number) {
     const cardControl = this.getCardControl<FormControl<Card>>(index);
-    this.editDialogRef = this.viewContainerRef.createComponent(CardEditDialogComponent);
-    this.editDialogRef.instance.cardModel = new CardContent(cardControl?.value.content);
+    this.editDialogRef = this.viewContainerRef.createComponent(
+      CardEditDialogComponent
+    );
+    this.editDialogRef.instance.cardModel = new CardContent(
+      cardControl?.value.content
+    );
     this.editDialogRef.instance.index = index;
   }
 

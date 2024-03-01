@@ -8,10 +8,13 @@ import { DataThemeValue } from '@models/editor.model';
   providedIn: 'root'
 })
 export class HomeService {
+  // 🔎 Current search input value
   searchText: string = '';
+  // 🌙 Dark theme preference
   dataThemeValue = document.documentElement.getAttribute('data-theme') as DataThemeValue;
-
+  // 🎴 Deck list from the current local database
   readonly decks$ = new BehaviorSubject<Decks>([]);
+  // 🔧 Deck list again, with extra info to show on UI
   readonly processedDecks$ = from(this.decks$).pipe(
     map(deck => deck.map(this._mapDecks))
   )
