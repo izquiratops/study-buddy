@@ -1,22 +1,26 @@
-<!-- <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" /> -->
-
 <table class="striped">
-    <thead>
-        <tr>
-            <th scope="col">Front</th>
-            <th scope="col">Back</th>
-            <th scope="col"><!-- ✏️ Column --></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let card of (cards | filterCardsByText: searchText); index as idx">
-            <th scope="row">{{ card.content.front }}</th>
-            <td>{{ card.content.back }}</td>
-            <td class="shrink-cell">
-                <div data-tooltip="Edit" (click)="handleOpenCardDialog(idx)">
-                    ✏️
-                </div>
-            </td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th scope="col">Front</th>
+      <th scope="col">Back</th>
+      <th scope="col"><!-- ✏️ Column --></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let card of cards | filterCardsByText : searchText; index as idx"
+    >
+      <th scope="row">{{ card.content.front }}</th>
+      <td>{{ card.content.back }}</td>
+      <td class="shrink-cell">
+        <div
+          data-tooltip="Edit"
+          tabindex="0"
+          (click)="handleOpenCardDialog(idx)"
+        >
+          ✏️
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </table>

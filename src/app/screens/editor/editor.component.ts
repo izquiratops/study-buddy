@@ -24,8 +24,8 @@ export class EditorComponent {
     return this.editorService.deckForm;
   }
 
-  get isNewCard() {
-    return this.deckForm.get('idbKey')!.value === -1;
+  get submitButtonLabel() {
+    return this.deckForm.get('idbKey')!.value === -1 ? "Create Deck" : "Apply Changes";
   }
 
   get nameControl() {
@@ -70,5 +70,9 @@ export class EditorComponent {
 
   handleOpenDialog(index: number) {
     this.editorService.openCardDialog(index);
+  }
+
+  onSearchTextChange(event: Event) {
+    this.editorService.searchText = (event.target as HTMLInputElement).value;
   }
 }

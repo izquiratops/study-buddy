@@ -1,29 +1,45 @@
 <app-navigator-bar title="エディタ">
-    <li><a (click)="handleOpenDialog(-1)">Add Card ✍🏼</a></li>
+  <li><a (click)="handleOpenDialog(-1)">Add Card ✍🏼</a></li>
 </app-navigator-bar>
 
 <!-- Reactive form -->
-<form [formGroup]="deckForm">
-    <fieldset>
-        <label for="name">
-            Name
-        </label>
-        <input type="text" id="name" formControlName="name" placeholder="JLPT N5 🍉" />
-        <small class="pico-color-red-500" [hidden]="nameControl.valid || nameControl.pristine">
-            Field not valid
-        </small>
-    </fieldset>
-    <hr>
-    <ng-container *ngIf="hasCards; else emptyListBlock">
-        <app-cards-table></app-cards-table>
-    </ng-container>
-    <button type="button" [disabled]="!deckForm.valid" [routerLink]="'..'" (click)="handleCreateDeck()">
-        {{ isNewCard ? 'Create Deck' : 'Apply Changes' }}
+<form [formGroup]="deckForm" class="expand-container hidden-scroll">
+  <fieldset>
+    <label for="name"> Name </label>
+    <input
+      type="text"
+      id="name"
+      formControlName="name"
+      placeholder="JLPT N5 🍉"
+    />
+    <small
+      class="pico-color-red-500"
+      [hidden]="nameControl.valid || nameControl.pristine"
+    >
+      Field not valid
+    </small>
+  </fieldset>
+
+  <ng-container *ngIf="hasCards; else emptyListBlock">
+    <!-- <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" /> -->
+    <app-cards-table class="expand-container scrollable"></app-cards-table>
+  </ng-container>
+
+  <div>
+    <button
+      type="button"
+      [disabled]="!deckForm.valid"
+      [routerLink]="'..'"
+      (click)="handleCreateDeck()"
+    >
+      {{ submitButtonLabel }}
     </button>
+  </div>
 </form>
 
 <ng-template #emptyListBlock>
-    <article>Looks like there are no cards,
-        <a (click)="handleOpenDialog(-1)">click here to create one.</a>
-    </article>
+  <article>
+    Looks like there are no cards,
+    <a (click)="handleOpenDialog(-1)">click here to create one.</a>
+  </article>
 </ng-template>

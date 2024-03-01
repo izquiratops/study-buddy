@@ -8,8 +8,8 @@
 </app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">
-  <input placeholder="Search..." (keyup)="handleSearchTextChange($event)" />
-  <app-decks-table></app-decks-table>
+  <input placeholder="Search..." (keyup)="onSearchTextChange($event)" />
+  <app-decks-table class="expand-container scrollable"></app-decks-table>
 </ng-container>
 
 <ng-template #emptyListBlock>

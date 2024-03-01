@@ -3,7 +3,6 @@ import { AbstractControl, FormArray, FormControl, NonNullableFormBuilder, Valida
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { Deck, Card, CardContent } from '@models/database.model';
 import { DeckForm } from '@models/editor.model';
-import { parse } from 'csv-parse';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,12 @@ import { parse } from 'csv-parse';
 export class EditorService {
   private editDialogRef?: ComponentRef<CardEditDialogComponent>;
 
-  deckForm: DeckForm;
+  // 🔎 Current search input value
+  searchText: string;
+  // 📍 Component View reference
   viewContainerRef: ViewContainerRef;
+  // 📒 Deck angular FormGroup
+  deckForm: DeckForm;
 
   constructor(
     private nnfb: NonNullableFormBuilder,

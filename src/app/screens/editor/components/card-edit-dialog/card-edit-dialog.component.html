@@ -1,48 +1,73 @@
 <dialog open="true">
-    <article>
-        <header>
-            <hgroup>
-                <h2>Create new card</h2>
-                <!-- <p>🐉</p> -->
-            </hgroup>
-        </header>
+  <article>
+    <header>
+      <h2>Create new card</h2>
+    </header>
 
-        <!-- Template driven form -->
-        <form #cardForm="ngForm">
-            <label for="front">
-                Front
-                <input type="text" [(ngModel)]="cardModel.front" required id="front" name="front"
-                    placeholder="Dictionary" #front="ngModel" />
-                <small class="pico-color-red-500" [hidden]="front.valid || front.pristine">
-                    Field not valid
-                </small>
-            </label>
-            <label for="front">
-                Back
-                <input type="text" [(ngModel)]="cardModel.back" required id="back" name="back" placeholder="じしょ"
-                    #back="ngModel" />
-                <small class="pico-color-red-500" [hidden]="back.valid || back.pristine">
-                    Field not valid
-                </small>
-            </label>
-            <hr>
-            <div class="grid">
-                <button tabindex="-1" class="secondary" (click)="handleClearCardStats()">
-                    Clear stats 🧼
-                </button>
-                <button tabindex="-1" class="secondary" (click)="handleDeleteCard()">
-                    Delete 🗑️
-                </button>
-            </div>
-        </form>
+    <!-- Template driven form -->
+    <form #cardForm="ngForm">
+      <label for="front">
+        Front
+        <textarea
+          [(ngModel)]="cardModel.front"
+          required
+          id="front"
+          name="front"
+          placeholder="Dictionary"
+          #front="ngModel"
+        ></textarea>
+        <small
+          class="pico-color-red-500"
+          [hidden]="front.valid || front.pristine"
+        >
+          Field not valid
+        </small>
+      </label>
+      <label for="front">
+        Back
+        <textarea
+          [(ngModel)]="cardModel.back"
+          required
+          id="back"
+          name="back"
+          placeholder="じしょ"
+          #back="ngModel"
+        ></textarea>
+        <small
+          class="pico-color-red-500"
+          [hidden]="back.valid || back.pristine"
+        >
+          Field not valid
+        </small>
+      </label>
 
-        <footer>
-            <button type="button" class="secondary" (click)="handleDismiss()">
-                Dismiss
-            </button>
-            <button type="button" [disabled]="!cardForm.form.valid" (click)="handleSubmit()">
-                Submit
-            </button>
-        </footer>
-    </article>
+      <hr />
+      <h3>Other actions ⚠️</h3>
+      <div class="grid">
+        <button
+          tabindex="-1"
+          class="secondary"
+          (click)="handleClearCardStats()"
+        >
+          Clear stats
+        </button>
+        <button tabindex="-1" class="secondary" (click)="handleDeleteCard()">
+          Delete
+        </button>
+      </div>
+    </form>
+
+    <footer>
+      <button type="button" class="secondary" (click)="handleDismiss()">
+        Dismiss
+      </button>
+      <button
+        type="button"
+        [disabled]="!cardForm.form.valid"
+        (click)="handleSubmit()"
+      >
+        Submit
+      </button>
+    </footer>
+  </article>
 </dialog>

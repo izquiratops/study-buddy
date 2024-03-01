@@ -7,16 +7,14 @@ import { EditorService } from '@screens/editor/editor.service';
   styleUrl: './cards-table.component.css'
 })
 export class CardsTableComponent {
-  searchText: string;
-
   constructor(private editorService: EditorService) {}
 
   get cards() {
     return this.editorService.deckForm.get('cards')!.value;
   }
 
-  onSearchTextChange(event: Event) {
-    this.searchText = (event.target as HTMLInputElement).value;
+  get searchText() {
+    return this.editorService.searchText;
   }
 
   handleOpenCardDialog(index: number) {

@@ -4,15 +4,32 @@ main {
     overflow: hidden;
 }
 
+/* Every screen component, they're placed after <router-outlet>  */
+app-root > *:not(router-outlet) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* This class expands the component vertically and enables scroll behavior */
+.expand-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: var(--pico-spacing);
+}
+
+.expand-container.scrollable {
+  overflow-y: scroll;
+}
+
+.expand-container.hidden-scroll {
+  overflow-y: hidden;
+}
+
 ol {
   list-style: none;
   padding: 0;
-}
-
-app-root > *:not(router-outlet) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
 thead,

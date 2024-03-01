@@ -34,7 +34,7 @@ export class HomeComponent {
     return this.homeService.dataThemeValue;
   }
 
-  handleSearchTextChange(event: Event) {
+  onSearchTextChange(event: Event) {
     this.homeService.searchText = (event.target as HTMLInputElement).value;
   }
 
