@@ -19,8 +19,8 @@ export class FeedComponent {
   constructor(
     private route: ActivatedRoute,
     private storageService: StorageService,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) { }
+    private changeDetectionRef: ChangeDetectorRef
+  ) {}
 
   private _initializeCardList(deck: Deck) {
     this.deckTitle = deck.name;
@@ -33,19 +33,18 @@ export class FeedComponent {
   }
 
   ngOnInit() {
-    combineLatest([
-      this.route.queryParams,
-      this.storageService.onIdbReady$
-    ]).pipe(
-      filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
-      map((([params, _]) => Number.parseInt(params['id']))),
-      switchMap((id) => this.storageService.getDeck(id)),
-      take(1),
-    ).subscribe({
-      next: deck => this._initializeCardList(deck),
-      error: err => console.error(err),
-      complete: () => this.changeDetectionRef.markForCheck(),
-    });
+    combineLatest([this.route.queryParams, this.storageService.onIdbReady$])
+      .pipe(
+        filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
+        map(([params, _]) => Number.parseInt(params['id'])),
+        switchMap((id) => this.storageService.getDeck(id)),
+        take(1)
+      )
+      .subscribe({
+        next: (deck) => this._initializeCardList(deck),
+        error: (err) => console.error(err),
+        complete: () => this.changeDetectionRef.markForCheck(),
+      });
   }
 
   get currentCard() {
@@ -63,7 +62,6 @@ export class FeedComponent {
       this.index = 0;
     } else {
       this.index++;
-      
     }
   }
 }

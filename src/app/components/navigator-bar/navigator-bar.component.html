@@ -1,8 +1,85 @@
 <nav>
-    <ul>
-        <li><h1><a [routerLink]="'/'">{{ title }}</a></h1></li>
-    </ul>
-    <ul>
-        <ng-content></ng-content>
-    </ul>
+  <ul>
+    <li>
+      <h1>
+        <a [routerLink]="'/'">{{ title }}</a>
+      </h1>
+    </li>
+  </ul>
+  <ul>
+    <ng-container
+      *ngIf="enableMobileLayout | async; then mobileLayout; else desktopLayout"
+    ></ng-container>
+  </ul>
 </nav>
+
+<ng-template #desktopLayout>
+  <li *ngFor="let action of actions">
+    <ng-container
+      *ngTemplateOutlet="
+        action.type === 'Method' ? methodDesktopButton : linkDesktopButton;
+        context: { $implicit: action }
+      "
+    ></ng-container>
+  </li>
+</ng-template>
+
+<ng-template #mobileLayout>
+  <li>
+    <details class="dropdown">
+      <summary>Menu</summary>
+      <ul dir="rtl">
+        <li *ngFor="let action of actions">
+          <ng-container
+            *ngTemplateOutlet="
+              action.type === 'Method' ? methodMobileButton : linkMobileButton;
+              context: { $implicit: action }
+            "
+          ></ng-container>
+        </li>
+      </ul>
+    </details>
+  </li>
+</ng-template>
+
+<ng-template #methodDesktopButton let-action>
+  <button
+    class="primary"
+    [routerLink]="action.routerLink"
+    [queryParams]="action.queryParams"
+    (click)="action.callback?.()"
+  >
+    {{ action.label }}
+  </button>
+</ng-template>
+
+<ng-template #linkDesktopButton let-action>
+  <button
+    class="primary"
+    [routerLink]="action.routerLink"
+    [queryParams]="action.queryParams"
+    (click)="action.callback()"
+  >
+    {{ action.label }}
+  </button>
+</ng-template>
+
+<ng-template #methodMobileButton let-action>
+  <a
+    [routerLink]="action.routerLink"
+    [queryParams]="action.queryParams"
+    (click)="action.callback?.()"
+  >
+    {{ action.label }}
+  </a>
+</ng-template>
+
+<ng-template #linkMobileButton let-action>
+  <a
+    [routerLink]="action.routerLink"
+    [queryParams]="action.queryParams"
+    (click)="action.callback()"
+  >
+    {{ action.label }}
+  </a>
+</ng-template>

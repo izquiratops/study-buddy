@@ -1,11 +1,7 @@
-<app-navigator-bar title="フラッシュカード">
-  <li>
-    <button class="outline" [routerLink]="'.'" (click)="handleThemeClick()">
-      {{ dataThemeLabel }}
-    </button>
-  </li>
-  <li><button class="primary" [routerLink]="'/editor'">Add Deck ✒️</button></li>
-</app-navigator-bar>
+<app-navigator-bar
+  title="フラッシュカード"
+  [actions]="navigatorActions"
+></app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">
   <input placeholder="Search..." (keyup)="onSearchTextChange($event)" />

@@ -4,12 +4,26 @@ import { combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
 import { NewDeck } from '@models/database.model';
+import { NavigatorAction } from '@models/editor.model';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
 })
 export class EditorComponent {
+  navigatorActions: Array<NavigatorAction> = [
+    {
+      type: 'Method',
+      label: 'Export to CSV 💾',
+      callback: () => this.handleExportCsv(),
+    },
+    {
+      type: 'Method',
+      label: 'Add Card ✍🏼',
+      callback: () => this.handleOpenDialog(-1),
+    },
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private viewContainerRef: ViewContainerRef,
