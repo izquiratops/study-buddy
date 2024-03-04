@@ -10,8 +10,8 @@
     <tr
       *ngFor="let card of cards | filterCardsByText : searchText; index as idx"
     >
-      <td scope="row">{{ card.content.front }}</td>
-      <td>{{ card.content.back }}</td>
+      <td scope="row" [innerHtml]="card.content.front"></td>
+      <td [innerHtml]="card.content.back"></td>
       <td class="shrink-cell">
         <div
           data-tooltip="Edit"

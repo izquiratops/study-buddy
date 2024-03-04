@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CardContent } from '@models/database.model';
 import Papa from 'papaparse';
 
@@ -6,7 +7,7 @@ import Papa from 'papaparse';
   providedIn: 'root',
 })
 export class FileService {
-  constructor() {}
+  constructor(private sanitizer: DomSanitizer) {}
 
   parseCsv(input: File) {
     return new Promise((resolve, reject) => {
@@ -25,12 +26,22 @@ export class FileService {
       quotes: true,
     });
 
+    const sanitizedDeck = this.sanitizer.sanitize(
+      SecurityContext.HTML,
+      stringifiedDeck
+    );
+
+    if (!sanitizedDeck) {
+      console.warn("Could't proceed to sanitize");
+      return;
+    }
+
     try {
       // It's experimental, this API needs SSL though
       const newHandle = await window.showSaveFilePicker();
       // Not working on Safari yet
       const writableStream = await newHandle.createWritable();
-      await writableStream.write(stringifiedDeck);
+      await writableStream.write(sanitizedDeck);
       await writableStream.close();
     } catch (err) {
       console.error(err);
@@ -39,7 +50,7 @@ export class FileService {
         "This browser is not able to export files yet. Instead, I'll put them in a new tab ✨"
       );
       const tab = window.open('about:blank', '_blank');
-      tab?.document.write('<pre>', stringifiedDeck, '</pre>');
+      tab?.document.write('<pre>', sanitizedDeck, '</pre>');
       tab?.document.close();
     }
   }

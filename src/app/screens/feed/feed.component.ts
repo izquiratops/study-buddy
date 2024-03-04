@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Card, Deck } from '@models/database.model';
 import { StorageService } from '@services/storage.service';
-import { combineLatest, filter, map, switchMap, take } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { FSRS } from 'ts-fsrs';
 
 @Component({
@@ -12,14 +12,15 @@ import { FSRS } from 'ts-fsrs';
 export class FeedComponent {
   private readonly fsrs = new FSRS({});
 
+  deck: Deck;
   index: number = 0;
   list: Array<Card> = [];
   deckTitle: string;
 
   constructor(
     private route: ActivatedRoute,
-    private storageService: StorageService,
-    private changeDetectionRef: ChangeDetectorRef
+    private changeDetectionRef: ChangeDetectorRef,
+    private storageService: StorageService
   ) {}
 
   private _initializeCardList(deck: Deck) {
@@ -32,19 +33,25 @@ export class FeedComponent {
     });
   }
 
-  ngOnInit() {
-    combineLatest([this.route.queryParams, this.storageService.onIdbReady$])
-      .pipe(
+  async ngOnInit() {
+    this.deck = await firstValueFrom(
+      combineLatest([
+        this.route.queryParams,
+        this.storageService.onIdbReady$,
+      ]).pipe(
         filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
         map(([params, _]) => Number.parseInt(params['id'])),
-        switchMap((id) => this.storageService.getDeck(id)),
-        take(1)
+        switchMap((id) => this.storageService.getDeck(id))
       )
-      .subscribe({
-        next: (deck) => this._initializeCardList(deck),
-        error: (err) => console.error(err),
-        complete: () => this.changeDetectionRef.markForCheck(),
-      });
+    );
+
+    this._initializeCardList(this.deck);
+    this.changeDetectionRef.markForCheck();
+  }
+
+  ngOnDestroy() {
+    // Autosave by default ⚠️
+    this.storageService.setDeck(this.deck);
   }
 
   get currentCard() {

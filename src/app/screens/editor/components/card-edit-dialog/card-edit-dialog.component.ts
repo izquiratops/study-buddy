@@ -1,5 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CardContent } from '@models/database.model';
 import { EditorService } from '@screens/editor/editor.service';
 
@@ -10,9 +9,14 @@ import { EditorService } from '@screens/editor/editor.service';
 export class CardEditDialogComponent {
   @Input() cardModel: CardContent;
   @Input() index: number;
-  @ViewChild('cardForm') cardForm: NgForm;
+  @ViewChild('frontField', { static: true })
+  frontFieldRef: ElementRef<HTMLInputElement>;
 
   constructor(private editorService: EditorService) {}
+
+  ngAfterViewInit() {
+    this.frontFieldRef.nativeElement.focus();
+  }
 
   handleClearCardStats() {
     this.editorService.clearStatsCard(this.index);

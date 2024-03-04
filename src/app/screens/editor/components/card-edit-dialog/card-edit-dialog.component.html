@@ -9,6 +9,7 @@
       <label for="front">
         Front
         <textarea
+          #frontField
           [(ngModel)]="cardModel.front"
           required
           id="front"
@@ -43,7 +44,7 @@
     </form>
 
     <hr />
-    <details class="dropdown">
+    <details class="dropdown" *ngIf="index !== -1">
       <summary>Menu</summary>
       <ul dir="rtl">
         <li>

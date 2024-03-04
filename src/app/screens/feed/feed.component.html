@@ -1,11 +1,12 @@
-<app-navigator-bar [title]="deckTitle"></app-navigator-bar>
+<app-navigator-bar title="🍣"></app-navigator-bar>
 
+<h3>{{ deckTitle }}</h3>
 <progress [value]="index" [max]="list.length"></progress>
 
 <article *ngIf="currentCard">
-  <p>{{ currentCard.content.front }}</p>
+  <div [innerHtml]="currentCard.content.front"></div>
   <hr />
-  <p>{{ currentCard.content.back }}</p>
+  <div [innerHtml]="currentCard.content.back"></div>
   <hr />
   <pre>{{ currentCard.fsrsCard | json }}</pre>
   <div class="grid">

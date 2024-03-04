@@ -7,14 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {
-  combineLatest,
-  filter,
-  firstValueFrom,
-  map,
-  switchMap,
-  take,
-} from 'rxjs';
+import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
 import { FileService } from '@services/file.service';
 import { StorageService } from '@services/storage.service';
@@ -69,8 +62,7 @@ export class EditorService {
       ]).pipe(
         filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
         map(([params, _]) => Number.parseInt(params['id'])),
-        switchMap((id) => this.storageService.getDeck(id)),
-        take(1)
+        switchMap((id) => this.storageService.getDeck(id))
       )
     );
   }

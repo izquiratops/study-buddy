@@ -25,7 +25,7 @@
 </ng-template>
 
 <ng-template #mobileLayout>
-  <li>
+  <li *ngIf="actions.length > 0">
     <details class="dropdown">
       <summary>Menu</summary>
       <ul dir="rtl">
