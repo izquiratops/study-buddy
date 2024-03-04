@@ -4,12 +4,10 @@ import { HomeService } from '@screens/home/home.service';
 @Component({
   selector: 'app-decks-table',
   templateUrl: './decks-table.component.html',
-  styleUrl: './decks-table.component.css'
+  styleUrl: './decks-table.component.css',
 })
 export class DecksTableComponent {
-  constructor(
-    private homeService: HomeService,
-  ) { }
+  constructor(private homeService: HomeService) {}
 
   get processedDecks$() {
     return this.homeService.processedDecks$;
@@ -17,9 +15,5 @@ export class DecksTableComponent {
 
   get searchText() {
     return this.homeService.searchText;
-  }
-
-  async handleDeleteDeck(index: number) {
-    this.homeService.removeDeck(index);
   }
 }

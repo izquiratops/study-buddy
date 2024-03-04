@@ -1,6 +1,6 @@
 <dialog open="true">
   <article>
-    <header>
+    <header class="grid">
       <h2>Create new card</h2>
     </header>
 
@@ -40,22 +40,22 @@
           Field not valid
         </small>
       </label>
-
-      <hr />
-      <h3>Other actions ⚠️</h3>
-      <div class="grid">
-        <button
-          tabindex="-1"
-          class="secondary"
-          (click)="handleClearCardStats()"
-        >
-          Clear stats
-        </button>
-        <button tabindex="-1" class="secondary" (click)="handleDeleteCard()">
-          Delete
-        </button>
-      </div>
     </form>
+
+    <hr />
+    <details class="dropdown">
+      <summary>Menu</summary>
+      <ul dir="rtl">
+        <li>
+          <a class="secondary" (click)="handleClearCardStats()">
+            Clear stats 🧼
+          </a>
+        </li>
+        <li>
+          <a class="secondary" (click)="handleDeleteCard()"> Delete 🗑️ </a>
+        </li>
+      </ul>
+    </details>
 
     <footer>
       <button type="button" class="secondary" (click)="handleDismiss()">

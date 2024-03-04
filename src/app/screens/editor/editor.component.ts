@@ -1,9 +1,5 @@
 import { ChangeDetectorRef, Component, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, filter, map, switchMap, take } from 'rxjs';
-import { StorageService } from '@services/storage.service';
 import { EditorService } from './editor.service';
-import { NewDeck } from '@models/database.model';
 import { NavigatorAction } from '@models/editor.model';
 
 @Component({
@@ -25,13 +21,11 @@ export class EditorComponent {
   ];
 
   constructor(
-    private route: ActivatedRoute,
     private viewContainerRef: ViewContainerRef,
     private changeDetectionRef: ChangeDetectorRef,
-    private storageService: StorageService,
     private editorService: EditorService
   ) {
-    this.editorService.viewContainerRef = viewContainerRef;
+    this.editorService.editorScreenViewRef = viewContainerRef;
   }
 
   get deckForm() {
@@ -52,35 +46,21 @@ export class EditorComponent {
     return this.deckForm.get('cards')!.value.length > 0;
   }
 
-  ngOnInit() {
-    combineLatest([this.route.queryParams, this.storageService.onIdbReady$])
-      .pipe(
-        filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
-        map(([params, _]) => Number.parseInt(params['id'])),
-        switchMap((id) => this.storageService.getDeck(id)),
-        take(1)
-      )
-      .subscribe({
-        next: (deck) => {
-          this.editorService.importDeck(deck);
-          this.changeDetectionRef.markForCheck();
-        },
-        error: (err) => console.error(err),
-      });
+  async ngOnInit() {
+    const deck = await this.editorService.initializeEditor();
+    this.editorService.importIdbDeck(deck);
+    this.changeDetectionRef.markForCheck();
   }
 
   ngOnDestroy() {
-    this.editorService.clearForm();
+    // Clear the FormControl list from 'cards'
+    this.deckForm.controls.cards.clear();
+    // Put every form field on its default value
+    this.deckForm.reset();
   }
 
   handleCreateDeck() {
-    const formValue = this.editorService.deckForm.value;
-
-    if (formValue.idbKey === -1) {
-      delete formValue.idbKey;
-    }
-
-    this.storageService.setDeck(formValue as NewDeck);
+    this.editorService.applyDeckToIdb();
   }
 
   handleOpenDialog(index: number) {
@@ -102,6 +82,8 @@ export class EditorComponent {
     }
 
     await this.editorService.importCsvFile(files[0]);
+    // Because the import method is async, we need to tell when this
+    // component needs to be rerendered.
     this.changeDetectionRef.markForCheck();
   }
 }

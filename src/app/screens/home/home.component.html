@@ -1,7 +1,5 @@
-<app-navigator-bar
-  title="フラッシュカード"
-  [actions]="navigatorActions"
-></app-navigator-bar>
+<app-navigator-bar title="フラッシュカード" [actions]="navigatorActions">
+</app-navigator-bar>
 
 <ng-container *ngIf="hasItems$ | async; else emptyListBlock">
   <input placeholder="Search..." (keyup)="onSearchTextChange($event)" />
