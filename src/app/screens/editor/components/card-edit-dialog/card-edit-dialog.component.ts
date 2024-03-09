@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardContent } from '@models/database.model';
 import { CardForm } from '@models/editor.model';
@@ -11,6 +11,14 @@ import { EditorService } from '@screens/editor/editor.service';
 export class CardEditDialogComponent {
   @Input() cardModel: CardContent;
   @Input() index: number;
+
+  @HostListener('keyup', ['$event'])
+  onKeyUp(event: any) {
+    if (event.ctrlKey && event.key == 'Enter') {
+      // TODO: Add shortcut to submit
+      alert('Ctrl+Enter key pressed');
+    }
+  }
 
   // 📒 Deck angular FormGroup
   cardForm: CardForm;
