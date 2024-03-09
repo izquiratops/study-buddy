@@ -13,6 +13,7 @@ import { DecksTableComponent } from '@screens/home/components/decks-table/decks-
 import { EditorComponent } from '@screens/editor/editor.component';
 import { FeedComponent } from '@screens/feed/feed.component';
 import { CardEditDialogComponent } from '@screens/editor/components/card-edit-dialog/card-edit-dialog.component';
+import { CardEditFieldComponent } from '@screens/editor/components/card-edit-field/card-edit-field.component';
 import { CardsTableComponent } from '@screens/editor/components/cards-table/cards-table.component';
 import { NavigatorBarComponent } from '@components/navigator-bar/navigator-bar.component';
 
@@ -26,6 +27,7 @@ import { FilterDecksByTextPipe } from '@pipes/filterDecksByText.pipe';
     EditorComponent,
     FeedComponent,
     CardEditDialogComponent,
+    CardEditFieldComponent,
     NavigatorBarComponent,
     DecksTableComponent,
     CardsTableComponent,

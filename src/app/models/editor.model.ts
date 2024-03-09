@@ -1,15 +1,25 @@
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Card } from '@models/database.model';
 
-export type DeckForm = FormGroup<CardForm>;
-export type CardForm = {
+// Deck Forms
+export type DeckForm = FormGroup<DeckFormProps>;
+type DeckFormProps = {
   idbKey: FormControl<number>;
   name: FormControl<string>;
   cards: FormArray<FormControl<Card>>;
 };
 
+// Card Forms
+export type CardForm = FormGroup<CardFormProps>;
+type CardFormProps = {
+  front: FormControl<string>;
+  back: FormControl<string>;
+};
+
+// Theme
 export type DataThemeValue = 'light' | 'dark';
 
+// Navigation
 export type NavigatorAction = NavigatorActionLink | NavigatorActionMethod;
 export type NavigatorActionMethod = NavigatorActionBase & {
   type: 'Method';

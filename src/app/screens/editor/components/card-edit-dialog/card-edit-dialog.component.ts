@@ -1,5 +1,7 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardContent } from '@models/database.model';
+import { CardForm } from '@models/editor.model';
 import { EditorService } from '@screens/editor/editor.service';
 
 @Component({
@@ -9,13 +11,20 @@ import { EditorService } from '@screens/editor/editor.service';
 export class CardEditDialogComponent {
   @Input() cardModel: CardContent;
   @Input() index: number;
-  @ViewChild('frontField', { static: true })
-  frontFieldRef: ElementRef<HTMLInputElement>;
 
-  constructor(private editorService: EditorService) {}
+  // 📒 Deck angular FormGroup
+  cardForm: CardForm;
 
-  ngAfterViewInit() {
-    this.frontFieldRef.nativeElement.focus();
+  constructor(
+    private nnfb: NonNullableFormBuilder,
+    private editorService: EditorService
+  ) {}
+
+  ngOnInit() {
+    this.cardForm = this.nnfb.group({
+      front: this.nnfb.control(this.cardModel.front, Validators.required),
+      back: this.nnfb.control(this.cardModel.back, Validators.required),
+    });
   }
 
   handleClearCardStats() {
@@ -28,7 +37,10 @@ export class CardEditDialogComponent {
   }
 
   handleSubmit() {
-    this.editorService.upsertCard(this.cardModel, this.index);
+    this.editorService.upsertCard(
+      this.cardForm.value as CardContent,
+      this.index
+    );
     this.editorService.editDialogRef?.destroy();
   }
 

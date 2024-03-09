@@ -1,0 +1,26 @@
+.preview-element {
+    margin-block-end: 1rem;
+}
+
+.textarea-container {
+    position: relative;
+
+    textarea {
+        min-height: 4rem;
+    }
+
+    .furigana-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 8px;
+
+        /* Override tooltip bottom border */
+        border-bottom: 0;
+
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.1;
+        }
+    }
+}

@@ -4,47 +4,23 @@
       <h2>Create new card</h2>
     </header>
 
-    <!-- Template driven form -->
-    <form #cardForm="ngForm">
-      <label for="front">
-        Front
-        <textarea
-          #frontField
-          [(ngModel)]="cardModel.front"
-          required
-          id="front"
-          name="front"
-          placeholder="Dictionary"
-          #front="ngModel"
-        ></textarea>
-        <small
-          class="pico-color-red-500"
-          [hidden]="front.valid || front.pristine"
-        >
-          Field not valid
-        </small>
-      </label>
-      <label for="front">
-        Back
-        <textarea
-          [(ngModel)]="cardModel.back"
-          required
-          id="back"
-          name="back"
-          placeholder="じしょ"
-          #back="ngModel"
-        ></textarea>
-        <small
-          class="pico-color-red-500"
-          [hidden]="back.valid || back.pristine"
-        >
-          Field not valid
-        </small>
-      </label>
+    <form [formGroup]="cardForm">
+      <app-card-edit-field
+        [cardForm]="cardForm"
+        label="Front"
+        name="front"
+        placeholder="辞書"
+      ></app-card-edit-field>
+      <hr />
+      <app-card-edit-field
+        [cardForm]="cardForm"
+        label="Back"
+        name="back"
+        placeholder="Dictionary"
+      ></app-card-edit-field>
     </form>
 
-    <hr />
-    <details class="dropdown" *ngIf="index !== -1">
+    <!-- <details class="dropdown" *ngIf="index !== -1">
       <summary>Menu</summary>
       <ul dir="rtl">
         <li>
@@ -56,7 +32,7 @@
           <a class="secondary" (click)="handleDeleteCard()"> Delete 🗑️ </a>
         </li>
       </ul>
-    </details>
+    </details> -->
 
     <footer>
       <button type="button" class="secondary" (click)="handleDismiss()">
@@ -64,7 +40,7 @@
       </button>
       <button
         type="button"
-        [disabled]="!cardForm.form.valid"
+        [disabled]="!cardForm.valid"
         (click)="handleSubmit()"
       >
         Submit
