@@ -6,6 +6,7 @@
 
     <form [formGroup]="cardForm">
       <app-card-edit-field
+        [autoFocus]="true"
         [cardForm]="cardForm"
         label="Front"
         name="front"

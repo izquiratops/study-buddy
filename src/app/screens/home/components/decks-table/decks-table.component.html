@@ -14,7 +14,14 @@
       >
         {{ deck.name }}
       </a>
-      <div [routerLink]="'/editor'" [queryParams]="{ id: deck.idbKey }">✏️</div>
+      <div
+        data-tooltip="Edit"
+        data-placement="left"
+        [routerLink]="'/editor'"
+        [queryParams]="{ id: deck.idbKey }"
+      >
+        ✏️
+      </div>
     </article>
   </li>
 </ol>

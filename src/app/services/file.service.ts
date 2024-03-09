@@ -47,7 +47,7 @@ export class FileService {
       console.error(err);
       // Paste the text in a new tab as fallback
       alert(
-        "This browser is not able to export files yet. Instead, I'll put them in a new tab ✨"
+        "This browser is not able to export files yet. I'll put them in a new tab instead ✨"
       );
       const tab = window.open('about:blank', '_blank');
       tab?.document.write('<pre>', sanitizedDeck, '</pre>');

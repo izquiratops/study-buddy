@@ -1,7 +1,7 @@
+import { BehaviorSubject } from 'rxjs';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CardForm } from '@models/editor.model';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-card-edit-field',
@@ -15,7 +15,7 @@ export class CardEditFieldComponent {
   // Message context
   @Input() label = '';
   @Input() placeholder = '';
-  @Input() validationMessage = 'Field not valid';
+  @Input() validationMessage = 'Empty field';
   // Form logic
   @Input() autoFocus = false;
 
@@ -30,6 +30,7 @@ export class CardEditFieldComponent {
     return [start, end];
   }
 
+  // TODO: Move logic to a service
   private insertFurigana(
     currentValue: string,
     input: string,
@@ -47,6 +48,10 @@ export class CardEditFieldComponent {
       currentValue.substring(selectionEnd);
 
     return modifiedContent;
+  }
+
+  get previewContent() {
+    return this.cardForm.get(this.name)?.value || this.placeholder;
   }
 
   ngOnInit() {
