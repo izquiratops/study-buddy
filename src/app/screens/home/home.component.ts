@@ -11,17 +11,8 @@ export class HomeComponent {
   loadingDecks$ = new BehaviorSubject(true);
   navigatorActions: Array<NavigatorAction> = [
     {
-      type: 'Link',
-      label:
-        this.homeService.dataThemeValue === 'light'
-          ? 'Darken 🌑'
-          : 'Enlighten ☀️',
-      routerLink: '.',
-      callback: () => this.homeService.switchTheme(),
-    },
-    {
       type: 'Method',
-      label: 'Random Hue 🌈',
+      label: 'Hue 🌈',
       callback: () => this.handleRandomHue(),
     },
     {

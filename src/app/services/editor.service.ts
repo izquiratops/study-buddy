@@ -7,7 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  firstValueFrom,
+  map,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { CardEditDialogComponent } from '../screens/editor/components/card-edit-dialog/card-edit-dialog.component';
 import { FileService, StorageService } from '@services';
 import { Deck, Card, CardContent, DeckForm, NewDeck } from '@models';
@@ -58,8 +65,14 @@ export class EditorService {
         this.route.queryParams,
         this.storageService.onIdbReady$,
       ]).pipe(
-        filter(([params, isReady]) => Object.hasOwn(params, 'id') && isReady),
-        map(([params, _]) => Number.parseInt(params['id'])),
+        filter(([_, isReady]) => isReady),
+        map(([params, _]) => {
+          if (Object.hasOwn(params, 'id')) {
+            return Number.parseInt(params['id']);
+          } else {
+            throw new Error('Id param not found');
+          }
+        }),
         switchMap((id) => this.storageService.getDeck(id))
       )
     );

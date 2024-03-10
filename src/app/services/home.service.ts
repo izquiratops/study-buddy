@@ -55,6 +55,7 @@ export class HomeService {
     );
   }
 
+  // Not used for now
   // TODO: Set this value with persistance
   switchTheme() {
     if (this.dataThemeValue === 'light') {
@@ -70,7 +71,7 @@ export class HomeService {
     // Remove from idb
     await this.storageService.deleteDeck(index);
 
-    // Remove from current state. decks$ is not linked to indexedDB updates.
+    // Remove from state once indexedDB is done
     const currDecksState = this.decks$.getValue();
     const newDecksState = currDecksState.filter(
       (curr) => curr.idbKey !== index

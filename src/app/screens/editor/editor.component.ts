@@ -80,14 +80,22 @@ export class EditorComponent {
   }
 
   async onCsvFileSelected(event: Event) {
+    this.loadingDeck$.next(true);
+
     const files = (event.target as HTMLInputElement).files;
     if (!files) {
       throw Error('File not found');
     }
 
-    await this.editorService.importCsvFile(files[0]);
+    try {
+      await this.editorService.importCsvFile(files[0]);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+
     // Because the import method is async, we need to tell when this
     // component needs to be rerendered.
     this.changeDetectionRef.markForCheck();
+    this.loadingDeck$.next(false);
   }
 }

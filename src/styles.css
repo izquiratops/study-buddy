@@ -19,7 +19,7 @@ app-root > *:not(router-outlet) {
   margin-bottom: var(--pico-spacing);
 
   &.scrollable {
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   
   &.hidden-scroll {
@@ -46,6 +46,12 @@ app-root > *:not(router-outlet) {
 
 .dropdown {
   max-width: 20ch;
+}
+
+nav {
+  h1 {
+    margin-bottom: 0;
+  }
 }
 
 ol {
