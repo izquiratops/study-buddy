@@ -35,6 +35,15 @@ app-root > *:not(router-outlet) {
   }
 }
 
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding-left: var(--pico-spacing);
+    padding-right: var(--pico-spacing);
+  }
+}
+
 .dropdown {
   max-width: 20ch;
 }

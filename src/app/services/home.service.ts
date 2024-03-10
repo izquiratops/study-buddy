@@ -46,15 +46,13 @@ export class HomeService {
     };
   }
 
-  async initializeDeckList() {
-    const decks = await firstValueFrom(
+  initializeHome() {
+    return firstValueFrom(
       this.storageService.onIdbReady$.pipe(
         filter((value) => value),
         switchMap(() => this.storageService.getDecks())
       )
     );
-
-    this.decks$.next(decks);
   }
 
   // TODO: Set this value with persistance

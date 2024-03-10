@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
-import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
+import { CardEditDialogComponent } from '../screens/editor/components/card-edit-dialog/card-edit-dialog.component';
 import { FileService, StorageService } from '@services';
 import { Deck, Card, CardContent, DeckForm, NewDeck } from '@models';
 

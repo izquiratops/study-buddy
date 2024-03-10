@@ -3,10 +3,9 @@
   [actions]="navigatorActions"
 ></app-navigator-bar>
 
-<!-- Reactive form -->
 <form [formGroup]="deckForm" class="expand-container hidden-scroll">
-  <fieldset>
-    <label for="name"> Name </label>
+  <label for="name">
+    Name
     <input
       type="text"
       id="name"
@@ -15,28 +14,32 @@
     />
     <small
       class="pico-color-red-500"
-      [hidden]="nameControl.valid || nameControl.pristine"
+      [hidden]="deckForm.get('name')?.valid || deckForm.get('name')?.pristine"
     >
       Field not valid
     </small>
-  </fieldset>
+  </label>
 
-  <ng-container *ngIf="hasCards; else emptyListBlock">
-    <!-- <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" /> -->
-    <app-cards-table class="expand-container scrollable"></app-cards-table>
-
-    <footer>
-      <button
-        type="button"
-        [disabled]="!deckForm.valid"
-        [routerLink]="'..'"
-        (click)="handleCreateDeck()"
-      >
-        {{ submitButtonLabel }}
-      </button>
-    </footer>
+  <ng-container *ngIf="!(loadingDeck$ | async); else loadingSpinnerBlock">
+    <ng-container *ngIf="hasItems; else emptyListBlock">
+      <app-cards-table class="expand-container scrollable"></app-cards-table>
+      <footer>
+        <button
+          type="button"
+          [disabled]="!deckForm.valid"
+          [routerLink]="'..'"
+          (click)="handleCreateDeck()"
+        >
+          {{ submitButtonLabel }}
+        </button>
+      </footer>
+    </ng-container>
   </ng-container>
 </form>
+
+<ng-template #loadingSpinnerBlock>
+  <article aria-busy="true">Loading deck...</article>
+</ng-template>
 
 <ng-template #emptyListBlock>
   <article>

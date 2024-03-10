@@ -1,10 +1,16 @@
-<app-navigator-bar title="🐉🧠" [actions]="navigatorActions">
+<app-navigator-bar title="ホーム" [actions]="navigatorActions">
 </app-navigator-bar>
 
-<ng-container *ngIf="hasItems$ | async; else emptyListBlock">
-  <input placeholder="Search..." (keyup)="onSearchTextChange($event)" />
-  <app-decks-table class="expand-container scrollable"></app-decks-table>
+<ng-container *ngIf="!(loadingDecks$ | async); else loadingSpinnerBlock">
+  <ng-container *ngIf="homeService.hasItems$ | async; else emptyListBlock">
+    <input placeholder="Search..." (keyup)="onSearchTextChange($event)" />
+    <app-decks-table class="expand-container scrollable"></app-decks-table>
+  </ng-container>
 </ng-container>
+
+<ng-template #loadingSpinnerBlock>
+  <article aria-busy="true">Loading decks...</article>
+</ng-template>
 
 <ng-template #emptyListBlock>
   <article>

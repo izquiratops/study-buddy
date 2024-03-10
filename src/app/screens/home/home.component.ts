@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { HomeService } from './home.service';
+import { BehaviorSubject } from 'rxjs';
+import { HomeService } from '@services';
 import { NavigatorAction, ThemeColorKeys } from '@models';
 
 @Component({
@@ -7,6 +8,7 @@ import { NavigatorAction, ThemeColorKeys } from '@models';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  loadingDecks$ = new BehaviorSubject(true);
   navigatorActions: Array<NavigatorAction> = [
     {
       type: 'Link',
@@ -29,14 +31,17 @@ export class HomeComponent {
     },
   ];
 
-  constructor(private homeService: HomeService) {}
+  constructor(public homeService: HomeService) {}
 
   ngOnInit() {
-    this.homeService.initializeDeckList();
-  }
-
-  get hasItems$() {
-    return this.homeService.hasItems$;
+    this.homeService
+      .initializeHome()
+      .then((decks) => {
+        this.homeService.decks$.next(decks);
+      })
+      .finally(() => {
+        this.loadingDecks$.next(false);
+      });
   }
 
   onSearchTextChange(event: Event) {

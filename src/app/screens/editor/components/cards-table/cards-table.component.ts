@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { EditorService } from '@screens/editor/editor.service';
+import { EditorService } from '@services';
 
 @Component({
   selector: 'app-cards-table',
   templateUrl: './cards-table.component.html',
-  styleUrl: './cards-table.component.css'
+  styleUrl: './cards-table.component.css',
 })
 export class CardsTableComponent {
   constructor(private editorService: EditorService) {}

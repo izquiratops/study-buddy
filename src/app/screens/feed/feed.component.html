@@ -1,18 +1,24 @@
-<app-navigator-bar title="🍣"></app-navigator-bar>
+<app-navigator-bar title="練習"></app-navigator-bar>
 
 <h3>{{ deckTitle }}</h3>
 <progress [value]="index" [max]="list.length"></progress>
 
 <article *ngIf="currentCard">
-  <div [innerHtml]="currentCard.content.front"></div>
+  <div class="card-face-display" [innerHtml]="currentCard.content.front"></div>
   <hr />
-  <div [innerHtml]="currentCard.content.back"></div>
-  <hr />
-  <pre>{{ currentCard.fsrsCard | json }}</pre>
-  <div class="grid">
-    <button (click)="handleFeedback(4)">Easy</button>
-    <button (click)="handleFeedback(3)">Good</button>
-    <button (click)="handleFeedback(2)">Hard</button>
-    <button (click)="handleFeedback(1)">Again</button>
-  </div>
+  <div class="card-face-display" [innerHtml]="currentCard.content.back"></div>
+  <footer class="grid">
+    <button (click)="handleFeedback(4)">
+      <ruby>簡<rt>かん</rt></ruby>
+      <ruby>単<rt>たん</rt></ruby>
+    </button>
+    <button (click)="handleFeedback(3)">まあまあ</button>
+    <button (click)="handleFeedback(2)">
+      <ruby>難<rt>むず</rt>しい</ruby>
+    </button>
+    <button (click)="handleFeedback(1)">
+      <ruby>別<rt>べつ</rt></ruby>
+      <ruby>時<rt>とき</rt></ruby>
+    </button>
+  </footer>
 </article>

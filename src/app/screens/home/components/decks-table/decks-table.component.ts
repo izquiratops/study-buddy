@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HomeService } from '@screens/home/home.service';
+import { HomeService } from 'app/services/home.service';
 
 @Component({
   selector: 'app-decks-table',

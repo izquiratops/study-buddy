@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ViewContainerRef } from '@angular/core';
-import { EditorService } from './editor.service';
+import { BehaviorSubject } from 'rxjs';
+import { EditorService } from '@services';
 import { NavigatorAction } from '@models';
 
 @Component({
@@ -7,6 +8,7 @@ import { NavigatorAction } from '@models';
   templateUrl: './editor.component.html',
 })
 export class EditorComponent {
+  loadingDeck$ = new BehaviorSubject(true);
   navigatorActions: Array<NavigatorAction> = [
     {
       type: 'Method',
@@ -23,7 +25,7 @@ export class EditorComponent {
   constructor(
     private viewContainerRef: ViewContainerRef,
     private changeDetectionRef: ChangeDetectorRef,
-    private editorService: EditorService
+    public editorService: EditorService
   ) {
     this.editorService.editorScreenViewRef = viewContainerRef;
   }
@@ -38,18 +40,20 @@ export class EditorComponent {
       : 'Apply Changes ✅';
   }
 
-  get nameControl() {
-    return this.deckForm.get('name')!;
-  }
-
-  get hasCards() {
+  get hasItems() {
     return this.deckForm.get('cards')!.value.length > 0;
   }
 
-  async ngOnInit() {
-    const deck = await this.editorService.initializeEditor();
-    this.editorService.importIdbDeck(deck);
-    this.changeDetectionRef.markForCheck();
+  ngOnInit() {
+    this.editorService
+      .initializeEditor()
+      .then((deck) => {
+        this.editorService.importIdbDeck(deck);
+      })
+      .finally(() => {
+        this.loadingDeck$.next(false);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   ngOnDestroy() {

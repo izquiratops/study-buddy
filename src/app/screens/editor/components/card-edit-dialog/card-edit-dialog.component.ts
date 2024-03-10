@@ -1,7 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CardForm, CardContent } from '@models';
-import { EditorService } from '@screens/editor/editor.service';
+import { EditorService } from '@services';
 
 @Component({
   selector: 'app-card-edit-dialog',
