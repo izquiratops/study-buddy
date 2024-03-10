@@ -29,14 +29,14 @@
     <details class="dropdown">
       <summary>Menu</summary>
       <ul dir="rtl">
-        <li *ngFor="let action of actions">
+        <ng-container *ngFor="let action of visibleActions">
           <ng-container
             *ngTemplateOutlet="
               action.type === 'Method' ? methodMobileButton : linkMobileButton;
               context: { $implicit: action }
             "
           ></ng-container>
-        </li>
+        </ng-container>
       </ul>
     </details>
   </li>
@@ -44,7 +44,7 @@
 
 <ng-template #methodDesktopButton let-action>
   <button
-    class="primary"
+    [class]="action.class"
     [routerLink]="action.routerLink"
     [queryParams]="action.queryParams"
     (click)="action.callback?.()"
@@ -55,7 +55,7 @@
 
 <ng-template #linkDesktopButton let-action>
   <button
-    class="primary"
+    [class]="action.class"
     [routerLink]="action.routerLink"
     [queryParams]="action.queryParams"
     (click)="action.callback()"
@@ -65,21 +65,25 @@
 </ng-template>
 
 <ng-template #methodMobileButton let-action>
-  <a
-    [routerLink]="action.routerLink"
-    [queryParams]="action.queryParams"
-    (click)="action.callback?.()"
-  >
-    {{ action.label }}
-  </a>
+  <li>
+    <a
+      [routerLink]="action.routerLink"
+      [queryParams]="action.queryParams"
+      (click)="action.callback?.()"
+    >
+      {{ action.label }}
+    </a>
+  </li>
 </ng-template>
 
 <ng-template #linkMobileButton let-action>
-  <a
-    [routerLink]="action.routerLink"
-    [queryParams]="action.queryParams"
-    (click)="action.callback()"
-  >
-    {{ action.label }}
-  </a>
+  <li>
+    <a
+      [routerLink]="action.routerLink"
+      [queryParams]="action.queryParams"
+      (click)="action.callback()"
+    >
+      {{ action.label }}
+    </a>
+  </li>
 </ng-template>

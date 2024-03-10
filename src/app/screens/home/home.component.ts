@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HomeService } from '@services';
-import { NavigatorAction, ThemeColorKeys } from '@models';
+import { NavigatorAction } from '@models';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +12,11 @@ export class HomeComponent {
   navigatorActions: Array<NavigatorAction> = [
     {
       type: 'Method',
-      label: 'Hue 🌈',
-      callback: () => this.handleRandomHue(),
+      label: 'Theme 🌑',
+      callback: () => {
+        this.homeService.switchTheme();
+      },
+      class: 'outline',
     },
     {
       type: 'Link',
@@ -37,15 +40,5 @@ export class HomeComponent {
 
   onSearchTextChange(event: Event) {
     this.homeService.searchText = (event.target as HTMLInputElement).value;
-  }
-
-  handleRandomHue() {
-    const index = Math.floor(Math.random() * ThemeColorKeys.length);
-    const color = ThemeColorKeys[index].toLowerCase();
-    const link = document.getElementById('hue');
-    link?.setAttribute(
-      'href',
-      `https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.${color}.min.css`
-    );
   }
 }

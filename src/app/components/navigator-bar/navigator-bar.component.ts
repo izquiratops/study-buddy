@@ -23,6 +23,11 @@ export class NavigatorBarComponent {
     this.onWindowResize();
   }
 
+  get visibleActions() {
+    // Actions with Undefined or 'false' values will be filtered
+    return this.actions.filter((action) => !action.hidden);
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.onWindowResize();

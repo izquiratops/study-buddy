@@ -1,14 +1,24 @@
 article {
     display: flex;
-
     border: var(--pico-border-width) solid var(--pico-form-element-border-color);
+    padding: 0;
     box-shadow: none;
+
+    div {
+        padding: var(--pico-spacing);
+    }
+
+    .deck-list-name {
+        flex-grow: 1;
+        text-overflow: ellipsis;
+    }
+
+    .deck-list-side-button {
+        flex-shrink: 0;
+        border-bottom: 0;
+    }
 }
 
 ol {
     padding-inline-end: 1rem;
 }
-
-.deck-list-name {
-    flex-grow: 1;
- }

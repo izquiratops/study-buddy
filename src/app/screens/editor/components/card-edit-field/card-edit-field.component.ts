@@ -60,8 +60,15 @@ export class CardEditFieldComponent {
     return formControl.valid || formControl.pristine;
   }
 
+  // TODO: Move this as a pipe
   get previewContent() {
-    return this.cardForm.get(this.name)?.value || this.placeholder;
+    const inputContent = this.cardForm.get(this.name)?.value;
+
+    if (inputContent) {
+      return inputContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+    } else {
+      return this.placeholder;
+    }
   }
 
   ngOnInit() {

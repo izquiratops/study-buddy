@@ -55,7 +55,6 @@ export class HomeService {
     );
   }
 
-  // Not used for now
   // TODO: Set this value with persistance
   switchTheme() {
     if (this.dataThemeValue === 'light') {

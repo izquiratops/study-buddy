@@ -35,6 +35,11 @@ app-root > *:not(router-outlet) {
   }
 }
 
+.rounded {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
 
 @media (max-width: 1024px) {
   .container {
@@ -48,9 +53,17 @@ app-root > *:not(router-outlet) {
   max-width: 20ch;
 }
 
+article {
+  border-radius: 22px;
+}
+
 nav {
   h1 {
     margin-bottom: 0;
+  }
+
+  details {
+    margin: 0;
   }
 }
 

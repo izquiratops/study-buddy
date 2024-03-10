@@ -6,15 +6,16 @@
     "
   >
     <article class="deck-list-item">
-      <a
+      <div
         class="deck-list-name"
         tabindex="0"
         [routerLink]="'/feed'"
         [queryParams]="{ id: deck.idbKey }"
       >
-        {{ deck.name }}
-      </a>
+        <a>{{ deck.name }}</a>
+      </div>
       <div
+        class="deck-list-side-button"
         data-tooltip="Edit"
         data-placement="left"
         [routerLink]="'/editor'"

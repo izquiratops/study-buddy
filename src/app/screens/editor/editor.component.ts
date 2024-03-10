@@ -14,6 +14,8 @@ export class EditorComponent {
       type: 'Method',
       label: 'Export to CSV 💾',
       callback: () => this.handleExportCsv(),
+      // Hide the export button on new decks
+      hidden: this.deckForm.get('idbKey')?.value === -1,
     },
     {
       type: 'Method',

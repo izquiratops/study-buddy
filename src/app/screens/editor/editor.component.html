@@ -5,12 +5,12 @@
 
 <form [formGroup]="deckForm" class="expand-container hidden-scroll">
   <label for="name">
-    Name
+    デッキ名
     <input
       type="text"
       id="name"
       formControlName="name"
-      placeholder="JLPT N5 🍉"
+      placeholder="Example: JLPT N5 🍡"
     />
     <small
       class="pico-color-red-500"
@@ -43,8 +43,8 @@
 
 <ng-template #emptyListBlock>
   <article>
-    <p><b>Oops!</b> It seems this deck is empty.</p>
-    <button (click)="handleOpenDialog(-1)">Create Card</button>
+    <p>🛸<b>Oops!</b> It seems this deck is empty</p>
+    <button (click)="handleOpenDialog(-1)">Start writing cards</button>
     <hr />
     <p>Or import an existing .csv file</p>
     <input type="file" accept=".csv" (change)="onCsvFileSelected($event)" />
