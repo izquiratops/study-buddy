@@ -1,9 +1,9 @@
+import { FSRS } from 'ts-fsrs';
+import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Card, Deck } from '@models/database.model';
-import { StorageService } from '@services/storage.service';
-import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
-import { FSRS } from 'ts-fsrs';
+import { Card, Deck } from '@models';
+import { StorageService } from '@services';
 
 @Component({
   selector: 'app-feed',

@@ -6,11 +6,9 @@ import {
   from,
   map,
   switchMap,
-  take,
 } from 'rxjs';
-import { Deck, Decks, ProcessedDeck } from '@models/database.model';
-import { StorageService } from '@services/storage.service';
-import { DataThemeValue } from '@models/editor.model';
+import { StorageService } from '@services';
+import { Deck, Decks, ProcessedDeck, DataThemeValue } from '@models';
 
 @Injectable({
   providedIn: 'root',

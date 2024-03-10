@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {
-  Deck,
-  Decks,
-  NewDeck,
-  ObjectStoreKey,
-  ObjectStoreKeys,
-} from '@models/database.model';
+import { Deck, Decks, NewDeck, ObjectStoreKey, ObjectStoreKeys } from '@models';
 
 @Injectable({
   providedIn: 'root',

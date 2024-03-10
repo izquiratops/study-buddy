@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CardForm } from '@models/editor.model';
+import { CardForm } from '@models';
 
 @Component({
   selector: 'app-card-edit-field',

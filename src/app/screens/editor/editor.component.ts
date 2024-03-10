@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ViewContainerRef } from '@angular/core';
 import { EditorService } from './editor.service';
-import { NavigatorAction } from '@models/editor.model';
+import { NavigatorAction } from '@models';
 
 @Component({
   selector: 'app-editor',

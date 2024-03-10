@@ -1,6 +1,6 @@
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CardContent } from '@models/database.model';
+import { CardContent } from '@models';
 import Papa from 'papaparse';
 
 @Injectable({

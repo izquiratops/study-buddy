@@ -1,6 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NavigatorAction } from '@models/editor.model';
+import { NavigatorAction } from '@models';
 
 @Component({
   selector: 'app-navigator-bar',

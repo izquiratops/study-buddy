@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ProcessedDecks } from '@models/database.model';
+import { ProcessedDecks } from '@models';
 
 @Pipe({
-  name: 'filterDecksByText'
+  name: 'filterDecksByText',
 })
 export class FilterDecksByTextPipe implements PipeTransform {
   transform(items: ProcessedDecks | null, filterValue: string): ProcessedDecks {
-    console.debug("Running filter pipe decks", filterValue);
+    console.debug('Running filter pipe decks', filterValue);
 
     if (!items) {
       return [];
@@ -16,7 +16,7 @@ export class FilterDecksByTextPipe implements PipeTransform {
       return items;
     }
 
-    return items.filter(item => {
+    return items.filter((item) => {
       return item.name.toLowerCase().includes(filterValue.toLowerCase());
     });
   }

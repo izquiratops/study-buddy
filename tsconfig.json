@@ -25,9 +25,9 @@
       "dom"
     ],
     "paths": {
-      "@models/*": ["app/models/*"],
+      "@models": ["app/models"],
+      "@services": ["app/services"],
       "@screens/*": ["app/screens/*"],
-      "@services/*": ["app/services/*"],
       "@pipes/*": ["app/pipes/*"],
       "@components/*": ["app/components/*"],
     }

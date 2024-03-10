@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HomeService } from './home.service';
-import { NavigatorAction, ThemeColorKeys } from '@models/editor.model';
+import { NavigatorAction, ThemeColorKeys } from '@models';
 
 @Component({
   selector: 'app-home',

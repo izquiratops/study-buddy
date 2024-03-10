@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Cards } from '@models/database.model';
+import { Cards } from '@models';
 
 @Pipe({
-  name: 'filterCardsByText'
+  name: 'filterCardsByText',
 })
 export class FilterCardsByTextPipe implements PipeTransform {
   transform(items: Cards | null, filterValue: string): Cards {
-    console.debug("Running filter pipe cards", filterValue);
+    console.debug('Running filter pipe cards', filterValue);
 
     if (!items) {
       return [];
@@ -17,9 +17,11 @@ export class FilterCardsByTextPipe implements PipeTransform {
     }
 
     const search = (value: string) => {
-        return value.toLowerCase().includes(filterValue.toLowerCase());
-    }
+      return value.toLowerCase().includes(filterValue.toLowerCase());
+    };
 
-    return items.filter(item => search(item.content.front) || search(item.content.back));
+    return items.filter(
+      (item) => search(item.content.front) || search(item.content.back)
+    );
   }
 }

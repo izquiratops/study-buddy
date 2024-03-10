@@ -1,7 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { CardContent } from '@models/database.model';
-import { CardForm } from '@models/editor.model';
+import { CardForm, CardContent } from '@models';
 import { EditorService } from '@screens/editor/editor.service';
 
 @Component({

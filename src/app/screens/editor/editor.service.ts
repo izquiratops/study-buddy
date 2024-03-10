@@ -9,10 +9,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { CardEditDialogComponent } from './components/card-edit-dialog/card-edit-dialog.component';
-import { FileService } from '@services/file.service';
-import { StorageService } from '@services/storage.service';
-import { Deck, Card, CardContent, NewDeck } from '@models/database.model';
-import { DeckForm } from '@models/editor.model';
+import { FileService, StorageService } from '@services';
+import { Deck, Card, CardContent, DeckForm, NewDeck } from '@models';
 
 @Injectable({
   providedIn: 'root',
