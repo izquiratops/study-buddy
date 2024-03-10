@@ -34,8 +34,8 @@ export class EditorComponent {
 
   get submitButtonLabel() {
     return this.deckForm.get('idbKey')!.value === -1
-      ? 'Create Deck'
-      : 'Apply Changes';
+      ? 'Create Deck 🔨'
+      : 'Apply Changes ✅';
   }
 
   get nameControl() {

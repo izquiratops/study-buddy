@@ -17,14 +17,26 @@ app-root > *:not(router-outlet) {
   flex-direction: column;
   flex-grow: 1;
   margin-bottom: var(--pico-spacing);
+
+  &.scrollable {
+    overflow-y: scroll;
+  }
+  
+  &.hidden-scroll {
+    overflow-y: hidden;
+  }
+
+  article {
+    align-self: center;
+  }
+
+  footer {
+    align-self: flex-end;
+  }
 }
 
-.expand-container.scrollable {
-  overflow-y: scroll;
-}
-
-.expand-container.hidden-scroll {
-  overflow-y: hidden;
+.dropdown {
+  max-width: 20ch;
 }
 
 ol {

@@ -33,21 +33,31 @@ export class CardEditFieldComponent {
   // TODO: Move logic to a service
   private insertFurigana(
     currentValue: string,
-    input: string,
     selectionStart: number,
     selectionEnd: number
   ): string {
+    const selection = currentValue.substring(selectionStart, selectionEnd);
+    const input = window.prompt(`Prompt the pronunciation of ${selection}`);
+    if (!input) {
+      throw Error('Input is empty');
+    }
+
     const wrapperLeftSide = '<ruby>';
     const wrapperRightSide = `<rt>${input}</rt></ruby>`;
 
     const modifiedContent =
       currentValue.substring(0, selectionStart) +
       wrapperLeftSide +
-      currentValue.substring(selectionStart, selectionEnd) +
+      selection +
       wrapperRightSide +
       currentValue.substring(selectionEnd);
 
     return modifiedContent;
+  }
+
+  get isNotValid() {
+    const formControl = this.cardForm.get(this.name) as FormControl<string>;
+    return formControl.valid || formControl.pristine;
   }
 
   get previewContent() {
@@ -61,12 +71,6 @@ export class CardEditFieldComponent {
   }
 
   handleFuriganaButton() {
-    const input = window.prompt('Insert furigana');
-    if (!input) {
-      console.warn('Input is empty');
-      return;
-    }
-
     const [start, end] = this.fetchCurrentSelection();
     if (start === null || end === null) {
       console.warn('Selection is empty');
@@ -74,14 +78,16 @@ export class CardEditFieldComponent {
     }
 
     const formControl = this.cardForm.get(this.name) as FormControl<string>;
-    const modifiedContent = this.insertFurigana(
-      formControl.value,
-      input,
-      start,
-      end
-    );
-
-    formControl.setValue(modifiedContent);
+    try {
+      const modifiedContent = this.insertFurigana(
+        formControl.value,
+        start,
+        end
+      );
+      formControl.setValue(modifiedContent);
+    } catch (err: any) {
+      console.warn(err.message);
+    }
   }
 
   onUserInput() {
@@ -92,17 +98,5 @@ export class CardEditFieldComponent {
       // Enable the button if the selection has at least one character
       this.furiganaButtonDisabled.next(start === end);
     }, 0);
-  }
-
-  onBlur() {
-    // Ignore blur events if the button is already disabled
-    if (this.furiganaButtonDisabled.getValue()) {
-      return;
-    }
-
-    // Give a little moment to let the click handler be triggered before disabling the button
-    setTimeout(() => {
-      this.furiganaButtonDisabled.next(true);
-    }, 100);
   }
 }

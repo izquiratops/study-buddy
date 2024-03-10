@@ -59,6 +59,7 @@ export class HomeService {
     this.decks$.next(decks);
   }
 
+  // TODO: Set this value with persistance
   switchTheme() {
     if (this.dataThemeValue === 'light') {
       document.documentElement.setAttribute('data-theme', 'dark');

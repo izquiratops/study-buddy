@@ -1,8 +1,8 @@
 import { Card as FsrsCard, ReviewLog, createEmptyCard } from 'ts-fsrs';
 
 // Database
-export const objectStoreKeys = ['decks'] as const;
-export type ObjectStoreKey = (typeof objectStoreKeys)[number];
+export const ObjectStoreKeys = ['decks'] as const;
+export type ObjectStoreKey = (typeof ObjectStoreKeys)[number];
 
 // Decks
 export class Deck {

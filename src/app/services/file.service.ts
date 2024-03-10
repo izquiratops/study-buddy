@@ -14,7 +14,7 @@ export class FileService {
       Papa.parse(input, {
         worker: true,
         skipEmptyLines: true,
-        complete: (results, file) => resolve(results),
+        complete: (results, _) => resolve(results),
         error: (error) => reject(error),
       });
     });

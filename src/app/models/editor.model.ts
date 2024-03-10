@@ -16,9 +16,6 @@ type CardFormProps = {
   back: FormControl<string>;
 };
 
-// Theme
-export type DataThemeValue = 'light' | 'dark';
-
 // Navigation
 export type NavigatorAction = NavigatorActionLink | NavigatorActionMethod;
 export type NavigatorActionMethod = NavigatorActionBase & {
@@ -34,3 +31,25 @@ export type NavigatorActionLink = NavigatorActionBase & {
 export type NavigatorActionBase = {
   label: string;
 };
+
+// Theme
+export type DataThemeValue = 'light' | 'dark';
+
+export const ThemeColorKeys = [
+  'Red',
+  'Pink',
+  'Fuchsia',
+  'Purple',
+  'Violet',
+  'Indigo',
+  'Blue',
+  'Azure',
+  'Cyan',
+  'Jade',
+  'Green',
+  'Yellow',
+  'Amber',
+  'Pumpkin',
+  'Orange',
+] as const;
+export type ThemeColorKey = (typeof ThemeColorKeys)[number];

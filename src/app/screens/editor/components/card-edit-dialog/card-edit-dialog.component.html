@@ -1,8 +1,21 @@
 <dialog open="true">
   <article>
-    <header class="grid">
-      <h2>Create new card</h2>
+    <header>
+      <h1>Card</h1>
     </header>
+    <!-- <details class="dropdown" *ngIf="index !== -1">
+      <summary>Menu</summary>
+      <ul dir="rtl">
+        <li>
+          <a class="secondary" (click)="handleClearCardStats()">
+            Clear stats 🧼
+          </a>
+        </li>
+        <li>
+          <a class="secondary" (click)="handleDeleteCard()"> Delete 🗑️ </a>
+        </li>
+      </ul>
+    </details> -->
 
     <form [formGroup]="cardForm">
       <app-card-edit-field
@@ -20,20 +33,6 @@
         placeholder="Dictionary"
       ></app-card-edit-field>
     </form>
-
-    <!-- <details class="dropdown" *ngIf="index !== -1">
-      <summary>Menu</summary>
-      <ul dir="rtl">
-        <li>
-          <a class="secondary" (click)="handleClearCardStats()">
-            Clear stats 🧼
-          </a>
-        </li>
-        <li>
-          <a class="secondary" (click)="handleDeleteCard()"> Delete 🗑️ </a>
-        </li>
-      </ul>
-    </details> -->
 
     <footer>
       <button type="button" class="secondary" (click)="handleDismiss()">

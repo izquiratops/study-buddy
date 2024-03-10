@@ -24,23 +24,22 @@
   <ng-container *ngIf="hasCards; else emptyListBlock">
     <!-- <input type="search" placeholder="Search..." (keyup)="onSearchTextChange($event)" /> -->
     <app-cards-table class="expand-container scrollable"></app-cards-table>
-  </ng-container>
 
-  <div>
-    <button
-      type="button"
-      [disabled]="!deckForm.valid"
-      [routerLink]="'..'"
-      (click)="handleCreateDeck()"
-    >
-      {{ submitButtonLabel }}
-    </button>
-  </div>
+    <footer>
+      <button
+        type="button"
+        [disabled]="!deckForm.valid"
+        [routerLink]="'..'"
+        (click)="handleCreateDeck()"
+      >
+        {{ submitButtonLabel }}
+      </button>
+    </footer>
+  </ng-container>
 </form>
 
 <ng-template #emptyListBlock>
   <article>
-    <!-- <img src="assets/empty_list.jpg" class="empty-list-picture" /> -->
     <p><b>Oops!</b> It seems this deck is empty.</p>
     <button (click)="handleOpenDialog(-1)">Create Card</button>
     <hr />
