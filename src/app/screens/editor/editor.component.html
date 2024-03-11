@@ -1,11 +1,9 @@
-<app-navigator-bar
-  title="エディタ"
-  [actions]="navigatorActions"
-></app-navigator-bar>
+<app-navigator-bar title="Editor" [actions]="navigatorActions" />
 
 <form [formGroup]="deckForm" class="expand-container hidden-scroll">
+  <!-- TODO: Create text input component -->
   <label for="name">
-    デッキ名
+    Name
     <input
       type="text"
       id="name"
@@ -20,22 +18,30 @@
     </small>
   </label>
 
-  <ng-container *ngIf="!(loadingDeck$ | async); else loadingSpinnerBlock">
-    <ng-container *ngIf="hasItems; else emptyListBlock">
-      <app-cards-table class="expand-container scrollable"></app-cards-table>
-      <footer>
-        <button
-          type="button"
-          [disabled]="!deckForm.valid"
-          [routerLink]="'..'"
-          (click)="handleCreateDeck()"
-        >
-          {{ submitButtonLabel }}
-        </button>
-      </footer>
-    </ng-container>
-  </ng-container>
+  <ng-container
+    *ngIf="
+      loadingDeck$ | async;
+      then alreadyLoadedBlock;
+      else loadingSpinnerBlock
+    "
+  />
 </form>
+
+<ng-template #alreadyLoadedBlock>
+  <ng-container *ngIf="hasItems; else emptyListBlock">
+    <app-cards-table class="expand-container scrollable"></app-cards-table>
+    <footer>
+      <button
+        type="button"
+        [disabled]="!deckForm.valid"
+        [routerLink]="'/'"
+        (click)="handleCreateDeck()"
+      >
+        {{ submitButtonLabel }}
+      </button>
+    </footer>
+  </ng-container>
+</ng-template>
 
 <ng-template #loadingSpinnerBlock>
   <article aria-busy="true">Loading deck...</article>

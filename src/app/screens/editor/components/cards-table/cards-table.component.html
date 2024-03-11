@@ -7,9 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let card of cards | filterCardsByText : searchText; index as idx"
-    >
+    <tr *ngFor="let card of cards; index as idx">
       <td scope="row" [innerHtml]="card.content.front"></td>
       <td [innerHtml]="card.content.back"></td>
       <td class="shrink-cell">
