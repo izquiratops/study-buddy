@@ -7,7 +7,7 @@ import {
   map,
   switchMap,
 } from 'rxjs';
-import { StorageService } from '@services';
+import { IdbStorageService } from '@services';
 import { Deck, Decks, ProcessedDeck, DataThemeValue } from '@models';
 
 @Injectable({
@@ -30,7 +30,7 @@ export class HomeService {
     map((deck) => deck.map(this._mapDecks))
   );
 
-  constructor(private storageService: StorageService) {}
+  constructor(private storageService: IdbStorageService) {}
 
   // TODO: Deprecate this map, this is not used on UI anymore
   private _mapDecks(deck: Deck): ProcessedDeck {

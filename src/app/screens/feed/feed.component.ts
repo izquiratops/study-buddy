@@ -3,7 +3,7 @@ import { combineLatest, filter, firstValueFrom, map, switchMap } from 'rxjs';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Card, Deck } from '@models';
-import { StorageService } from '@services';
+import { IdbStorageService } from '@services';
 
 @Component({
   selector: 'app-feed',
@@ -20,7 +20,7 @@ export class FeedComponent {
   constructor(
     private route: ActivatedRoute,
     private changeDetectionRef: ChangeDetectorRef,
-    private storageService: StorageService
+    private storageService: IdbStorageService
   ) {}
 
   private _initializeCardList(deck: Deck) {

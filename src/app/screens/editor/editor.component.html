@@ -1,34 +1,41 @@
 <app-navigator-bar title="Editor" [actions]="navigatorActions" />
 
-<form [formGroup]="deckForm" class="expand-container hidden-scroll">
-  <!-- TODO: Create text input component -->
-  <label for="name">
-    Name
-    <input
-      type="text"
-      id="name"
-      formControlName="name"
-      placeholder="Example: JLPT N5 🍡"
-    />
-    <small
-      class="pico-color-red-500"
-      [hidden]="deckForm.get('name')?.valid || deckForm.get('name')?.pristine"
-    >
-      Field not valid
-    </small>
-  </label>
-
+<form class="expand-container hidden-scroll">
+  <ng-container *ngTemplateOutlet="nameFieldBlock" />
   <ng-container
     *ngIf="
       loadingDeck$ | async;
-      then alreadyLoadedBlock;
-      else loadingSpinnerBlock
+      then loadingSpinnerBlock;
+      else alreadyLoadedBlock
     "
   />
 </form>
 
+<ng-template #nameFieldBlock>
+  <ng-container [formGroup]="deckForm">
+    <label for="name">
+      Name
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        placeholder="Example: JLPT N5 🍡"
+      />
+      <small
+        class="pico-color-red-500"
+        [hidden]="deckForm.get('name')?.valid || deckForm.get('name')?.pristine"
+      >
+        Field not valid
+      </small>
+    </label>
+  </ng-container>
+</ng-template>
+
 <ng-template #alreadyLoadedBlock>
-  <ng-container *ngIf="hasItems; else emptyListBlock">
+  <ng-container
+    *ngIf="deckHasItems; else emptyListBlock"
+    [formGroup]="deckForm"
+  >
     <app-cards-table class="expand-container scrollable"></app-cards-table>
     <footer>
       <button
@@ -44,11 +51,11 @@
 </ng-template>
 
 <ng-template #loadingSpinnerBlock>
-  <article aria-busy="true">Loading deck...</article>
+  <article class="centered" aria-busy="true">Loading deck...</article>
 </ng-template>
 
 <ng-template #emptyListBlock>
-  <article>
+  <article class="centered">
     <p>🛸<b>Oops!</b> It seems this deck is empty</p>
     <button (click)="handleOpenDialog(-1)">Start writing cards</button>
     <hr />

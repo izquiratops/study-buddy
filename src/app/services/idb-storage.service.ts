@@ -5,7 +5,7 @@ import { Deck, Decks, NewDeck, ObjectStoreKey, ObjectStoreKeys } from '@models';
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService {
+export class IdbStorageService {
   private dbOpenRequest = indexedDB.open('cards', 14);
   private dataBase: IDBDatabase;
 

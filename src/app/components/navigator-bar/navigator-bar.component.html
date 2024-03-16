@@ -14,14 +14,14 @@
 </nav>
 
 <ng-template #desktopLayout>
-  <li *ngFor="let action of actions">
+  <ng-container *ngFor="let action of actions">
     <ng-container
       *ngTemplateOutlet="
         action.type === 'Method' ? methodDesktopButton : linkDesktopButton;
         context: { $implicit: action }
       "
     ></ng-container>
-  </li>
+  </ng-container>
 </ng-template>
 
 <ng-template #mobileLayout>
@@ -29,7 +29,7 @@
     <details class="dropdown">
       <summary>Menu</summary>
       <ul dir="rtl">
-        <ng-container *ngFor="let action of visibleActions">
+        <ng-container *ngFor="let action of actions">
           <ng-container
             *ngTemplateOutlet="
               action.type === 'Method' ? methodMobileButton : linkMobileButton;
@@ -43,29 +43,33 @@
 </ng-template>
 
 <ng-template #methodDesktopButton let-action>
-  <button
-    [class]="action.class"
-    [routerLink]="action.routerLink"
-    [queryParams]="action.queryParams"
-    (click)="action.callback?.()"
-  >
-    {{ action.label }}
-  </button>
+  <li *ngIf="action.renderCondition?.() ?? true">
+    <button
+      [class]="action.class"
+      [routerLink]="action.routerLink"
+      [queryParams]="action.queryParams"
+      (click)="action.callback?.()"
+    >
+      {{ action.label }}
+    </button>
+  </li>
 </ng-template>
 
 <ng-template #linkDesktopButton let-action>
-  <button
-    [class]="action.class"
-    [routerLink]="action.routerLink"
-    [queryParams]="action.queryParams"
-    (click)="action.callback()"
-  >
-    {{ action.label }}
-  </button>
+  <li *ngIf="action.renderCondition?.() ?? true">
+    <button
+      [class]="action.class"
+      [routerLink]="action.routerLink"
+      [queryParams]="action.queryParams"
+      (click)="action.callback()"
+    >
+      {{ action.label }}
+    </button>
+  </li>
 </ng-template>
 
 <ng-template #methodMobileButton let-action>
-  <li>
+  <li *ngIf="action.renderCondition?.() ?? true">
     <a
       [routerLink]="action.routerLink"
       [queryParams]="action.queryParams"
@@ -77,7 +81,7 @@
 </ng-template>
 
 <ng-template #linkMobileButton let-action>
-  <li>
+  <li *ngIf="action.renderCondition?.() ?? true">
     <a
       [routerLink]="action.routerLink"
       [queryParams]="action.queryParams"

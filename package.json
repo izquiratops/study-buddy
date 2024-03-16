@@ -1,5 +1,10 @@
 {
-  "name": "mondai-client",
+  "name": "study-buddy",
+  "private": true,
+  "author": {
+    "email": "jordi.izquierdo.casares@gmail.com",
+    "name": "Jordi Izquierdo Casares"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -7,7 +12,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",
     "@angular/common": "^17.0.0",

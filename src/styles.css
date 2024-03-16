@@ -1,17 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* Layout */
+
 main {
-    height: 100dvh;
-    overflow: hidden;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-/* Every screen component, they're placed after <router-outlet>  */
-app-root > *:not(router-outlet) {
+app-home, app-editor, app-feed {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* This class expands the component vertically and enables scroll behavior */
 .expand-container {
   display: flex;
   flex-direction: column;
@@ -25,21 +24,17 @@ app-root > *:not(router-outlet) {
   &.hidden-scroll {
     overflow-y: hidden;
   }
-
-  article {
-    align-self: center;
-  }
-
-  footer {
-    align-self: flex-end;
-  }
 }
 
-.rounded {
-  aspect-ratio: 1;
-  border-radius: 50%;
+.centered {
+  align-self: center;
 }
 
+/* PicoCSS Override themes */
+
+[data-tooltip]:not(a, button, input) {
+  border-bottom: 0;
+}
 
 @media (max-width: 1024px) {
   .container {
@@ -49,22 +44,8 @@ app-root > *:not(router-outlet) {
   }
 }
 
-.dropdown {
-  max-width: 20ch;
-}
-
 article {
   border-radius: 22px;
-}
-
-nav {
-  h1 {
-    margin-bottom: 0;
-  }
-
-  details {
-    margin: 0;
-  }
 }
 
 ol {
@@ -87,4 +68,8 @@ th {
   position: sticky;
   z-index: 1;
   top: 0;
+}
+
+.dropdown {
+  max-width: 20ch;
 }

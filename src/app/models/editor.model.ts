@@ -15,7 +15,7 @@ export type NavigatorActionLink = NavigatorActionBase & {
 export type NavigatorActionBase = {
   label: string;
   class?: string;
-  hidden?: boolean;
+  renderCondition?: () => boolean;
 };
 
 export type DataThemeValue = 'light' | 'dark';

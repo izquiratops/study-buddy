@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mondai-client": {
+    "study-buddy": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/mondai-client",
+            "outputPath": "dist/study-buddy",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "mondai-client:build:production"
+              "buildTarget": "study-buddy:build:production"
             },
             "development": {
-              "buildTarget": "mondai-client:build:development"
+              "buildTarget": "study-buddy:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "mondai-client:build"
+            "buildTarget": "study-buddy:build"
           }
         },
         "test": {

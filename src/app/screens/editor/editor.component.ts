@@ -14,8 +14,7 @@ export class EditorComponent {
       type: 'Method',
       label: 'Export to CSV 💾',
       callback: () => this.handleExportCsv(),
-      // Hide the export button on new decks
-      hidden: this.deckForm.get('idbKey')?.value === -1,
+      renderCondition: () => this.deckHasItems,
     },
     {
       type: 'Method',
@@ -36,14 +35,14 @@ export class EditorComponent {
     return this.editorService.deckForm;
   }
 
+  get deckHasItems() {
+    return this.deckForm.get('cards')!.value.length > 0;
+  }
+
   get submitButtonLabel() {
     return this.deckForm.get('idbKey')!.value === -1
       ? 'Create Deck 🔨'
       : 'Apply Changes ✅';
-  }
-
-  get hasItems() {
-    return this.deckForm.get('cards')!.value.length > 0;
   }
 
   ngOnInit() {

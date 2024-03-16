@@ -1,10 +1,11 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NavigatorAction } from '@models';
 
 @Component({
   selector: 'app-navigator-bar',
   templateUrl: './navigator-bar.component.html',
+  styleUrl: './navigator-bar.component.css',
 })
 export class NavigatorBarComponent {
   // '768px' is the value of the second smallest media query from PicoCSS.
@@ -23,9 +24,12 @@ export class NavigatorBarComponent {
     this.onWindowResize();
   }
 
-  get visibleActions() {
-    // Actions with Undefined or 'false' values will be filtered
-    return this.actions.filter((action) => !action.hidden);
+  ngDoCheck() {
+    console.debug('do check');
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.debug('changes', changes);
   }
 
   @HostListener('window:resize', ['$event'])

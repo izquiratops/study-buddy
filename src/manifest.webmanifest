@@ -1,6 +1,6 @@
 {
-  "name": "mondai-client",
-  "short_name": "mondai-client",
+  "name": "study-buddy",
+  "short_name": "study-buddy",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

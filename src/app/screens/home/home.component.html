@@ -9,7 +9,7 @@
 />
 
 <ng-template #loadingSpinnerBlock>
-  <article aria-busy="true">Loading decks...</article>
+  <article class="centered" aria-busy="true">Loading decks...</article>
 </ng-template>
 
 <ng-template #alreadyLoadedBlock>
@@ -20,7 +20,7 @@
 </ng-template>
 
 <ng-template #emptyListBlock>
-  <article>
+  <article class="centered">
     Looks like there are no decks here at the moment,
     <a [routerLink]="'/editor'">click here to create one.</a>
   </article>

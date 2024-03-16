@@ -15,9 +15,6 @@
         right: 0;
         padding: 8px;
 
-        /* Override tooltip bottom border */
-        border-bottom: 0;
-
         &.disabled {
             pointer-events: none;
             opacity: 0.1;

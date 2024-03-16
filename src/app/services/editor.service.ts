@@ -16,7 +16,7 @@ import {
   throwError,
 } from 'rxjs';
 import { CardEditDialogComponent } from '../screens/editor/components/card-edit-dialog/card-edit-dialog.component';
-import { FileService, StorageService } from '@services';
+import { FileService, IdbStorageService } from '@services';
 import { Deck, Card, CardContent, DeckForm, NewDeck } from '@models';
 
 @Injectable({
@@ -27,7 +27,6 @@ export class EditorService {
   editDialogRef?: ComponentRef<CardEditDialogComponent>;
   // 📍 Editor Screen View reference
   editorScreenViewRef: ViewContainerRef;
-
   // 🔎 Current search input value
   searchText: string = '';
   // 📒 Deck angular FormGroup
@@ -37,7 +36,7 @@ export class EditorService {
     private nnfb: NonNullableFormBuilder,
     private route: ActivatedRoute,
     private fileService: FileService,
-    private storageService: StorageService
+    private storageService: IdbStorageService
   ) {
     this.deckForm = this.nnfb.group({
       idbKey: this.nnfb.control(-1),

@@ -10,15 +10,14 @@
     <tr *ngFor="let card of cards; index as idx">
       <td scope="row" [innerHtml]="card.content.front"></td>
       <td [innerHtml]="card.content.back"></td>
-      <td class="shrink-cell">
-        <div
-          data-tooltip="Edit"
-          data-placement="left"
-          tabindex="0"
-          (click)="handleOpenCardDialog(idx)"
-        >
-          ✏️
-        </div>
+      <td
+        class="shrink-cell"
+        data-tooltip="Edit"
+        data-placement="left"
+        tabindex="0"
+        (click)="handleOpenCardDialog(idx)"
+      >
+        <div>✏️</div>
       </td>
     </tr>
   </tbody>

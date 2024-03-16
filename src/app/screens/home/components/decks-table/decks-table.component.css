@@ -2,7 +2,6 @@ article {
     display: flex;
     border: var(--pico-border-width) solid var(--pico-form-element-border-color);
     padding: 0;
-    box-shadow: none;
 
     div {
         padding: var(--pico-spacing);
@@ -15,10 +14,9 @@ article {
 
     .deck-list-side-button {
         flex-shrink: 0;
-        border-bottom: 0;
     }
 }
 
 ol {
-    padding-inline-end: 1rem;
+    padding-inline: 1rem;
 }
